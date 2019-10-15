@@ -15,13 +15,13 @@ import tagline.model.person.Person;
 import tagline.model.group.Group;
 
 /**
- * Adds a person to the address book.
+ * Adds a group to the address book.
  */
 public class CreateGroupCommand extends Command {
 
     public static final String COMMAND_WORD = "add";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a person to the address book. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a group to the address book. "
             + "Parameters: "
             + PREFIX_NAME + "NAME "
             + PREFIX_PHONE + "PHONE "
@@ -36,28 +36,28 @@ public class CreateGroupCommand extends Command {
             + PREFIX_TAG + "friends "
             + PREFIX_TAG + "owesMoney";
 
-    public static final String MESSAGE_SUCCESS = "New person added: %1$s";
-    public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book";
+    public static final String MESSAGE_SUCCESS = "New group added: %1$s";
+    public static final String MESSAGE_DUPLICATE_PERSON = "This group already exists in the address book";
 
-    private final Person toAdd;
+    private final Group toAdd;
 
     /**
-     * Creates an CreateGroupCommand to add the specified {@code Person}
+     * Creates an CreateGroupCommand to add the specified {@code Group}
      */
-    public CreateGroupCommand(Person person) {
-        requireNonNull(person);
-        toAdd = person;
+    public CreateGroupCommand(Group group) {
+        requireNonNull(group);
+        toAdd = group;
     }
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        if (model.hasPerson(toAdd)) {
+        if (model.hasGroup(toAdd)) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         }
 
-        model.addPerson(toAdd);
+        model.addGroup(toAdd);
         return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
     }
 

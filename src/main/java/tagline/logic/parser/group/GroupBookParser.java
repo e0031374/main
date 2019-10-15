@@ -1,4 +1,4 @@
-package tagline.logic.parser.group.member;
+package tagline.logic.parser;
 
 import static tagline.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static tagline.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
@@ -6,25 +6,26 @@ import static tagline.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import tagline.logic.commands.AddCommand;
+import tagline.logic.commands.ClearCommand;
 import tagline.logic.commands.Command;
+import tagline.logic.commands.DeleteCommand;
+import tagline.logic.commands.EditCommand;
+import tagline.logic.commands.ExitCommand;
+import tagline.logic.commands.FindCommand;
 import tagline.logic.commands.HelpCommand;
 import tagline.logic.commands.ListCommand;
-import tagline.logic.parser.AddMemberCommandParser;
 import tagline.logic.parser.exceptions.ParseException;
 
 /**
  * Parses user input.
  */
-public class MemberBookParser {
+public class AddressBookParser {
 
     /**
      * Used for initial separation of command word and args.
      */
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
-    private static final String ADD_MEMBER_COMMAND = "ADD_MEMBER_COMMAND";
-    private static final String DELETE_MEMBER_COMMAND = "DELETE_MEMBER_COMMAND";
-    private static final String FIND_MEMBER_COMMAND = "FIND_MEMBER_COMMAND";
-    private static final String LIST_MEMBER_COMMAND = "LIST_MEMBER_COMMAND";
 
     /**
      * Parses user input into command for execution.
@@ -33,8 +34,7 @@ public class MemberBookParser {
      * @return the command based on the user input
      * @throws ParseException if the user input does not conform the expected format
      */
-    public Command parseCommand(String userInput, Contact contactArg) throws ParseException {
-        // userInput has to be one of the above XXX_MEMBER_COMMAND
+    public Command parseCommand(String userInput) throws ParseException {
         final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(userInput.trim());
         if (!matcher.matches()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE));
@@ -44,18 +44,29 @@ public class MemberBookParser {
         final String arguments = matcher.group("arguments");
         switch (commandWord) {
 
-        case ADD_MEMBER_COMMAND:
-            return new AddMemberCommandParser().parse(contactArg);
+        case AddCommand.COMMAND_WORD:
+            return new AddCommandParser().parse(arguments);
 
-        case DELETE_MEMBER_COMMAND:
-            return new DeleteMemberCommandParser().parse(contactArg);
+        case EditCommand.COMMAND_WORD:
+            return new EditCommandParser().parse(arguments);
 
-        case FIND_MEMBER_COMMAND:
-            // Contact -> Member, to support DELETE_MEMBER_COMMAND find then delete
-            return new FindMemberCommandParser().parse(contactArg);
+        case DeleteCommand.COMMAND_WORD:
+            return new DeleteCommandParser().parse(arguments);
 
-        case LIST_MEMBER_COMMAND:
+        case ClearCommand.COMMAND_WORD:
+            return new ClearCommand();
+
+        case FindCommand.COMMAND_WORD:
+            return new FindCommandParser().parse(arguments);
+
+        case ListCommand.COMMAND_WORD:
             return new ListCommand();
+
+        case ExitCommand.COMMAND_WORD:
+            return new ExitCommand();
+
+        case HelpCommand.COMMAND_WORD:
+            return new HelpCommand();
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);

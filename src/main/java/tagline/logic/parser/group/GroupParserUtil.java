@@ -11,6 +11,7 @@ import tagline.commons.util.StringUtil;
 import tagline.logic.parser.exceptions.ParseException;
 import tagline.model.group.GroupDescription;
 import tagline.model.group.GroupName;
+import tagline.model.group.MemberId;
 import tagline.model.person.Address;
 import tagline.model.person.Email;
 import tagline.model.person.Name;
@@ -133,6 +134,32 @@ public class GroupParserUtil {
         return new Email(trimmedEmail);
     }
 
+    /**
+     * Parses a {@code String tag} into a {@code Tag}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code tag} is invalid.
+     */
+    public static MemberId parseMemberId(String id) throws ParseException {
+        requireNonNull(id);
+        String trimmedId = id.trim();
+        if (!MemberId.isValidMemberIdName(trimmedId)) {
+            throw new ParseException(Tag.MESSAGE_CONSTRAINTS);
+        }
+        return new MemberId(trimmedId);
+    }
+
+    /**
+     * Parses {@code Collection<String> tags} into a {@code Set<Tag>}.
+     */
+    public static Set<MemberId> parseMemberIds(Collection<String> ids) throws ParseException {
+        requireNonNull(ids);
+        final Set<MemberId> memberSet = new HashSet<>();
+        for (String id : ids) {
+            memberSet.add(parseMemberId(id));
+        }
+        return memberSet;
+    }
     /**
      * Parses a {@code String tag} into a {@code Tag}.
      * Leading and trailing whitespaces will be trimmed.

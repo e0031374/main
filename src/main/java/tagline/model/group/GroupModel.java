@@ -13,7 +13,7 @@ import tagline.model.group.Group;
  */
 public interface GroupModel {
     /** {@code Predicate} that always evaluate to true */
-    Predicate<Group> PREDICATE_SHOW_ALL_PERSONS = unused -> true;
+    Predicate<Group> PREDICATE_SHOW_ALL_GROUPS = unused -> true;
 
     /**
      * Replaces user prefs data with the data in {@code userPrefs}.

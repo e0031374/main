@@ -7,6 +7,9 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import tagline.logic.commands.Command;
+import tagline.logic.commands.CommandResult;
+import tagline.logic.parser.group.member.MemberBookParser;
 import tagline.model.group.member.MemberModel;
 import tagline.model.tag.Tag;
 
@@ -16,25 +19,35 @@ import tagline.model.tag.Tag;
  */
 public class Group {
 
+    // Member Logic
+    //private final MemberBookParser memberBookParser;
+
     // Identity fields
     private final GroupName groupName;
-    private final GroupDescription description;
+    //private final GroupDescription description;
 
     // Data fields
-    private final MemberModel members;
-    //private final Set<Id> memberIds = new HashSet<>();
+    //private final MemberModel members;
+    private final Set<MemberId> memberIds = new HashSet<>();
 
     /**
      * Every field must be present and not null.
      */
-    //public Group(GroupName groupName, Set<Id> memberIds, GroupDescription description, Set<Tag> tags) {
-    public Group(GroupName groupName, MemberModel members, GroupDescription description) {
-        requireAllNonNull(groupName, members);
+    public Group(GroupName groupName, Set<MemberId> memberIds) {
+        requireAllNonNull(groupName, memberIds);
         this.groupName = groupName;
-        this.members = members;
-        this.description = description;
+        this.memberIds.addAll(memberIds);
         //this.tags.addAll(tags);
     }
+    //public Group(GroupName groupName, Set<MemberId> memberIds, GroupDescription description) {
+    //public Group(GroupName groupName, MemberModel members, GroupDescription description) {
+    //    requireAllNonNull(groupName, members);
+    //    this.groupName = groupName;
+    //    this.members = members;
+    //    this.description = description;
+    //    this.memberBookParser = new MemberBookParser();
+    //    //this.tags.addAll(tags);
+    //}
 
     public GroupName getGroupName() {
         return groupName;
@@ -44,16 +57,16 @@ public class Group {
      * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
      */
-    //public Set<Id> getMemberIds() {
-    //    return Collections.unmodifiableSet(memberIds);
+    public Set<MemberId> getMemberIds() {
+        return Collections.unmodifiableSet(memberIds);
+    }
+    //public MemberModel getMembers() {
+    //    return members; //Collections.unmodifiableSet(memberIds);
     //}
-    public MemberModel getMembers() {
-        return members; //Collections.unmodifiableSet(memberIds);
-    }
 
-    public GroupDescription getDescription() {
-        return description;
-    }
+    //public GroupDescription getDescription() {
+    //    return description;
+    //}
 
     /**
      * Returns true if both persons of the same name have at least one other identity field that is the same.
@@ -86,7 +99,8 @@ public class Group {
 
         Group otherGroup = (Group) other;
         return otherGroup.getGroupName().equals(getGroupName())
-                && otherGroup.getMembers().equals(getMembers());
+                && otherGroup.getMemberIds().equals(getMemberIds());
+                //&& otherGroup.getMembers().equals(getMembers());
         //return otherGroup.getName().equals(getName())
                 //&& otherGroup.getPhone().equals(getPhone())
                 //&& otherGroup.getEmail().equals(getEmail())
@@ -97,8 +111,8 @@ public class Group {
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(groupName, members, description);
-        //return Objects.hash(name, phone, email, address, tags);
+        //return Objects.hash(groupName, members, description);
+        return Objects.hash(groupName, memberIds);
     }
 
     @Override
@@ -107,8 +121,9 @@ public class Group {
         builder.append(getGroupName())
                 //.append(" Desription: ")
                 //.append(getDescription())
-                .append(" Members: ")
-                .append(getMembers());
+                .append(" Members: ");
+                //.append(getMembers());
+        getMemberIds().forEach(builder::append);
         //getMemberIds().forEach(builder::append);
         //builder.append(getName())
         //        .append(" Phone: ")
@@ -121,5 +136,4 @@ public class Group {
         //getTags().forEach(builder::append);
         return builder.toString();
     }
-
 }

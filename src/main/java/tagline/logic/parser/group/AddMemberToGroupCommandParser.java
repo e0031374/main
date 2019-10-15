@@ -1,29 +1,30 @@
-package tagline.logic.parser.group.;
+package tagline.logic.parser.group;
 
+import static java.util.Objects.requireNonNull;
 import static tagline.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static tagline.logic.parser.group.GroupCliSyntax.PREFIX_CONTACTID;
 import static tagline.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static tagline.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static tagline.logic.parser.CliSyntax.PREFIX_NAME;
 import static tagline.logic.parser.CliSyntax.PREFIX_PHONE;
 import static tagline.logic.parser.CliSyntax.PREFIX_TAG;
+import static tagline.logic.parser.group.GroupCliSyntax.PREFIX_CONTACTID;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Stream;
 
+import tagline.commons.core.index.Index;
 import tagline.logic.commands.group.AddMemberToGroupCommand;
+import tagline.logic.commands.group.AddMemberToGroupCommand.EditGroupDescriptor;
 import tagline.logic.parser.ArgumentMultimap;
 import tagline.logic.parser.ArgumentTokenizer;
-import tagline.logic.parser.Prefix;
+import tagline.logic.parser.Parser;
+import tagline.logic.parser.ParserUtil;
 import tagline.logic.parser.exceptions.ParseException;
-import tagline.model.person.Address;
-import tagline.model.person.Email;
-import tagline.model.person.Name;
-import tagline.model.person.Person;
-import tagline.model.person.Phone;
+import tagline.model.group.MemberId;
 import tagline.model.tag.Tag;
 
-//AHHHHHHHHHHHHHHHHHHHHHHHHHHH i left this still a work in progress on 14/10/2019 11.00pm and slept afterwards
 /**
  * Parses input arguments and creates a new AddMemberToGroupCommand object
  */
@@ -35,32 +36,61 @@ public class AddMemberToGroupCommandParser implements Parser<AddMemberToGroupCom
      * @throws ParseException if the user input does not conform the expected format
      */
     public AddMemberToGroupCommand parse(String args) throws ParseException {
+        requireNonNull(args);
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_CONTACTID);
+                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_CONTACTID)
-                || !argMultimap.getPreamble().isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddMemberToGroupCommand.MESSAGE_USAGE));
+        String targetGroupName;
+        targetGroupName = argMultimap.getPreamble(); //GroupParserUtil.parseIndex(argMultimap.getPreamble());
+
+        //try {
+        //    targetGroupName = argMultimap.getPreamble(); //GroupParserUtil.parseIndex(argMultimap.getPreamble());
+        //} catch (ParseException pe) {
+        //    throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddMemberToGroupCommand.MESSAGE_USAGE), pe);
+        //}
+
+        EditGroupDescriptor editGroupDescriptor = new EditGroupDescriptor();
+        //if (argMultimap.getValue(PREFIX_NAME).isPresent()) {
+        //    editGroupDescriptor.setName(ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get()));
+        //}
+        //parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editGroupDescriptor::setTags);
+        parseMemberIdsForEdit(argMultimap.getAllValues(PREFIX_CONTACTID)).ifPresent(editGroupDescriptor::setMemberIds);
+
+        if (!editGroupDescriptor.isAnyFieldEdited()) {
+            throw new ParseException(AddMemberToGroupCommand.MESSAGE_NOT_EDITED);
         }
 
-        //nopes dun need this, just find those contacts
-        Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
-        Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
-        Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
-        Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
-        Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
-
-        Person person = new Person(name, phone, email, address, tagList);
-
-        return new AddMemberToGroupCommand(person);
+        return new AddMemberToGroupCommand(targetGroupName, editGroupDescriptor);
     }
 
     /**
-     * Returns true if none of the prefixes contains empty {@code Optional} values in the given
-     * {@code ArgumentMultimap}.
+     * Parses {@code Collection<String> tags} into a {@code Set<Tag>} if {@code tags} is non-empty.
+     * If {@code tags} contain only one element which is an empty string, it will be parsed into a
+     * {@code Set<Tag>} containing zero tags.
      */
-    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
-        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
+    private Optional<Set<MemberId>> parseMemberIdsForEdit(Collection<String> tags) throws ParseException {
+        assert tags != null;
+
+        if (tags.isEmpty()) {
+            return Optional.empty();
+        }
+        Collection<String> tagSet = tags.size() == 1 && tags.contains("") ? Collections.emptySet() : tags;
+        return Optional.of(GroupParserUtil.parseMemberIds(tagSet));
+    }
+
+    /**
+     * Parses {@code Collection<String> tags} into a {@code Set<Tag>} if {@code tags} is non-empty.
+     * If {@code tags} contain only one element which is an empty string, it will be parsed into a
+     * {@code Set<Tag>} containing zero tags.
+     */
+    private Optional<Set<Tag>> parseTagsForEdit(Collection<String> tags) throws ParseException {
+        assert tags != null;
+
+        if (tags.isEmpty()) {
+            return Optional.empty();
+        }
+        Collection<String> tagSet = tags.size() == 1 && tags.contains("") ? Collections.emptySet() : tags;
+        return Optional.of(ParserUtil.parseTags(tagSet));
     }
 
 }
