@@ -1,6 +1,7 @@
 package tagline.logic.parser.group.;
 
 import static tagline.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static tagline.logic.parser.group.GroupCliSyntax.PREFIX_CONTACTID;
 import static tagline.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static tagline.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static tagline.logic.parser.CliSyntax.PREFIX_NAME;
@@ -12,6 +13,8 @@ import java.util.stream.Stream;
 
 import tagline.logic.commands.group.AddMemberToGroupCommand;
 import tagline.logic.parser.ArgumentMultimap;
+import tagline.logic.parser.ArgumentTokenizer;
+import tagline.logic.parser.Prefix;
 import tagline.logic.parser.exceptions.ParseException;
 import tagline.model.person.Address;
 import tagline.model.person.Email;
@@ -33,9 +36,9 @@ public class AddMemberToGroupCommandParser implements Parser<AddMemberToGroupCom
      */
     public AddMemberToGroupCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG);
+                ArgumentTokenizer.tokenize(args, PREFIX_CONTACTID);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_ADDRESS, PREFIX_PHONE, PREFIX_EMAIL)
+        if (!arePrefixesPresent(argMultimap, PREFIX_CONTACTID)
                 || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddMemberToGroupCommand.MESSAGE_USAGE));
         }

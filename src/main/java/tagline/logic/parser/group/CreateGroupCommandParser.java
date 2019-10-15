@@ -6,7 +6,7 @@ import static tagline.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static tagline.logic.parser.CliSyntax.PREFIX_NAME;
 import static tagline.logic.parser.CliSyntax.PREFIX_PHONE;
 import static tagline.logic.parser.CliSyntax.PREFIX_TAG;
-import static tagline.logic.parser.group.GroupCliSyntax.PREFIX_CONTACT;
+import static tagline.logic.parser.group.GroupCliSyntax.PREFIX_CONTACTID;
 
 import java.util.Set;
 import java.util.stream.Stream;
@@ -36,9 +36,9 @@ public class CreateGroupCommandParser implements Parser<CreateGroupCommand> {
      */
     public CreateGroupCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap2 =
-                ArgumentTokenizer.tokenize(args, PREFIX_CONTACT);
+                ArgumentTokenizer.tokenize(args, PREFIX_CONTACTID);
 
-        if (!arePrefixesPresent(argMultimap2, PREFIX_CONTACT)
+        if (!arePrefixesPresent(argMultimap2, PREFIX_CONTACTID)
                 || !argMultimap2.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, CreateGroupCommand.MESSAGE_USAGE));
         }

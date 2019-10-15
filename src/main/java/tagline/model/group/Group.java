@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import tagline.model.group.member.MemberModel;
 import tagline.model.tag.Tag;
 
 /**
@@ -20,21 +21,19 @@ public class Group {
     private final GroupDescription description;
 
     // Data fields
-    private final Set<Tag> tags = new HashSet<>();
-    private final Set<Id> memberIds = new HashSet<>();
-    //private final Set<GroupName> gn = new HashSet<>();
+    private final MemberModel members;
+    //private final Set<Id> memberIds = new HashSet<>();
 
     /**
      * Every field must be present and not null.
      */
-    public Group(GroupName groupName, Set<Id> memberIds, GroupDescription description, Set<Tag> tags) {
-        requireAllNonNull(groupName, memberIds);
+    //public Group(GroupName groupName, Set<Id> memberIds, GroupDescription description, Set<Tag> tags) {
+    public Group(GroupName groupName, MemberModel members, GroupDescription description) {
+        requireAllNonNull(groupName, members);
         this.groupName = groupName;
-        this.memberIds.addAll(memberIds);
+        this.members = members;
         this.description = description;
-
-        this.tags.addAll(tags);
-        //this.gn.add(groupName);
+        //this.tags.addAll(tags);
     }
 
     public GroupName getGroupName() {
@@ -45,20 +44,15 @@ public class Group {
      * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
      */
-    public Set<Id> getMemberIds() {
-        return Collections.unmodifiableSet(memberIds);
+    //public Set<Id> getMemberIds() {
+    //    return Collections.unmodifiableSet(memberIds);
+    //}
+    public MemberModel getMembers() {
+        return members; //Collections.unmodifiableSet(memberIds);
     }
 
     public GroupDescription getDescription() {
         return description;
-    }
-
-    /**
-     * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
-     * if modification is attempted.
-     */
-    public Set<Tag> getTags() {
-        return Collections.unmodifiableSet(tags);
     }
 
     /**
@@ -92,6 +86,7 @@ public class Group {
 
         Group otherGroup = (Group) other;
         return otherGroup.getGroupName().equals(getGroupName())
+                && otherGroup.getMembers().equals(getMembers());
         //return otherGroup.getName().equals(getName())
                 //&& otherGroup.getPhone().equals(getPhone())
                 //&& otherGroup.getEmail().equals(getEmail())
@@ -102,7 +97,7 @@ public class Group {
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(groupName, memberIds, description);
+        return Objects.hash(groupName, members, description);
         //return Objects.hash(name, phone, email, address, tags);
     }
 
@@ -112,8 +107,9 @@ public class Group {
         builder.append(getGroupName())
                 //.append(" Desription: ")
                 //.append(getDescription())
-                .append(" Members: ");
-        getMemberIds().forEach(builder::append);
+                .append(" Members: ")
+                .append(getMembers());
+        //getMemberIds().forEach(builder::append);
         //builder.append(getName())
         //        .append(" Phone: ")
         //        .append(getPhone())
