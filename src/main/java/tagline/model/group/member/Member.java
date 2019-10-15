@@ -17,27 +17,41 @@ public class Member {
 
     // Identity fields
     private final Id memberId;
-    private final MemberDescription description;
 
     // Data fields
+    //private final MemberDescription description;
     private final Set<Tag> tags = new HashSet<>();
 
     /**
      * Every field must be present and not null.
      */
-    public Member(Id memberId, MemberDescription description) {
-        requireAllNonNull(memberId, description);
+    //public Member(Id memberId, MemberDescription description) {
+    //    requireAllNonNull(memberId, description);
+    //    this.memberId = memberId;
+    //    this.description = description;
+    //}
+
+    public Member(Id memberId) {
+        requireAllNonNull(memberId);
         this.memberId = memberId;
-        this.description = description;
+        //this.description = new MemberDescription("");
     }
 
     public Id getMemberId() {
         return memberId;
     }
 
-    public MemberDescription getMemberDescription() {
-        return description;
+    public String getMemberIdAsString() {
+        return memberId.getInteger().toString();
     }
+
+    //public boolean hasId(String stringId) {
+    //    return stringId.equals(memberId.getInteger());
+    //}
+
+    //public MemberDescription getMemberDescription() {
+    //    return description;
+    //}
 
     /**
      * Returns true if both persons of the same name have at least one other identity field that is the same.
@@ -74,14 +88,14 @@ public class Member {
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(memberId, description);
-        //return Objects.hash(name, phone, email, address, tags);
+        //return Objects.hash(memberId, description);
+        return Objects.hash(memberId);
     }
 
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
-        builder.append(getMemberId())
+        builder.append(getMemberId());
                 //.append(" Desription: ")
                 //.append(getMemberDescription())
         //builder.append(getName())
