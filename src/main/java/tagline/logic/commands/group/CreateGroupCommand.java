@@ -19,9 +19,9 @@ import tagline.model.group.Group;
  */
 public class CreateGroupCommand extends Command {
 
-    public static final String COMMAND_WORD = "add";
+    public static final String COMMAND_WORD = "create";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a group to the address book. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Creates a group. "
             + "Parameters: "
             + PREFIX_NAME + "NAME "
             + PREFIX_PHONE + "PHONE "

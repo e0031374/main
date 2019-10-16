@@ -12,6 +12,7 @@ import java.util.*;
 
 import tagline.commons.core.Messages;
 import tagline.commons.util.CollectionUtil;
+import tagline.logic.commands.Command;
 import tagline.logic.commands.CommandResult;
 import tagline.logic.commands.exceptions.CommandException;
 import tagline.logic.parser.group.GroupCliSyntax;
@@ -27,9 +28,9 @@ import tagline.model.tag.Tag;
  */
 public class AddMemberToGroupCommand extends Command {
 
-    public static final String COMMAND_WORD = "edit";
+    public static final String COMMAND_WORD = "add";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the details of the group identified "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Add a member to the group identified "
             + "by the index number used in the displayed group list. "
             + "Existing values will be overwritten by the input values.\n"
             + "Parameters: INDEX (must be a positive integer) "
