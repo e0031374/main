@@ -143,7 +143,7 @@ public class GroupParserUtil {
     public static MemberId parseMemberId(String id) throws ParseException {
         requireNonNull(id);
         String trimmedId = id.trim();
-        if (!MemberId.isValidMemberIdName(trimmedId)) {
+        if (!MemberId.isValidMemberId(trimmedId)) {
             throw new ParseException(Tag.MESSAGE_CONSTRAINTS);
         }
         return new MemberId(trimmedId);
