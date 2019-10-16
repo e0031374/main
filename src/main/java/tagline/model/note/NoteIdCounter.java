@@ -68,21 +68,4 @@ public class NoteIdCounter {
 
     }
 
-    //@Override
-    //public String toString() {
-    //    return String.valueOf(counter);
-    //}
-
-    //@Override
-    //public boolean equals(Object other) {
-    //    return other == this // short circuit if same object
-    //            || (other instanceof NoteIdCounter // instanceof handles nulls
-    //            && counter.equals(((NoteIdCounter) other).counter)); // state check
-    //}
-
-    //@Override
-    //public int hashCode() {
-    //    return counter.hashCode();
-    //}
-
 }
