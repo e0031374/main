@@ -20,9 +20,8 @@ public class NoteIdCounter {
     //public final String value;
     private static long counter;
 
-    //this is a static class only
+    //this is a static class only this is done in other AB3 classes as well
     private NoteIdCounter() {
-        //counter = Long.valueOf(0);
     }
 
     // for testing purposes
