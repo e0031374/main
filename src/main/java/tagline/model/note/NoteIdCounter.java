@@ -1,11 +1,7 @@
 package tagline.model.note;
 
-//import static java.util.Objects.requireNonNull;
-//import static tagline.commons.util.AppUtil.checkArgument;
-
 import static tagline.commons.util.AppUtil.checkArgument;
 
-// yes a Singleton is better but I will refactor this one day
 /**
  * Represents a Note's content in the note book.
  * Guarantees: a Static Class,
@@ -17,10 +13,8 @@ public class NoteIdCounter {
     // from https://stackoverflow.com/questions/15111420/how-to-check-if-a-string-contains-only-digits-in-java
     public static final String VALIDATION_REGEX = "\\d+";
 
-    //public final String value;
     private static long counter;
 
-    //this is a static class only this is done in other AB3 classes as well
     private NoteIdCounter() {
     }
 
