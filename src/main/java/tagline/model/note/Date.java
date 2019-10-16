@@ -47,8 +47,6 @@ public class Date {
     public Date(String dateString) {
         requireNonNull(dateString);
         this.date = (LocalDateTime.parse(dateString, INPUT_TEST_FORMATTER).atZone(timezone).toInstant());
-        // to generate Date at the current time use this.date = Instant.now();
-        //did not use this(LocalDateTime...toInstant()) since then i cannot use requireNonNull
     }
 
     public String getStorageString() {
