@@ -18,6 +18,7 @@ import tagline.model.contact.ReadOnlyAddressBook;
 import tagline.model.note.NoteBook;
 import tagline.model.note.ReadOnlyNoteBook;
 import tagline.storage.contact.JsonAddressBookStorage;
+import tagline.storage.group.JsonGroupBookStorage;
 import tagline.storage.note.JsonNoteBookStorage;
 
 public class StorageManagerTest {
@@ -31,8 +32,10 @@ public class StorageManagerTest {
     public void setUp() {
         JsonAddressBookStorage addressBookStorage = new JsonAddressBookStorage(getTempFilePath("ab"));
         JsonNoteBookStorage noteBookStorage = new JsonNoteBookStorage(getTempFilePath("nb"));
+        JsonGroupBookStorage groupBookStorage = new JsonGroupBookStorage(getTempFilePath("gb"));
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(getTempFilePath("prefs"));
-        storageManager = new StorageManager(addressBookStorage, noteBookStorage, userPrefsStorage);
+        storageManager = new StorageManager(addressBookStorage, noteBookStorage,
+            groupBookStorage, userPrefsStorage);
     }
 
     private Path getTempFilePath(String fileName) {

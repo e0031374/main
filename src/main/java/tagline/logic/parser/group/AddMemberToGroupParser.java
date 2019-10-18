@@ -1,11 +1,6 @@
 package tagline.logic.parser.group;
 
 import static java.util.Objects.requireNonNull;
-import static tagline.logic.parser.CliSyntax.PREFIX_ADDRESS;
-import static tagline.logic.parser.CliSyntax.PREFIX_EMAIL;
-import static tagline.logic.parser.CliSyntax.PREFIX_NAME;
-import static tagline.logic.parser.CliSyntax.PREFIX_PHONE;
-import static tagline.logic.parser.CliSyntax.PREFIX_TAG;
 import static tagline.logic.parser.group.GroupCliSyntax.PREFIX_CONTACTID;
 
 import java.util.Collection;
@@ -18,15 +13,13 @@ import tagline.logic.commands.group.AddMemberToGroupCommand.EditGroupDescriptor;
 import tagline.logic.parser.ArgumentMultimap;
 import tagline.logic.parser.ArgumentTokenizer;
 import tagline.logic.parser.Parser;
-import tagline.logic.parser.ParserUtil;
 import tagline.logic.parser.exceptions.ParseException;
-import tagline.model.group.ContactId;
-import tagline.model.tag.Tag;
+import tagline.model.contact.ContactId;
 
 /**
  * Parses input arguments and creates a new AddMemberToGroupCommand object
  */
-public class AddMemberToGroupCommandParser implements Parser<AddMemberToGroupCommand> {
+public class AddMemberToGroupParser implements Parser<AddMemberToGroupCommand> {
 
     /**
      * Parses the given {@code String} of arguments in the context of the AddMemberToGroupCommand
@@ -36,7 +29,7 @@ public class AddMemberToGroupCommandParser implements Parser<AddMemberToGroupCom
     public AddMemberToGroupCommand parse(String args) throws ParseException {
         requireNonNull(args);
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG);
+                ArgumentTokenizer.tokenize(args, PREFIX_CONTACTID);
 
         String targetGroupName;
         targetGroupName = argMultimap.getPreamble(); //GroupParserUtil.parseIndex(argMultimap.getPreamble());
@@ -55,7 +48,7 @@ public class AddMemberToGroupCommandParser implements Parser<AddMemberToGroupCom
         parseMemberIdsForEdit(argMultimap.getAllValues(PREFIX_CONTACTID)).ifPresent(editGroupDescriptor::setMemberIds);
 
         if (!editGroupDescriptor.isAnyFieldEdited()) {
-            throw new ParseException(AddMemberToGroupCommand.MESSAGE_NOT_EDITED);
+            throw new ParseException(AddMemberToGroupCommand.MESSAGE_NOT_ADDED);
         }
 
         return new AddMemberToGroupCommand(targetGroupName, editGroupDescriptor);
@@ -64,31 +57,16 @@ public class AddMemberToGroupCommandParser implements Parser<AddMemberToGroupCom
     /**
      * Parses {@code Collection<String> tags} into a {@code Set<Tag>} if {@code tags} is non-empty.
      * If {@code tags} contain only one element which is an empty string, it will be parsed into a
-     * {@code Set<Tag>} containing zero tags.
+     * {@code Set<Tag>} containing zero memberIds.
      */
-    private Optional<Set<ContactId>> parseMemberIdsForEdit(Collection<String> tags) throws ParseException {
-        assert tags != null;
+    private Optional<Set<ContactId>> parseMemberIdsForEdit(Collection<String> memberIds) throws ParseException {
+        assert memberIds != null;
 
-        if (tags.isEmpty()) {
+        if (memberIds.isEmpty()) {
             return Optional.empty();
         }
-        Collection<String> tagSet = tags.size() == 1 && tags.contains("") ? Collections.emptySet() : tags;
+        Collection<String> tagSet = memberIds.size() == 1 && memberIds.contains("") ? Collections.emptySet() : memberIds;
         return Optional.of(GroupParserUtil.parseMemberIds(tagSet));
-    }
-
-    /**
-     * Parses {@code Collection<String> tags} into a {@code Set<Tag>} if {@code tags} is non-empty.
-     * If {@code tags} contain only one element which is an empty string, it will be parsed into a
-     * {@code Set<Tag>} containing zero tags.
-     */
-    private Optional<Set<Tag>> parseTagsForEdit(Collection<String> tags) throws ParseException {
-        assert tags != null;
-
-        if (tags.isEmpty()) {
-            return Optional.empty();
-        }
-        Collection<String> tagSet = tags.size() == 1 && tags.contains("") ? Collections.emptySet() : tags;
-        return Optional.of(ParserUtil.parseTags(tagSet));
     }
 
 }

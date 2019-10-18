@@ -8,23 +8,21 @@ import java.util.regex.Pattern;
 
 import tagline.logic.commands.Command;
 import tagline.logic.commands.HelpCommand;
-//import tagline.logic.commands.ListCommand;
 import tagline.logic.commands.group.AddMemberToGroupCommand;
 import tagline.logic.commands.group.CreateGroupCommand;
 import tagline.logic.parser.exceptions.ParseException;
 
 /**
- * Parses user input.
+ * Parses user input for group commands.
  */
-public class GroupBookParser {
-
+public class GroupCommandParser {
     /**
      * Used for initial separation of command word and args.
      */
-    private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
+    private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?s)(?<commandWord>\\S+)(?<arguments>.*)");
 
     /**
-     * Parses user input into command for execution.
+     * Parses user input into group command for execution.
      *
      * @param userInput full user input string
      * @return the command based on the user input
@@ -46,27 +44,17 @@ public class GroupBookParser {
         case AddMemberToGroupCommand.COMMAND_WORD:
             return new AddMemberToGroupParser().parse(arguments);
 
-        //case DeleteCommand.COMMAND_WORD:
-        //    return new DeleteCommandParser().parse(arguments);
+        //case DeleteGroupCommand.COMMAND_WORD:
+        //    return new DeleteGroupParser().parse(arguments);
 
-        //case ClearCommand.COMMAND_WORD:
-        //    return new ClearCommand();
+        //case EditGroupCommand.COMMAND_WORD:
+        //    return new EditGroupParser().parse(arguments);
 
-        //case FindCommand.COMMAND_WORD:
-        //    return new FindCommandParser().parse(arguments);
-
-        //case ListCommand.COMMAND_WORD:
-        //    return new ListCommand();
-
-        //case ExitCommand.COMMAND_WORD:
-        //    return new ExitCommand();
-
-        //case HelpCommand.COMMAND_WORD:
-        //    return new HelpCommand();
+        //case ListGroupCommand.COMMAND_WORD:
+        //    return new ListGroupParser().parse(arguments);
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
         }
     }
-
 }

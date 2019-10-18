@@ -4,13 +4,18 @@ import static java.util.Objects.requireNonNull;
 import static tagline.logic.parser.group.GroupCliSyntax.PREFIX_CONTACTID;
 import static tagline.model.group.GroupModel.PREDICATE_SHOW_ALL_GROUPS;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import tagline.commons.core.Messages;
 import tagline.commons.util.CollectionUtil;
-import tagline.logic.commands.Command;
+
 import tagline.logic.commands.CommandResult;
 import tagline.logic.commands.exceptions.CommandException;
-import tagline.logic.parser.group.GroupCliSyntax;
 import tagline.model.Model;
 import tagline.model.contact.ContactId;
 import tagline.model.group.Group;
@@ -18,12 +23,10 @@ import tagline.model.group.GroupDescription;
 import tagline.model.group.GroupName;
 import tagline.model.group.GroupNameEqualsKeywordPredicate;
 
-import java.util.*;
-
 /**
  * Edits the details of an existing group in the address book.
  */
-public class AddMemberToGroupCommand extends Command {
+public class AddMemberToGroupCommand extends GroupCommand {
 
     public static final String COMMAND_WORD = "add";
 
@@ -31,7 +34,7 @@ public class AddMemberToGroupCommand extends Command {
             + "by the group name and the contact ID number displayed in the contact list.\n "
             + "Parameters: GROUP_NAME (one word, cannot contain space) "
             + "[" + PREFIX_CONTACTID + "CONTACT_ID]...\n"
-            + "Example: " + COMMAND_WORD + " BTS_fanclub "
+            + "Example: " + COMMAND_WORD + " BTS_ARMY "
             + PREFIX_CONTACTID + "47337 ";
 
     public static final String MESSAGE_ADD_MEMBER_SUCCESS = "Added contact to Group: %1$s";
@@ -220,7 +223,6 @@ public class AddMemberToGroupCommand extends Command {
 
             return getGroupName().equals(e.getGroupName())
                     && getMemberIds().equals(e.getMemberIds());
-                    //&& getTags().equals(e.getTags());
         }
     }
 }

@@ -5,13 +5,11 @@ import java.util.function.Predicate;
 
 import tagline.commons.util.StringUtil;
 import tagline.model.contact.Contact;
-import tagline.model.contact.Id;
 
 /**
  * Tests that a {@code Contact}'s {@code Id} matches the searchId given.
  */
 public class ContactIdEqualsIdPredicate implements Predicate<Contact> {
-    //private final List<String> keywords;
     private final String searchId;
 
     public ContactIdEqualsIdPredicate(String searchId) {
@@ -28,7 +26,7 @@ public class ContactIdEqualsIdPredicate implements Predicate<Contact> {
 
     @Override
     public boolean test(Contact contact) {
-        return contact.toInteger().toString().equals(searchId); //String.valueOf(contact.getDigit()).equals(searchId);
+        return contact.getContactId().toInteger().toString().equals(searchId);
         //return keywords.stream()
         //        .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(String.valueOf(contact.getDigit()), keyword));
     }

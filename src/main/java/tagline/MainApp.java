@@ -33,6 +33,8 @@ import tagline.storage.StorageManager;
 import tagline.storage.UserPrefsStorage;
 import tagline.storage.contact.AddressBookStorage;
 import tagline.storage.contact.JsonAddressBookStorage;
+import tagline.storage.group.GroupBookStorage;
+import tagline.storage.group.JsonGroupBookStorage;
 import tagline.storage.note.JsonNoteBookStorage;
 import tagline.storage.note.NoteBookStorage;
 import tagline.ui.Ui;
@@ -65,7 +67,9 @@ public class MainApp extends Application {
         UserPrefs userPrefs = initPrefs(userPrefsStorage);
         AddressBookStorage addressBookStorage = new JsonAddressBookStorage(userPrefs.getAddressBookFilePath());
         NoteBookStorage noteBookStorage = new JsonNoteBookStorage(userPrefs.getNoteBookFilePath());
-        storage = new StorageManager(addressBookStorage, noteBookStorage, userPrefsStorage);
+        GroupBookStorage groupBookStorage = new JsonGroupBookStorage(userPrefs.getGroupBookFilePath());
+        storage = new StorageManager(addressBookStorage, noteBookStorage,
+            groupBookStorage, userPrefsStorage);
 
         initLogging(config);
 

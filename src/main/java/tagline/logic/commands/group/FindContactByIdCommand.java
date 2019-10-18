@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import tagline.commons.core.Messages;
 import tagline.logic.commands.Command;
 import tagline.logic.commands.CommandResult;
+import tagline.model.Model;
 import tagline.model.contact.ContactModel;
 import tagline.model.group.ContactIdEqualsIdPredicate;
 
@@ -12,7 +13,7 @@ import tagline.model.group.ContactIdEqualsIdPredicate;
  * Finds and lists all contacts in address book whose name contains any of the argument keywords.
  * Keyword matching is case insensitive.
  */
-public class FindContactByIdCommand extends Command {
+public class FindContactByIdCommand extends GroupCommand {
 
     public static final String COMMAND_WORD = "find";
 
@@ -28,11 +29,11 @@ public class FindContactByIdCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(ContactModel model) {
+    public CommandResult execute(Model model) {
         requireNonNull(model);
-        model.updateFilteredPersonList(predicate);
+        model.updateFilteredContactList(predicate);
         return new CommandResult(
-                String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()));
+                String.format(Messages.MESSAGE_CONTACTS_LISTED_OVERVIEW, model.getFilteredContactList().size()));
     }
 
     @Override

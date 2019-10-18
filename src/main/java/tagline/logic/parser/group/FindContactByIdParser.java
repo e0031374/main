@@ -12,7 +12,7 @@ import tagline.model.group.ContactIdEqualsIdPredicate;
 /**
  * Parses input arguments and creates a new FindContactByIdCommand object
  */
-public class FindContactByIdCommandParser implements Parser<FindContactByIdCommand> {
+public class FindContactByIdParser implements Parser<FindContactByIdCommand> {
 
     public static final String VALIDATION_REGEX = "\\d+";
     public static final String MESSAGE_INVALID_SEARCH_TERM = "Contact Id search numbers should only "

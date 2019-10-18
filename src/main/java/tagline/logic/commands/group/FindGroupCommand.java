@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import tagline.commons.core.Messages;
 import tagline.logic.commands.Command;
 import tagline.logic.commands.CommandResult;
+import tagline.model.Model;
 import tagline.model.group.GroupModel;
 import tagline.model.group.GroupNameEqualsKeywordPredicate;
 
@@ -12,7 +13,7 @@ import tagline.model.group.GroupNameEqualsKeywordPredicate;
  * Finds and lists all persons in address book whose name contains any of the argument keywords.
  * Keyword matching is case insensitive.
  */
-public class FindGroupCommand extends Command {
+public class FindGroupCommand extends GroupCommand {
 
     public static final String COMMAND_WORD = "find";
 
@@ -28,11 +29,11 @@ public class FindGroupCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(GroupModel model) {
+    public CommandResult execute(Model model) {
         requireNonNull(model);
         model.updateFilteredGroupList(predicate);
         return new CommandResult(
-                String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredGroupList().size()));
+                String.format(Messages.MESSAGE_GROUPS_LISTED_OVERVIEW, model.getFilteredGroupList().size()));
     }
 
     @Override
