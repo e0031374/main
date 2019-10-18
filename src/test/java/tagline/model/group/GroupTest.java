@@ -7,9 +7,10 @@ import static tagline.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
 import static tagline.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static tagline.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static tagline.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
+import static tagline.logic.commands.GroupCommandTestUtil.*;
 import static tagline.testutil.Assert.assertThrows;
-import static tagline.testutil.TypicalPersons.ALICE;
-import static tagline.testutil.TypicalGroups.BOB;
+import static tagline.testutil.TypicalGroups.CHILDREN;
+import static tagline.testutil.TypicalGroups.HYDRA;
 
 import org.junit.jupiter.api.Test;
 
@@ -19,77 +20,66 @@ public class GroupTest {
 
     @Test
     public void asObservableList_modifyList_throwsUnsupportedOperationException() {
-        Group person = new GroupBuilder().build();
-        assertThrows(UnsupportedOperationException.class, () -> person.getTags().remove(0));
+        Group group = new GroupBuilder().build();
+        assertThrows(UnsupportedOperationException.class, () -> group.getMemberIds().remove(0));
     }
 
     @Test
     public void isSameGroup() {
         // same object -> returns true
-        assertTrue(ALICE.isSameGroup(ALICE));
+        assertTrue(CHILDREN.isSameGroup(CHILDREN));
 
         // null -> returns false
-        assertFalse(ALICE.isSameGroup(null));
-
-        // different phone and email -> returns false
-        Group editedAlice = new GroupBuilder(ALICE).withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_BOB).build();
-        assertFalse(ALICE.isSameGroup(editedAlice));
+        assertFalse(CHILDREN.isSameGroup(null));
 
         // different name -> returns false
-        editedAlice = new GroupBuilder(ALICE).withName(VALID_NAME_BOB).build();
-        assertFalse(ALICE.isSameGroup(editedAlice));
+        Group editedChildren = new GroupBuilder(CHILDREN).withGroupName(VALID_GROUPNAME_HYDRA).build();
+        assertFalse(CHILDREN.isSameGroup(editedChildren));
 
-        // same name, same phone, different attributes -> returns true
-        editedAlice = new GroupBuilder(ALICE).withEmail(VALID_EMAIL_BOB).withAddress(VALID_ADDRESS_BOB)
-                .withTags(VALID_TAG_HUSBAND).build();
-        assertTrue(ALICE.isSameGroup(editedAlice));
+        // same name, different attributes -> returns true
+        editedChildren = new GroupBuilder(CHILDREN).withGroupDescription(VALID_GROUPDESCRIPTION_HYDRA)
+                .withMemberIds(VALID_CONTACTID_HYDRA1, VALID_CONTACTID_HYDRA2).build();
+        assertTrue(CHILDREN.isSameGroup(editedChildren));
 
-        // same name, same email, different attributes -> returns true
-        editedAlice = new GroupBuilder(ALICE).withPhone(VALID_PHONE_BOB).withAddress(VALID_ADDRESS_BOB)
-                .withTags(VALID_TAG_HUSBAND).build();
-        assertTrue(ALICE.isSameGroup(editedAlice));
-
-        // same name, same phone, same email, different attributes -> returns true
-        editedAlice = new GroupBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).withTags(VALID_TAG_HUSBAND).build();
-        assertTrue(ALICE.isSameGroup(editedAlice));
     }
 
     @Test
     public void equals() {
         // same values -> returns true
-        Group aliceCopy = new GroupBuilder(ALICE).build();
-        assertTrue(ALICE.equals(aliceCopy));
+        Group childrenCopy = new GroupBuilder(CHILDREN).build();
+        assertTrue(CHILDREN.equals(childrenCopy));
 
         // same object -> returns true
-        assertTrue(ALICE.equals(ALICE));
+        assertTrue(CHILDREN.equals(CHILDREN));
 
         // null -> returns false
-        assertFalse(ALICE.equals(null));
+        assertFalse(CHILDREN.equals(null));
 
         // different type -> returns false
-        assertFalse(ALICE.equals(5));
+        assertFalse(CHILDREN.equals(5));
 
         // different person -> returns false
-        assertFalse(ALICE.equals(BOB));
+        assertFalse(CHILDREN.equals(HYDRA));
 
         // different name -> returns false
-        Group editedAlice = new GroupBuilder(ALICE).withName(VALID_NAME_BOB).build();
-        assertFalse(ALICE.equals(editedAlice));
+        Group editedChildren = new GroupBuilder(CHILDREN).withGroupName(VALID_GROUPNAME_HYDRA).build();
+        assertFalse(CHILDREN.equals(editedChildren));
 
-        // different phone -> returns false
-        editedAlice = new GroupBuilder(ALICE).withPhone(VALID_PHONE_BOB).build();
-        assertFalse(ALICE.equals(editedAlice));
-
-        // different email -> returns false
-        editedAlice = new GroupBuilder(ALICE).withEmail(VALID_EMAIL_BOB).build();
-        assertFalse(ALICE.equals(editedAlice));
-
-        // different address -> returns false
-        editedAlice = new GroupBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).build();
-        assertFalse(ALICE.equals(editedAlice));
+        // different description -> returns false
+        editedChildren = new GroupBuilder(CHILDREN).withGroupDescription(VALID_GROUPDESCRIPTION_HYDRA).build();
+        assertFalse(CHILDREN.equals(editedChildren));
 
         // different tags -> returns false
-        editedAlice = new GroupBuilder(ALICE).withTags(VALID_TAG_HUSBAND).build();
-        assertFalse(ALICE.equals(editedAlice));
+        editedChildren = new GroupBuilder(CHILDREN)
+            .withMemberIds(VALID_CONTACTID_HYDRA1, VALID_CONTACTID_HYDRA2).build();
+        assertFalse(CHILDREN.equals(editedChildren));
+
+        editedChildren = new GroupBuilder(CHILDREN)
+                .withMemberIds(VALID_CONTACTID_CHILDREN1).build();
+        assertFalse(CHILDREN.equals(editedChildren));
+
+        editedChildren = new GroupBuilder(CHILDREN)
+                .withMemberIds(null).build();
+        assertFalse(CHILDREN.equals(editedChildren));
     }
 }

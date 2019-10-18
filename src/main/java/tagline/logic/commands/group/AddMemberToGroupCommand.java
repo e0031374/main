@@ -8,7 +8,6 @@ import static tagline.logic.parser.CliSyntax.PREFIX_PHONE;
 import static tagline.logic.parser.CliSyntax.PREFIX_TAG;
 import static tagline.model.group.GroupModel.PREDICATE_SHOW_ALL_GROUPS;
 
-import java.util.*;
 
 import tagline.commons.util.CollectionUtil;
 import tagline.logic.commands.Command;
@@ -16,10 +15,15 @@ import tagline.logic.commands.CommandResult;
 import tagline.logic.commands.exceptions.CommandException;
 import tagline.logic.parser.group.GroupCliSyntax;
 import tagline.model.Model;
+import tagline.model.contact.ContactId;
 import tagline.model.group.Group;
 import tagline.model.group.GroupName;
 import tagline.model.group.GroupNameEqualsKeywordPredicate;
-import tagline.model.group.ContactId;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Edits the details of an existing group in the address book.
@@ -31,15 +35,15 @@ public class AddMemberToGroupCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Add a member to the group identified "
             + "by the index number used in the displayed group list. "
             + "Existing values will be overwritten by the input values.\n"
-            + "Parameters: INDEX (must be a positive integer) "
-            + "[" + PREFIX_NAME + "NAME] "
-            + "[" + PREFIX_PHONE + "PHONE] "
-            + "[" + PREFIX_EMAIL + "EMAIL] "
-            + "[" + PREFIX_ADDRESS + "ADDRESS] "
-            + "[" + PREFIX_TAG + "TAG]...\n"
-            + "Example: " + COMMAND_WORD + " 1 "
-            + PREFIX_PHONE + "91234567 "
-            + PREFIX_EMAIL + "johndoe@example.com";
+            + "Parameters: INDEX (must be a positive integer) ";
+            //+ "[" + PREFIX_NAME + "NAME] "
+            //+ "[" + PREFIX_PHONE + "PHONE] "
+            //+ "[" + PREFIX_EMAIL + "EMAIL] "
+            //+ "[" + PREFIX_ADDRESS + "ADDRESS] "
+            //+ "[" + PREFIX_TAG + "TAG]...\n"
+            //+ "Example: " + COMMAND_WORD + " 1 "
+            //+ PREFIX_PHONE + "91234567 "
+            //+ PREFIX_EMAIL + "johndoe@example.com";
 
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Group: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
