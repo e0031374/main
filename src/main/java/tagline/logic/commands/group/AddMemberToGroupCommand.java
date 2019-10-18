@@ -10,7 +10,6 @@ import static tagline.model.group.GroupModel.PREDICATE_SHOW_ALL_GROUPS;
 
 import java.util.*;
 
-import tagline.commons.core.Messages;
 import tagline.commons.util.CollectionUtil;
 import tagline.logic.commands.Command;
 import tagline.logic.commands.CommandResult;
@@ -20,8 +19,7 @@ import tagline.model.Model;
 import tagline.model.group.Group;
 import tagline.model.group.GroupName;
 import tagline.model.group.GroupNameEqualsKeywordPredicate;
-import tagline.model.group.MemberId;
-import tagline.model.tag.Tag;
+import tagline.model.group.ContactId;
 
 /**
  * Edits the details of an existing group in the address book.
@@ -95,7 +93,7 @@ public class AddMemberToGroupCommand extends Command {
         assert groupToEdit != null;
 
         GroupName updatedGroupName = editGroupDescriptor.getGroupName().orElse(groupToEdit.getGroupName());
-        Set<MemberId> updatedMemberIds = new HashSet<>();
+        Set<ContactId> updatedMemberIds = new HashSet<>();
         if (editGroupDescriptor.getMemberIds().isPresent()) {
             updatedMemberIds.addAll(editGroupDescriptor.getMemberIds().get());
         }
@@ -130,7 +128,7 @@ public class AddMemberToGroupCommand extends Command {
      */
     public static class EditGroupDescriptor {
         private GroupName groupName;
-        private Set<MemberId> memberIds;
+        private Set<ContactId> memberIds;
         //private Set<Tag> tags;
 
         public EditGroupDescriptor() {}
@@ -171,7 +169,7 @@ public class AddMemberToGroupCommand extends Command {
          * Sets {@code tags} to this object's {@code tags}.
          * A defensive copy of {@code tags} is used internally.
          */
-        public void setMemberIds(Set<MemberId> memberIds) {
+        public void setMemberIds(Set<ContactId> memberIds) {
             this.memberIds = (memberIds != null) ? new HashSet<>(memberIds) : null;
         }
 
@@ -179,7 +177,7 @@ public class AddMemberToGroupCommand extends Command {
          * Sets {@code tags} to this object's {@code tags}.
          * A defensive copy of {@code tags} is used internally.
          */
-        public void addMemberIds(Set<MemberId> memberIds) {
+        public void addMemberIds(Set<ContactId> memberIds) {
             this.memberIds = (memberIds != null) ? new HashSet<>(memberIds) : null;
         }
         /**
@@ -187,7 +185,7 @@ public class AddMemberToGroupCommand extends Command {
          * if modification is attempted.
          * Returns {@code Optional#empty()} if {@code tags} is null.
          */
-        public Optional<Set<MemberId>> getMemberIds() {
+        public Optional<Set<ContactId>> getMemberIds() {
             return (memberIds != null) ? Optional.of(Collections.unmodifiableSet(memberIds)) : Optional.empty();
         }
         ///**

@@ -7,11 +7,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import tagline.logic.commands.Command;
-import tagline.logic.commands.CommandResult;
 import tagline.logic.parser.group.member.MemberBookParser;
 import tagline.model.group.member.MemberModel;
-import tagline.model.tag.Tag;
 
 /**
  * Represents a Group in the address book.
@@ -28,12 +25,12 @@ public class Group {
 
     // Data fields
     //private final MemberModel members;
-    private final Set<MemberId> memberIds = new HashSet<>();
+    private final Set<ContactId> memberIds = new HashSet<>();
 
     /**
      * Every field must be present and not null.
      */
-    public Group(GroupName groupName, Set<MemberId> memberIds) {
+    public Group(GroupName groupName, Set<ContactId> memberIds) {
         requireAllNonNull(groupName, memberIds);
         this.groupName = groupName;
         this.memberIds.addAll(memberIds);
@@ -57,7 +54,7 @@ public class Group {
      * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
      */
-    public Set<MemberId> getMemberIds() {
+    public Set<ContactId> getMemberIds() {
         return Collections.unmodifiableSet(memberIds);
     }
     //public MemberModel getMembers() {

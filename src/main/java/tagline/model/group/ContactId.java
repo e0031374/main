@@ -7,7 +7,7 @@ import static tagline.commons.util.AppUtil.checkArgument;
  * Represents a MemberId in the address book.
  * Guarantees: immutable; name is valid as declared in {@link #isValidMemberId(String)}
  */
-public class MemberId {
+public class ContactId {
 
     public static final String MESSAGE_CONSTRAINTS = "MemberIds should be numeric";
     public static final String VALIDATION_REGEX = "\\d+";
@@ -19,7 +19,7 @@ public class MemberId {
      *
      * @param value A valid tag name.
      */
-    public MemberId(String value) {
+    public ContactId(String value) {
         requireNonNull(value);
         checkArgument(isValidMemberId(value), MESSAGE_CONSTRAINTS);
         this.value = value;
@@ -35,8 +35,8 @@ public class MemberId {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof MemberId // instanceof handles nulls
-                && value.equals(((MemberId) other).value)); // state check
+                || (other instanceof ContactId // instanceof handles nulls
+                && value.equals(((ContactId) other).value)); // state check
     }
 
     @Override

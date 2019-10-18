@@ -15,7 +15,7 @@ import tagline.logic.parser.Prefix;
 import tagline.logic.parser.exceptions.ParseException;
 import tagline.model.group.Group;
 import tagline.model.group.GroupName;
-import tagline.model.group.MemberId;
+import tagline.model.group.ContactId;
 import tagline.model.tag.Tag;
 
 /**
@@ -40,7 +40,7 @@ public class CreateGroupCommandParser implements Parser<CreateGroupCommand> {
         Set<Tag> tagList = GroupParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
         GroupName groupName = GroupParserUtil.parseGroupName(argMultimap.getPreamble());
-        Set<MemberId> memberIds = GroupParserUtil.parseMemberIds(argMultimap.getAllValues(PREFIX_CONTACTID).get());
+        Set<ContactId> memberIds = GroupParserUtil.parseMemberIds(argMultimap.getAllValues(PREFIX_CONTACTID).get());
         Group group = new Group(groupName, memberIds);
 
         return new CreateGroupCommand(group);

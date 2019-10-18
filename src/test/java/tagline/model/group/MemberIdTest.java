@@ -11,32 +11,32 @@ class MemberIdTest {
     @Test
     public void constructor_invalidMemberId_throwsIllegalArgumentException() {
         String invalidMemberId1 = "";
-        assertThrows(IllegalArgumentException.class, () -> new MemberId(invalidMemberId1));
+        assertThrows(IllegalArgumentException.class, () -> new ContactId(invalidMemberId1));
 
         String invalidMemberId2 = "12asd";
-        assertThrows(IllegalArgumentException.class, () -> new MemberId(invalidMemberId2));
+        assertThrows(IllegalArgumentException.class, () -> new ContactId(invalidMemberId2));
 
         String invalidMemberId3 = "one";
-        assertThrows(IllegalArgumentException.class, () -> new MemberId(invalidMemberId3));
+        assertThrows(IllegalArgumentException.class, () -> new ContactId(invalidMemberId3));
     }
 
     @Test
     public void isValidNote() {
         // null phone number
-        assertThrows(NullPointerException.class, () -> MemberId.isValidMemberId(null));
+        assertThrows(NullPointerException.class, () -> ContactId.isValidMemberId(null));
 
         // invalid noteId numbers
-        assertFalse(MemberId.isValidMemberId("")); // empty string
-        assertFalse(MemberId.isValidMemberId(" ")); // spaces only
+        assertFalse(ContactId.isValidMemberId("")); // empty string
+        assertFalse(ContactId.isValidMemberId(" ")); // spaces only
         //assertFalse(MemberId.isValidMemberId("91")); // less than 3 numbers
-        assertFalse(MemberId.isValidMemberId("phone")); // non-numeric
-        assertFalse(MemberId.isValidMemberId("9011p041")); // alphabets within digits
-        assertFalse(MemberId.isValidMemberId("9312 1534")); // spaces within digits
+        assertFalse(ContactId.isValidMemberId("phone")); // non-numeric
+        assertFalse(ContactId.isValidMemberId("9011p041")); // alphabets within digits
+        assertFalse(ContactId.isValidMemberId("9312 1534")); // spaces within digits
 
         // valid noteId numbers
-        assertTrue(MemberId.isValidMemberId("911")); // exactly 3 numbers
-        assertTrue(MemberId.isValidMemberId("93121534"));
-        assertTrue(MemberId.isValidMemberId("124293842033123")); // long phone numbers
+        assertTrue(ContactId.isValidMemberId("911")); // exactly 3 numbers
+        assertTrue(ContactId.isValidMemberId("93121534"));
+        assertTrue(ContactId.isValidMemberId("124293842033123")); // long phone numbers
     }
     //@Test
     //public void toString_test() {
@@ -78,14 +78,14 @@ class MemberIdTest {
     @Test
     public void equals_test() {
 
-        MemberId one = new MemberId("10");
-        assertTrue(one.equals(new MemberId("10")));
+        ContactId one = new ContactId("10");
+        assertTrue(one.equals(new ContactId("10")));
 
-        MemberId two = new MemberId("2");
-        assertTrue(two.equals(new MemberId("2")));
+        ContactId two = new ContactId("2");
+        assertTrue(two.equals(new ContactId("2")));
 
-        MemberId fifty = new MemberId("00050");
-        assertTrue(fifty.equals(new MemberId("50")));
+        ContactId fifty = new ContactId("00050");
+        assertTrue(fifty.equals(new ContactId("50")));
 
     }
 }

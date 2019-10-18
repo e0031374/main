@@ -6,11 +6,10 @@ import java.util.Set;
 import tagline.model.group.Group;
 import tagline.model.group.GroupDescription;
 import tagline.model.group.GroupName;
-import tagline.model.group.MemberId;
+import tagline.model.group.ContactId;
 import tagline.model.person.Address;
 import tagline.model.person.Email;
 import tagline.model.person.Name;
-import tagline.model.person.Person;
 import tagline.model.person.Phone;
 import tagline.model.tag.Tag;
 import tagline.model.util.SampleDataUtil;
@@ -27,7 +26,7 @@ public class GroupBuilder {
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
 
     private GroupName groupName;
-    private Set<MemberId> memberIds;
+    private Set<ContactId> memberIds;
     private GroupDescription groupDescription;
 
     private Name name;
