@@ -3,13 +3,13 @@ package tagline.logic.commands.group;
 import static java.util.Objects.requireNonNull;
 import static tagline.logic.parser.group.GroupCliSyntax.PREFIX_CONTACTID;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import tagline.logic.commands.CommandResult;
 import tagline.logic.commands.exceptions.CommandException;
 import tagline.model.Model;
 import tagline.model.group.Group;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Adds a group to the address book.

@@ -6,7 +6,6 @@ import java.util.function.Predicate;
 import javafx.collections.ObservableList;
 import tagline.commons.core.GuiSettings;
 import tagline.model.ReadOnlyUserPrefs;
-import tagline.model.group.Group;
 
 /**
  * The API of the GroupModel component.

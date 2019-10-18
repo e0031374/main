@@ -34,10 +34,12 @@ public class AddMemberToGroupParser implements Parser<AddMemberToGroupCommand> {
         String targetGroupName;
         targetGroupName = argMultimap.getPreamble(); //GroupParserUtil.parseIndex(argMultimap.getPreamble());
 
+        //TODO i need to reference this bit to finish up the rest of the parser
         //try {
         //    targetGroupName = argMultimap.getPreamble(); //GroupParserUtil.parseIndex(argMultimap.getPreamble());
         //} catch (ParseException pe) {
-        //    throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddMemberToGroupCommand.MESSAGE_USAGE), pe);
+        //    throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+        //        AddMemberToGroupCommand.MESSAGE_USAGE), pe);
         //}
 
         EditGroupDescriptor editGroupDescriptor = new EditGroupDescriptor();
@@ -65,7 +67,8 @@ public class AddMemberToGroupParser implements Parser<AddMemberToGroupCommand> {
         if (memberIds.isEmpty()) {
             return Optional.empty();
         }
-        Collection<String> tagSet = memberIds.size() == 1 && memberIds.contains("") ? Collections.emptySet() : memberIds;
+        Collection<String> tagSet = memberIds.size() == 1 && memberIds.contains("")
+            ? Collections.emptySet() : memberIds;
         return Optional.of(GroupParserUtil.parseMemberIds(tagSet));
     }
 

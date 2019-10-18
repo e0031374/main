@@ -3,10 +3,8 @@ package tagline.logic.commands.group;
 import static java.util.Objects.requireNonNull;
 
 import tagline.commons.core.Messages;
-import tagline.logic.commands.Command;
 import tagline.logic.commands.CommandResult;
 import tagline.model.Model;
-import tagline.model.contact.ContactModel;
 import tagline.model.group.ContactIdEqualsIdPredicate;
 
 /**

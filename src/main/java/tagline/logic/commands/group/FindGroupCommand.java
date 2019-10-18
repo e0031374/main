@@ -3,10 +3,9 @@ package tagline.logic.commands.group;
 import static java.util.Objects.requireNonNull;
 
 import tagline.commons.core.Messages;
-import tagline.logic.commands.Command;
+
 import tagline.logic.commands.CommandResult;
 import tagline.model.Model;
-import tagline.model.group.GroupModel;
 import tagline.model.group.GroupNameEqualsKeywordPredicate;
 
 /**

@@ -2,12 +2,11 @@ package tagline.model.group;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static tagline.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
-import static tagline.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
-import static tagline.logic.commands.CommandTestUtil.VALID_NAME_BOB;
-import static tagline.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
-import static tagline.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
-import static tagline.logic.commands.GroupCommandTestUtil.*;
+import static tagline.logic.commands.GroupCommandTestUtil.VALID_CONTACTID_CHILDREN1;
+import static tagline.logic.commands.GroupCommandTestUtil.VALID_CONTACTID_HYDRA1;
+import static tagline.logic.commands.GroupCommandTestUtil.VALID_CONTACTID_HYDRA2;
+import static tagline.logic.commands.GroupCommandTestUtil.VALID_GROUPDESCRIPTION_HYDRA;
+import static tagline.logic.commands.GroupCommandTestUtil.VALID_GROUPNAME_HYDRA;
 import static tagline.testutil.Assert.assertThrows;
 import static tagline.testutil.TypicalGroups.CHILDREN;
 import static tagline.testutil.TypicalGroups.HYDRA;

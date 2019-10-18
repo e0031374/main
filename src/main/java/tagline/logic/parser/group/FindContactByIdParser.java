@@ -2,8 +2,6 @@ package tagline.logic.parser.group;
 
 import static tagline.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
-import java.util.Arrays;
-
 import tagline.logic.commands.group.FindContactByIdCommand;
 import tagline.logic.parser.Parser;
 import tagline.logic.parser.exceptions.ParseException;

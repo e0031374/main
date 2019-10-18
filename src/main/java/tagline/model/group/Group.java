@@ -1,7 +1,5 @@
 package tagline.model.group;
 
-import tagline.model.contact.ContactId;
-
 import static tagline.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Collections;
@@ -9,6 +7,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import tagline.model.contact.ContactId;
 
 /**
  * Represents a Group in the address book.
@@ -97,18 +96,7 @@ public class Group {
                 .append(" Description: ")
                 .append(getGroupDescription())
                 .append(" Members: ");
-                //.append(getMembers());
         getMemberIds().forEach(builder::append);
-        //getMemberIds().forEach(builder::append);
-        //builder.append(getName())
-        //        .append(" Phone: ")
-        //        .append(getPhone())
-        //        .append(" Email: ")
-        //        .append(getEmail())
-        //        .append(" Address: ")
-        //        .append(getAddress())
-        //        .append(" Tags: ");
-        //getTags().forEach(builder::append);
         return builder.toString();
     }
 }

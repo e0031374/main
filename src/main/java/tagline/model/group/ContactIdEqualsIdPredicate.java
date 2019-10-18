@@ -1,9 +1,7 @@
 package tagline.model.group;
 
-import java.util.List;
 import java.util.function.Predicate;
 
-import tagline.commons.util.StringUtil;
 import tagline.model.contact.Contact;
 
 /**

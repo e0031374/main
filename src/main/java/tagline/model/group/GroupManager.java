@@ -13,7 +13,6 @@ import tagline.commons.core.GuiSettings;
 import tagline.commons.core.LogsCenter;
 import tagline.model.ReadOnlyUserPrefs;
 import tagline.model.UserPrefs;
-import tagline.model.group.Group;
 
 /**
  * Represents the in-memory model of the address book data.

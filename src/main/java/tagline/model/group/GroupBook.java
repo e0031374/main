@@ -5,8 +5,6 @@ import static java.util.Objects.requireNonNull;
 import java.util.List;
 
 import javafx.collections.ObservableList;
-import tagline.model.group.Group;
-import tagline.model.group.UniqueGroupList;
 
 /**
  * Wraps all data at the address-book level

@@ -1,7 +1,6 @@
 package tagline.model.group;
 
 import javafx.collections.ObservableList;
-import tagline.model.group.Group;
 
 /**
  * Unmodifiable view of an address book

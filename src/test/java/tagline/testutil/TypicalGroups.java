@@ -4,10 +4,10 @@ import static tagline.logic.commands.GroupCommandTestUtil.VALID_CONTACTID_CHILDR
 import static tagline.logic.commands.GroupCommandTestUtil.VALID_CONTACTID_CHILDREN2;
 import static tagline.logic.commands.GroupCommandTestUtil.VALID_CONTACTID_HYDRA1;
 import static tagline.logic.commands.GroupCommandTestUtil.VALID_CONTACTID_HYDRA2;
-import static tagline.logic.commands.GroupCommandTestUtil.VALID_GROUPNAME_CHILDREN;
-import static tagline.logic.commands.GroupCommandTestUtil.VALID_GROUPNAME_HYDRA;
 import static tagline.logic.commands.GroupCommandTestUtil.VALID_GROUPDESCRIPTION_CHILDREN;
 import static tagline.logic.commands.GroupCommandTestUtil.VALID_GROUPDESCRIPTION_HYDRA;
+import static tagline.logic.commands.GroupCommandTestUtil.VALID_GROUPNAME_CHILDREN;
+import static tagline.logic.commands.GroupCommandTestUtil.VALID_GROUPNAME_HYDRA;
 
 import java.util.ArrayList;
 import java.util.Arrays;
