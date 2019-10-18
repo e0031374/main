@@ -4,8 +4,10 @@ import static java.util.Objects.requireNonNull;
 import static tagline.logic.parser.note.NoteCliSyntax.PREFIX_CONTENT;
 import static tagline.logic.parser.note.NoteCliSyntax.PREFIX_TAG;
 import static tagline.logic.parser.note.NoteCliSyntax.PREFIX_TITLE;
+import static tagline.model.note.NoteModel.PREDICATE_SHOW_ALL_NOTES;
 
 import tagline.logic.commands.CommandResult;
+import tagline.logic.commands.CommandResult.ViewType;
 import tagline.logic.commands.exceptions.CommandException;
 import tagline.model.Model;
 import tagline.model.note.Note;
@@ -19,8 +21,8 @@ public class CreateNoteCommand extends NoteCommand {
 
     public static final String MESSAGE_USAGE = COMMAND_KEY + " " + COMMAND_WORD + ": Creates a new note.\n"
             + "Parameters: "
-            + PREFIX_TITLE + "TITLE "
             + PREFIX_CONTENT + "CONTENT "
+            + "[" + PREFIX_TITLE + "TITLE] "
             + "[" + PREFIX_TAG + "TAG...]\n"
             + "Example: " + COMMAND_KEY + " " + COMMAND_WORD + " "
             + PREFIX_TITLE + "CS2103T TP "
@@ -50,7 +52,8 @@ public class CreateNoteCommand extends NoteCommand {
         }
 
         model.addNote(toCreate);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, toCreate));
+        model.updateFilteredNoteList(PREDICATE_SHOW_ALL_NOTES);
+        return new CommandResult(String.format(MESSAGE_SUCCESS, toCreate), ViewType.NOTE);
     }
 
     @Override

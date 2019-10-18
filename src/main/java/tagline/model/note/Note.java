@@ -70,7 +70,7 @@ public class Note {
     }
 
     /**
-     * Returns true if both persons of the same name have at least one other identity field that is the same.
+     * Returns true if both notes have the same id.
      * This defines a weaker notion of equality between two persons.
      */
     public boolean isSameNote(Note otherNote) {
@@ -79,16 +79,28 @@ public class Note {
         }
 
         return otherNote != null
-             //this part should be .equals(getId()), title will be optional i guess
-             && otherNote.getNoteId().equals(getNoteId());
-             //&& otherNote.getContent().equals(getContent())
-             //&& otherNote.getTimeCreated().equals(getTimeCreated());
-        //&& (otherNote.getPhone().equals(getPhone()) || otherNote.getEmail().equals(getEmail()));
+                && otherNote.getNoteId().equals(getNoteId());
     }
 
     /**
-     * Returns true if both persons have the same identity and data fields.
-     * This defines a stronger notion of equality between two persons.
+     * Returns true if both notes of the same id have the same data fields.
+     * This defines a weaker notion of equality between two notes.
+     */
+    public boolean isUniqueNote(Note otherNote) {
+        if (otherNote == this) {
+            return true;
+        }
+
+        return otherNote != null
+                && otherNote.getNoteId().equals(getNoteId())
+                && otherNote.getTitle().equals(getTitle())
+                && otherNote.getContent().equals(getContent())
+                && otherNote.getTags().equals(getTags());
+    }
+
+    /**
+     * Returns true if both notes of the same id have the same timestamp fields and data fields.
+     * This defines a stronger notion of equality between two notes.
      */
     @Override
     public boolean equals(Object other) {

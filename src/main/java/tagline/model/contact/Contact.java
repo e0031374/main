@@ -14,6 +14,7 @@ public class Contact {
     private final Name name;
     private final Phone phone;
     private final Email email;
+    private ContactId contactId;
 
     // Data fields
     private final Address address;
@@ -29,6 +30,20 @@ public class Contact {
         this.email = email;
         this.address = address;
         this.description = description;
+    }
+
+    /**
+     * Construct a contact with id.
+     * Ensure that the id is unique among all other contact.
+     */
+    public Contact(Name name, Phone phone, Email email, Address address, Description description, ContactId contactId) {
+        requireAllNonNull(name, phone, email, address, description);
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.description = description;
+        this.contactId = contactId;
     }
 
     public Name getName() {
@@ -49,6 +64,14 @@ public class Contact {
 
     public Description getDescription() {
         return description;
+    }
+
+    public ContactId getContactId() {
+        return contactId;
+    }
+
+    void setContactId(ContactId contactId) {
+        this.contactId = contactId;
     }
 
     /**

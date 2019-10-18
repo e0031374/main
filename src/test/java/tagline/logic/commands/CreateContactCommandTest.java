@@ -9,22 +9,24 @@ import static tagline.testutil.Assert.assertThrows;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
 
 import javafx.collections.ObservableList;
-
 import tagline.commons.core.GuiSettings;
 import tagline.logic.commands.contact.CreateContactCommand;
 import tagline.logic.commands.exceptions.CommandException;
-import tagline.model.AddressBook;
 import tagline.model.Model;
-import tagline.model.ReadOnlyAddressBook;
 import tagline.model.ReadOnlyUserPrefs;
+import tagline.model.contact.AddressBook;
 import tagline.model.contact.Contact;
+import tagline.model.contact.ContactBuilder;
+import tagline.model.contact.ContactId;
+import tagline.model.contact.ReadOnlyAddressBook;
 import tagline.model.note.Note;
-import tagline.testutil.ContactBuilder;
+import tagline.model.note.ReadOnlyNoteBook;
 
 public class CreateContactCommandTest {
 
@@ -114,17 +116,27 @@ public class CreateContactCommandTest {
         }
 
         @Override
+        public Path getNoteBookFilePath() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setNoteBookFilePath(Path noteBookFilePath) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public void addContact(Contact contact) {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
-        public void setAddressBook(ReadOnlyAddressBook newData) {
+        public void setNoteBook(ReadOnlyNoteBook newData) {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
-        public ReadOnlyAddressBook getAddressBook() {
+        public ReadOnlyNoteBook getNoteBook() {
             throw new AssertionError("This method should not be called.");
         }
 
@@ -144,12 +156,27 @@ public class CreateContactCommandTest {
         }
 
         @Override
+        public Optional<Contact> findContact(ContactId id) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public ObservableList<Contact> getFilteredContactList() {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
         public void updateFilteredContactList(Predicate<Contact> predicate) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setAddressBook(ReadOnlyAddressBook newData) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public ReadOnlyAddressBook getAddressBook() {
             throw new AssertionError("This method should not be called.");
         }
 
@@ -163,6 +190,25 @@ public class CreateContactCommandTest {
             throw new AssertionError("This method should not be called.");
         }
 
+        @Override
+        public void deleteNote(Note target) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setNote(Note target, Note editedNote) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public ObservableList<Note> getFilteredNoteList() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void updateFilteredNoteList(Predicate<Note> predicate) {
+            throw new AssertionError("This method should not be called.");
+        }
     }
 
     /**

@@ -63,14 +63,14 @@ public class ChatPaneTest {
     }
 
     @Start
-    void setup(Stage stage) throws TimeoutException {
-        logic = new LogicStub(testFolder);
+    void setUp(Stage stage) throws TimeoutException {
+        logic = new LogicStub(testFolder.resolve("addressbook.json"), testFolder.resolve("notebook.json"));
         logic.setCommandResult(DEFAULT_COMMAND_RESULT);
         initMainWindow(stage, logic);
     }
 
     @Stop
-    void teardown() throws TimeoutException {
+    void tearDown() throws TimeoutException {
         FxToolkit.cleanupStages();
     }
 
@@ -114,7 +114,7 @@ public class ChatPaneTest {
     void sendEmptyCommand_successful(FxRobot robot) {
         TextField textField = robot.lookup(".commandTextField").queryAs(TextField.class);
         robot.clickOn(textField);
-        robot.press(KeyCode.ENTER);
+        robot.type(KeyCode.ENTER);
 
         //should have no command dialog
         assertEquals(0, robot.lookup(".command-dialog").queryAll().size());

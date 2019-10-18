@@ -13,11 +13,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import tagline.commons.core.index.Index;
+import tagline.logic.commands.CommandResult.ViewType;
 import tagline.logic.commands.contact.EditContactCommand;
 import tagline.logic.commands.exceptions.CommandException;
-import tagline.model.AddressBook;
 import tagline.model.Model;
+import tagline.model.contact.AddressBook;
 import tagline.model.contact.Contact;
+import tagline.model.contact.ContactId;
 import tagline.model.contact.NameContainsKeywordsPredicate;
 import tagline.testutil.EditContactDescriptorBuilder;
 
@@ -56,6 +58,10 @@ public class CommandTestUtil {
     public static final EditContactCommand.EditContactDescriptor DESC_AMY;
     public static final EditContactCommand.EditContactDescriptor DESC_BOB;
 
+    public static final ContactId NON_EXISTING_ID = new ContactId(99999);
+    public static final ContactId CONTACT_ID_ONE = new ContactId(1);
+    public static final ContactId CONTACT_ID_TWO = new ContactId(2);
+
     static {
         DESC_AMY = new EditContactDescriptorBuilder().withName(VALID_NAME_AMY)
                 .withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_AMY).withAddress(VALID_ADDRESS_AMY)
@@ -83,11 +89,11 @@ public class CommandTestUtil {
 
     /**
      * Convenience wrapper to {@link #assertCommandSuccess(Command, Model, CommandResult, Model)}
-     * that takes a string {@code expectedMessage}.
+     * that takes a string {@code expectedMessage} and a {@code ViewType} {@code expectedViewType}.
      */
     public static void assertCommandSuccess(Command command, Model actualModel, String expectedMessage,
-                                            Model expectedModel) {
-        CommandResult expectedCommandResult = new CommandResult(expectedMessage);
+                                            ViewType expectedViewType, Model expectedModel) {
+        CommandResult expectedCommandResult = new CommandResult(expectedMessage, expectedViewType);
         assertCommandSuccess(command, actualModel, expectedCommandResult, expectedModel);
     }
 

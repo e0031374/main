@@ -10,23 +10,28 @@ import tagline.commons.core.GuiSettings;
 import tagline.logic.Logic;
 import tagline.logic.commands.CommandResult;
 import tagline.logic.commands.exceptions.CommandException;
-import tagline.model.ReadOnlyAddressBook;
 import tagline.model.contact.Contact;
+import tagline.model.contact.ReadOnlyAddressBook;
+import tagline.model.note.Note;
+import tagline.model.note.ReadOnlyNoteBook;
 
 /**
  * A stub class for Logic which returns a fixed {@code CommandResult} which is settable.
  */
 public class LogicStub implements Logic {
-    private Path filePath;
+    private Path addressBookFilePath;
+    private Path noteBookFilePath;
     private CommandResult commandResult;
     private String exceptionString = null;
 
-    public LogicStub(Path filePath) {
-        this.filePath = filePath;
+    public LogicStub(Path addressBookFilePath, Path noteBookFilePath) {
+        this.addressBookFilePath = addressBookFilePath;
+        this.noteBookFilePath = noteBookFilePath;
     }
 
     /**
      * Sets the command result returned by {@code execute()}.
+     *
      * @param commandResult The CommandResult to return
      */
     public void setCommandResult(CommandResult commandResult) {
@@ -61,7 +66,19 @@ public class LogicStub implements Logic {
     }
 
     public Path getAddressBookFilePath() { //test folder
-        return filePath;
+        return addressBookFilePath;
+    }
+
+    public ReadOnlyNoteBook getNoteBook() {
+        return TypicalNotes.getTypicalNoteBook();
+    }
+
+    public ObservableList<Note> getFilteredNoteList() {
+        return new FilteredList<>(TypicalNotes.getTypicalNoteBook().getNoteList());
+    }
+
+    public Path getNoteBookFilePath() { //test folder
+        return noteBookFilePath;
     }
 
     public GuiSettings getGuiSettings() {

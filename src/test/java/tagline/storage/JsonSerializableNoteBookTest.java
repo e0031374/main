@@ -12,6 +12,7 @@ import tagline.commons.exceptions.IllegalValueException;
 import tagline.commons.util.JsonUtil;
 import tagline.model.note.NoteBook;
 import tagline.model.note.NoteIdCounter;
+import tagline.storage.note.JsonSerializableNoteBook;
 import tagline.testutil.TypicalNotes;
 
 public class JsonSerializableNoteBookTest {
@@ -39,8 +40,8 @@ public class JsonSerializableNoteBookTest {
         long currCount = NoteIdCounter.getCount();
         NoteIdCounter.setZero();
         // set the NoteIdCounter
-        //NoteIdCounter.setCountFromStorage(VALID_NOTEIDCOUNT);
-        //assertEquals(VALID_NOTEIDCOUNT, NoteIdCounter.getCount().toString());
+        //NoteIdCounter.setCountFromStorage(validNoteIdCount);
+        //assertEquals(validNoteIdCount, NoteIdCounter.getCount().toString());
 
         JsonSerializableNoteBook dataFromFile = JsonUtil.readJsonFile(TYPICAL_NOTES_FILE,
                 JsonSerializableNoteBook.class).get();

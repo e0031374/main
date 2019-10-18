@@ -19,6 +19,7 @@ import tagline.commons.exceptions.DataConversionException;
 import tagline.model.note.NoteBook;
 import tagline.model.note.NoteIdCounter;
 import tagline.model.note.ReadOnlyNoteBook;
+import tagline.storage.note.JsonNoteBookStorage;
 import tagline.testutil.TypicalNotes;
 
 public class JsonNoteBookStorageTest {
@@ -72,7 +73,6 @@ public class JsonNoteBookStorageTest {
         NoteIdCounter.setCountFromStorage(validNoteIdCount);
         assertEquals(validNoteIdCount, NoteIdCounter.getCount().toString());
 
-
         Path filePath = testFolder.resolve("TempNoteBook.json");
         //to get a copy of how the JSON is stored as
         Path filePath2 = TEST_DATA_FOLDER.resolve("TempNoteBook2.json");
@@ -106,7 +106,6 @@ public class JsonNoteBookStorageTest {
         assertEquals(original, new NoteBook(readBack));
         //noteIdCounter restores after bringing back a Note
         assertEquals(validNoteIdCount, NoteIdCounter.getCount().toString());
-
 
         jsonNoteBookStorage.saveNoteBook(TypicalNotes.getTypicalNoteBook(), filePath2);
 
