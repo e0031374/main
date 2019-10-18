@@ -107,4 +107,18 @@ public class SampleDataUtil {
             .collect(Collectors.toSet());
     }
 
+    /**
+     * Returns a contactId set containing the list of strings given.
+     */
+    public static Set<ContactId> getContactIdSet(String... strings) {
+        return Arrays.stream(strings)
+                .map(s -> new ContactId(Integer.valueOf(s)))
+                .collect(Collectors.toSet());
+    }
+
+    public static Set<ContactId> getContactIdSet(Integer... integers) {
+        return Arrays.stream(integers)
+                .map(i -> new ContactId(i))
+                .collect(Collectors.toSet());
+    }
 }

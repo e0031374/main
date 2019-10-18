@@ -1,4 +1,4 @@
-package tagline.model.person;
+package tagline.model.group;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
