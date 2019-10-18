@@ -1,14 +1,11 @@
 package tagline.logic.commands.group;
 
 import static java.util.Objects.requireNonNull;
-import static tagline.logic.parser.CliSyntax.PREFIX_ADDRESS;
-import static tagline.logic.parser.CliSyntax.PREFIX_EMAIL;
-import static tagline.logic.parser.CliSyntax.PREFIX_NAME;
-import static tagline.logic.parser.CliSyntax.PREFIX_PHONE;
-import static tagline.logic.parser.CliSyntax.PREFIX_TAG;
+import static tagline.logic.parser.group.GroupCliSyntax.PREFIX_CONTACTID;
 import static tagline.model.group.GroupModel.PREDICATE_SHOW_ALL_GROUPS;
 
 
+import tagline.commons.core.Messages;
 import tagline.commons.util.CollectionUtil;
 import tagline.logic.commands.Command;
 import tagline.logic.commands.CommandResult;
@@ -17,13 +14,11 @@ import tagline.logic.parser.group.GroupCliSyntax;
 import tagline.model.Model;
 import tagline.model.contact.ContactId;
 import tagline.model.group.Group;
+import tagline.model.group.GroupDescription;
 import tagline.model.group.GroupName;
 import tagline.model.group.GroupNameEqualsKeywordPredicate;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Edits the details of an existing group in the address book.
@@ -32,21 +27,16 @@ public class AddMemberToGroupCommand extends Command {
 
     public static final String COMMAND_WORD = "add";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Add a member to the group identified "
-            + "by the index number used in the displayed group list. "
-            + "Existing values will be overwritten by the input values.\n"
-            + "Parameters: INDEX (must be a positive integer) ";
-            //+ "[" + PREFIX_NAME + "NAME] "
-            //+ "[" + PREFIX_PHONE + "PHONE] "
-            //+ "[" + PREFIX_EMAIL + "EMAIL] "
-            //+ "[" + PREFIX_ADDRESS + "ADDRESS] "
-            //+ "[" + PREFIX_TAG + "TAG]...\n"
-            //+ "Example: " + COMMAND_WORD + " 1 "
-            //+ PREFIX_PHONE + "91234567 "
-            //+ PREFIX_EMAIL + "johndoe@example.com";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Add a contact to the group identified "
+            + "by the group name and the contact ID number displayed in the contact list.\n "
+            + "Parameters: GROUP_NAME (one word, cannot contain space) "
+            + "[" + PREFIX_CONTACTID + "CONTACT_ID]...\n"
+            + "Example: " + COMMAND_WORD + " BTS_fanclub "
+            + PREFIX_CONTACTID + "47337 ";
 
-    public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Group: %1$s";
-    public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
+    public static final String MESSAGE_ADD_MEMBER_SUCCESS = "Added contact to Group: %1$s";
+    public static final String MESSAGE_NOT_ADDED = "At least one field to edit must be provided.";
+    public static final String MESSAGE_DUPLICATE_MEMBER = "This contact already exists in the Group.";
     public static final String MESSAGE_DUPLICATE_PERSON = "This group already exists in the address book.";
 
     //private final Group group;
@@ -77,7 +67,7 @@ public class AddMemberToGroupCommand extends Command {
         Optional<Group> optionalGroup = filteredGroupList.stream().findFirst();
 
         if (optionalGroup.isEmpty()) {
-            throw new CommandException(GroupCliSyntax.MESSAGE_INVALID_GROUP_NAME);
+            throw new CommandException(Messages.MESSAGE_INVALID_GROUP_NAME);
         }
 
         Group groupToEdit = optionalGroup.get();
@@ -86,7 +76,7 @@ public class AddMemberToGroupCommand extends Command {
 
         model.setGroup(groupToEdit, editedGroup);
         model.updateFilteredGroupList(PREDICATE_SHOW_ALL_GROUPS);
-        return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, editedGroup));
+        return new CommandResult(String.format(MESSAGE_ADD_MEMBER_SUCCESS, editedGroup));
     }
 
     /**
@@ -97,6 +87,8 @@ public class AddMemberToGroupCommand extends Command {
         assert groupToEdit != null;
 
         GroupName updatedGroupName = editGroupDescriptor.getGroupName().orElse(groupToEdit.getGroupName());
+        GroupDescription updatedGroupDescription = editGroupDescriptor.getGroupDescription()
+            .orElse(groupToEdit.getGroupDescription());
         Set<ContactId> updatedMemberIds = new HashSet<>();
         if (editGroupDescriptor.getMemberIds().isPresent()) {
             updatedMemberIds.addAll(editGroupDescriptor.getMemberIds().get());
@@ -105,7 +97,7 @@ public class AddMemberToGroupCommand extends Command {
         //Set<MemberId> updatedMemberIds = editGroupDescriptor.getMemberIds().orElse(groupToEdit.getMemberIds());
         //Set<Tag> updatedTags = editGroupDescriptor.getTags().orElse(groupToEdit.getTags());
 
-        return new Group(updatedGroupName, updatedMemberIds);
+        return new Group(updatedGroupName, updatedGroupDescription, updatedMemberIds);
     }
 
     @Override
@@ -132,6 +124,7 @@ public class AddMemberToGroupCommand extends Command {
      */
     public static class EditGroupDescriptor {
         private GroupName groupName;
+        private GroupDescription description;
         private Set<ContactId> memberIds;
         //private Set<Tag> tags;
 
@@ -143,6 +136,7 @@ public class AddMemberToGroupCommand extends Command {
          */
         public EditGroupDescriptor(EditGroupDescriptor toCopy) {
             setGroupName(toCopy.groupName);
+            setGroupDescription(toCopy.description);
             setMemberIds(toCopy.memberIds);
         }
 
@@ -150,7 +144,7 @@ public class AddMemberToGroupCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(groupName, memberIds);
+            return CollectionUtil.isAnyNonNull(groupName, description, memberIds);
         }
 
         public void setGroupName(GroupName groupName) {
@@ -161,25 +155,25 @@ public class AddMemberToGroupCommand extends Command {
             return Optional.ofNullable(groupName);
         }
 
-        //public void setPhone(Phone phone) {
-        //    this.phone = phone;
-        //}
+        public void setGroupDescription(GroupDescription description) {
+            this.description = description;
+        }
 
-        //public Optional<Phone> getPhone() {
-        //    return Optional.ofNullable(phone);
-        //}
+        public Optional<GroupDescription> getGroupDescription() {
+            return Optional.ofNullable(description);
+        }
 
         /**
-         * Sets {@code tags} to this object's {@code tags}.
-         * A defensive copy of {@code tags} is used internally.
+         * Sets {@code memberIds} to this object's {@code memberIds}.
+         * A defensive copy of {@code memberIds} is used internally.
          */
         public void setMemberIds(Set<ContactId> memberIds) {
             this.memberIds = (memberIds != null) ? new HashSet<>(memberIds) : null;
         }
 
         /**
-         * Sets {@code tags} to this object's {@code tags}.
-         * A defensive copy of {@code tags} is used internally.
+         * Adds {@code memberIds} to this object's {@code memberIds}.
+         * A defensive copy of {@code memberIds} is used internally.
          */
         public void addMemberIds(Set<ContactId> memberIds) {
             this.memberIds = (memberIds != null) ? new HashSet<>(memberIds) : null;

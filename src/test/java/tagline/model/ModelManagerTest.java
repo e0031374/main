@@ -7,6 +7,8 @@ import static tagline.model.contact.ContactModel.PREDICATE_SHOW_ALL_CONTACTS;
 import static tagline.testutil.Assert.assertThrows;
 import static tagline.testutil.TypicalContacts.ALICE;
 import static tagline.testutil.TypicalContacts.BENSON;
+import static tagline.testutil.TypicalGroups.ASGARDIAN;
+import static tagline.testutil.TypicalGroups.MYSTIC_ARTS;
 import static tagline.testutil.TypicalNotes.EARTH;
 import static tagline.testutil.TypicalNotes.TOKYO;
 
@@ -19,8 +21,10 @@ import org.junit.jupiter.api.Test;
 import tagline.commons.core.GuiSettings;
 import tagline.model.contact.AddressBook;
 import tagline.model.contact.NameContainsKeywordsPredicate;
+import tagline.model.group.GroupBook;
 import tagline.model.note.NoteBook;
 import tagline.testutil.AddressBookBuilder;
+import tagline.testutil.GroupBookBuilder;
 import tagline.testutil.NoteBookBuilder;
 
 public class ModelManagerTest {
@@ -133,11 +137,13 @@ public class ModelManagerTest {
         AddressBook differentAddressBook = new AddressBook();
         NoteBook noteBook = new NoteBookBuilder().withNote(TOKYO).withNote(EARTH).build();
         NoteBook differentNoteBook = new NoteBook();
+        GroupBook groupBook = new GroupBookBuilder().withGroup(ASGARDIAN).withGroup(MYSTIC_ARTS).build();
+        GroupBook differentGroupBook = new GroupBook();
         UserPrefs userPrefs = new UserPrefs();
 
         // same values -> returns true
-        modelManager = new ModelManager(addressBook, noteBook, userPrefs);
-        ModelManager modelManagerCopy = new ModelManager(addressBook, noteBook, userPrefs);
+        modelManager = new ModelManager(addressBook, noteBook, groupBook, userPrefs);
+        ModelManager modelManagerCopy = new ModelManager(addressBook, noteBook, groupBook, userPrefs);
         assertTrue(modelManager.equals(modelManagerCopy));
 
         // same object -> returns true
@@ -150,15 +156,21 @@ public class ModelManagerTest {
         assertFalse(modelManager.equals(5));
 
         // different addressBook -> returns false
-        assertFalse(modelManager.equals(new ModelManager(differentAddressBook, noteBook, userPrefs)));
+        assertFalse(modelManager.equals(
+            new ModelManager(differentAddressBook, noteBook, groupBook, userPrefs)));
 
         // different noteBook -> returns false
-        assertFalse(modelManager.equals(new ModelManager(addressBook, differentNoteBook, userPrefs)));
+        assertFalse(modelManager.equals(
+            new ModelManager(addressBook, differentNoteBook, groupBook, userPrefs)));
+
+        // different groupBook -> returns false
+        assertFalse(modelManager.equals(
+                new ModelManager(addressBook, noteBook, differentGroupBook, userPrefs)));
 
         // different filteredContactList -> returns false
         String[] keywords = ALICE.getName().fullName.split("\\s+");
         modelManager.updateFilteredContactList(new NameContainsKeywordsPredicate(Arrays.asList(keywords)));
-        assertFalse(modelManager.equals(new ModelManager(addressBook, noteBook, userPrefs)));
+        assertFalse(modelManager.equals(new ModelManager(addressBook, noteBook, groupBook, userPrefs)));
 
         // resets modelManager to initial state for upcoming tests
         modelManager.updateFilteredContactList(PREDICATE_SHOW_ALL_CONTACTS);
@@ -166,6 +178,6 @@ public class ModelManagerTest {
         // different userPrefs -> returns false
         UserPrefs differentUserPrefs = new UserPrefs();
         differentUserPrefs.setAddressBookFilePath(Paths.get("differentFilePath"));
-        assertFalse(modelManager.equals(new ModelManager(addressBook, noteBook, differentUserPrefs)));
+        assertFalse(modelManager.equals(new ModelManager(addressBook, noteBook, groupBook, differentUserPrefs)));
     }
 }

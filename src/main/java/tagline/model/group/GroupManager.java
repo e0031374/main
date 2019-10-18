@@ -18,28 +18,35 @@ import tagline.model.group.Group;
 /**
  * Represents the in-memory model of the address book data.
  */
-public class GroupModelManager implements GroupModel {
-    private static final Logger logger = LogsCenter.getLogger(GroupModelManager.class);
+public class GroupManager implements GroupModel {
+    private static final Logger logger = LogsCenter.getLogger(GroupManager.class);
 
-    private final GroupBook addressBook;
+    private final GroupBook groupBook;
     private final UserPrefs userPrefs;
     private final FilteredList<Group> filteredGroups;
 
     /**
-     * Initializes a GroupModelManager with the given addressBook and userPrefs.
+     * Initializes a GroupManager with the given groupBook and userPrefs.
      */
-    public GroupModelManager(ReadOnlyGroupBook addressBook, ReadOnlyUserPrefs userPrefs) {
+    public GroupManager(ReadOnlyGroupBook groupBook, ReadOnlyUserPrefs userPrefs) {
         super();
-        requireAllNonNull(addressBook, userPrefs);
+        requireAllNonNull(groupBook, userPrefs);
 
-        logger.fine("Initializing with address book: " + addressBook + " and user prefs " + userPrefs);
+        logger.fine("Initializing with address book: " + groupBook + " and user prefs " + userPrefs);
 
-        this.addressBook = new GroupBook(addressBook);
+        this.groupBook = new GroupBook(groupBook);
         this.userPrefs = new UserPrefs(userPrefs);
-        filteredGroups = new FilteredList<>(this.addressBook.getGroupList());
+        filteredGroups = new FilteredList<>(this.groupBook.getGroupList());
+    }
+    public GroupManager(ReadOnlyGroupBook groupBook) {
+        this(groupBook, new UserPrefs());
     }
 
-    public GroupModelManager() {
+    public GroupManager(ReadOnlyUserPrefs userPrefs) {
+        this(new GroupBook(), userPrefs);
+    }
+
+    public GroupManager() {
         this(new GroupBook(), new UserPrefs());
     }
 
@@ -73,45 +80,45 @@ public class GroupModelManager implements GroupModel {
     }
 
     @Override
-    public void setGroupBookFilePath(Path addressBookFilePath) {
-        requireNonNull(addressBookFilePath);
-        userPrefs.setGroupBookFilePath(addressBookFilePath);
+    public void setGroupBookFilePath(Path groupBookFilePath) {
+        requireNonNull(groupBookFilePath);
+        userPrefs.setGroupBookFilePath(groupBookFilePath);
     }
 
     //=========== GroupBook ================================================================================
 
     @Override
-    public void setGroupBook(ReadOnlyGroupBook addressBook) {
-        this.addressBook.resetData(addressBook);
+    public void setGroupBook(ReadOnlyGroupBook groupBook) {
+        this.groupBook.resetData(groupBook);
     }
 
     @Override
     public ReadOnlyGroupBook getGroupBook() {
-        return addressBook;
+        return groupBook;
     }
 
     @Override
     public boolean hasGroup(Group group) {
         requireNonNull(group);
-        return addressBook.hasGroup(group);
+        return groupBook.hasGroup(group);
     }
 
     @Override
     public void deleteGroup(Group target) {
-        addressBook.removeGroup(target);
+        groupBook.removeGroup(target);
     }
 
     @Override
     public void addGroup(Group group) {
-        addressBook.addGroup(group);
-        updateFilteredGroupList(PREDICATE_SHOW_ALL_PERSONS);
+        groupBook.addGroup(group);
+        updateFilteredGroupList(PREDICATE_SHOW_ALL_GROUPS);
     }
 
     @Override
     public void setGroup(Group target, Group editedGroup) {
         requireAllNonNull(target, editedGroup);
 
-        addressBook.setGroup(target, editedGroup);
+        groupBook.setGroup(target, editedGroup);
     }
 
     //=========== Filtered Group List Accessors =============================================================
@@ -139,13 +146,13 @@ public class GroupModelManager implements GroupModel {
         }
 
         // instanceof handles nulls
-        if (!(obj instanceof GroupModelManager)) {
+        if (!(obj instanceof GroupManager)) {
             return false;
         }
 
         // state check
-        GroupModelManager other = (GroupModelManager) obj;
-        return addressBook.equals(other.addressBook)
+        GroupManager other = (GroupManager) obj;
+        return groupBook.equals(other.groupBook)
                 && userPrefs.equals(other.userPrefs)
                 && filteredGroups.equals(other.filteredGroups);
     }
