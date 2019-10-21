@@ -19,7 +19,7 @@ import tagline.model.group.ReadOnlyGroupBook;
 @JsonRootName(value = "groupbook")
 public class JsonSerializableGroupBook {
 
-    public static final String MESSAGE_DUPLICATE_NOTE = "Groups list contains duplicate group(s).";
+    public static final String MESSAGE_DUPLICATE_GROUP = "Groups list contains duplicate group(s).";
 
     private final List<JsonAdaptedGroup> groups = new ArrayList<>();
 
@@ -50,7 +50,7 @@ public class JsonSerializableGroupBook {
         for (JsonAdaptedGroup jsonAdaptedGroup : groups) {
             Group group = jsonAdaptedGroup.toModelType();
             if (groupBook.hasGroup(group)) {
-                throw new IllegalValueException(MESSAGE_DUPLICATE_NOTE);
+                throw new IllegalValueException(MESSAGE_DUPLICATE_GROUP);
             }
             groupBook.addGroup(group);
         }

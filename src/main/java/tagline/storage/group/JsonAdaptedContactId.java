@@ -9,7 +9,7 @@ import tagline.model.contact.ContactId;
 /**
  * Jackson-friendly version of {@link ContactId}.
  */
-class JsonAdaptedContactId {
+public class JsonAdaptedContactId {
 
     private final String idValue;
 

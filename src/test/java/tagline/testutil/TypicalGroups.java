@@ -66,6 +66,6 @@ public class TypicalGroups {
     }
 
     public static List<Group> getTypicalGroups() {
-        return new ArrayList<>(Arrays.asList(WAKANDAN_ROYAL, AVENGERS, GUARDIANS));
+        return new ArrayList<>(Arrays.asList(CHILDREN, HYDRA, WAKANDAN_ROYAL, AVENGERS, GUARDIANS));
     }
 }
