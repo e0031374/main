@@ -3,18 +3,10 @@ package tagline.logic.commands.group;
 import static java.util.Objects.requireNonNull;
 import static tagline.logic.parser.group.GroupCliSyntax.PREFIX_CONTACTID;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import tagline.logic.commands.CommandResult;
 import tagline.logic.commands.exceptions.CommandException;
 import tagline.model.Model;
-import tagline.model.group.ContactIdEqualsSearchIdsPredicate;
 import tagline.model.group.Group;
-import tagline.model.group.GroupDescription;
-import tagline.model.group.GroupName;
-import tagline.model.group.MemberId;
 
 /**
  * Adds a group to the address book.
@@ -53,40 +45,10 @@ public class CreateGroupCommand extends GroupCommand {
 
         // look for the contacts and get their contactID, then edit the Group
         // ensures Group members are ContactIds that can be found in Model
-        GroupName editedGroupName = toAdd.getGroupName();
-        GroupDescription editedGroupDescription = toAdd.getGroupDescription();
-        Set<MemberId> verifiedGroupMemberIds = verifyMemberIdWithModel(model, toAdd);
-
-        Group verifiedGroup = new Group(editedGroupName, editedGroupDescription,
-                verifiedGroupMemberIds);
+        Group verifiedGroup = GroupCommand.verifyGroupWithModel(model, toAdd);
 
         model.addGroup(verifiedGroup);
         return new CommandResult(String.format(MESSAGE_SUCCESS, verifiedGroup));
-    }
-
-    /**
-     * Checks and returns a {@code Set<MemberId>} with the MemberId of {@code targetGroup}
-     * that can be found as {@code ContactId} in {@code Model}.
-     */
-    private static Set<MemberId> verifyMemberIdWithModel(Model model, Group targetGroup) {
-        List<String> members = targetGroup.getMemberIds()
-                .stream()
-                .map(member -> member.value)
-                .collect(Collectors.toList());
-
-        // to display all contacts which are Group members
-        model.updateFilteredContactList(new ContactIdEqualsSearchIdsPredicate(members));
-
-        // this bit to ensure groupmembers are as updated in case of storage error
-        // done by getting all the MemberIds in the group, AddressBook
-        // for those contacts, then make them into MemberIds
-        Set<MemberId> updatedGroupMemberIds = model.getFilteredContactList()
-                .stream()
-                .map(contact -> contact.getContactId().toInteger().toString())
-                .map(member -> new MemberId(member))
-                .collect(Collectors.toSet());
-
-        return updatedGroupMemberIds;
     }
 
     @Override

@@ -4,25 +4,19 @@ import static java.util.Objects.requireNonNull;
 import static tagline.logic.parser.group.GroupCliSyntax.PREFIX_CONTACTID;
 import static tagline.model.group.GroupModel.PREDICATE_SHOW_ALL_GROUPS;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import tagline.commons.core.Messages;
 import tagline.commons.util.CollectionUtil;
 
 import tagline.logic.commands.CommandResult;
 import tagline.logic.commands.exceptions.CommandException;
 import tagline.model.Model;
-import tagline.model.group.ContactIdEqualsSearchIdsPredicate;
 import tagline.model.group.Group;
 import tagline.model.group.GroupDescription;
 import tagline.model.group.GroupName;
-import tagline.model.group.GroupNameEqualsKeywordPredicate;
 import tagline.model.group.MemberId;
 
 /**
@@ -71,60 +65,12 @@ public class AddMemberToGroupCommand extends GroupCommand {
         Group editedGroup = createEditedGroup(groupToEdit, editGroupDescriptor);
 
         // check to ensure Group members are ContactIds that can be found in Model
-        GroupName editedGroupName = editedGroup.getGroupName();
-        GroupDescription editedGroupDescription = editedGroup.getGroupDescription();
-        Set<MemberId> verifiedGroupMemberIds = verifyMemberIdWithModel(model, editedGroup);
-
         // this Group should only have contactId of contacts found in ContactList after calling setGroup
-        Group verifiedGroup = new Group(editedGroupName, editedGroupDescription,
-                verifiedGroupMemberIds);
+        Group verifiedGroup = GroupCommand.verifyGroupWithModel(model, editedGroup);
         model.setGroup(groupToEdit, verifiedGroup);
 
         model.updateFilteredGroupList(PREDICATE_SHOW_ALL_GROUPS);
         return new CommandResult(String.format(MESSAGE_ADD_MEMBER_SUCCESS, verifiedGroup));
-    }
-
-    /**
-     * Finds and returns a {@code Group} with the GroupName of {@code groupName}
-     * from {@code Model}.
-     */
-    private static Group findOneGroup(Model model, String groupName) throws CommandException {
-        List<String> keywords = new ArrayList<>();
-        keywords.add(groupName);
-        model.updateFilteredGroupList(new GroupNameEqualsKeywordPredicate(keywords));
-        List<Group> filteredGroupList = model.getFilteredGroupList();
-        Optional<Group> optionalGroup = filteredGroupList.stream().findFirst();
-
-        if (optionalGroup.isEmpty()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_GROUP_NAME);
-        }
-
-        return optionalGroup.get();
-    }
-
-    /**
-     * Checks and returns a {@code Set<MemberId>} with the MemberId of {@code targetGroup}
-     * that can be found as {@code ContactId} in {@code Model}.
-     */
-    private static Set<MemberId> verifyMemberIdWithModel(Model model, Group targetGroup) {
-        List<String> members = targetGroup.getMemberIds()
-                .stream()
-                .map(member -> member.value)
-                .collect(Collectors.toList());
-
-        // to display all contacts which are Group members
-        model.updateFilteredContactList(new ContactIdEqualsSearchIdsPredicate(members));
-
-        // this bit to ensure groupmembers are as updated in case of storage error
-        // done by getting all the MemberIds in the group, AddressBook
-        // for those contacts, then make them into MemberIds
-        Set<MemberId> updatedGroupMemberIds = model.getFilteredContactList()
-                .stream()
-                .map(contact -> contact.getContactId().toInteger().toString())
-                .map(member -> new MemberId(member))
-                .collect(Collectors.toSet());
-
-        return updatedGroupMemberIds;
     }
 
     /**
