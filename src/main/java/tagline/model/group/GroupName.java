@@ -26,6 +26,8 @@ public class GroupName {
      * @param name A valid name.
      */
     public GroupName(String name) {
+        // right now Groupname accepts white space only string
+        // i think i can handle this in parser/command
         requireNonNull(name);
         checkArgument(isValidGroupName(name), MESSAGE_CONSTRAINTS);
         value = name;
