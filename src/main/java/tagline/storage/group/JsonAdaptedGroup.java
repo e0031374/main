@@ -10,10 +10,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import tagline.commons.exceptions.IllegalValueException;
-import tagline.model.group.MemberId;
 import tagline.model.group.Group;
 import tagline.model.group.GroupDescription;
 import tagline.model.group.GroupName;
+import tagline.model.group.MemberId;
 
 /**
  * Jackson-friendly version of {@link Group}.

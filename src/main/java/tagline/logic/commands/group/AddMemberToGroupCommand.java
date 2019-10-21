@@ -17,11 +17,11 @@ import tagline.commons.util.CollectionUtil;
 import tagline.logic.commands.CommandResult;
 import tagline.logic.commands.exceptions.CommandException;
 import tagline.model.Model;
-import tagline.model.group.MemberId;
 import tagline.model.group.Group;
 import tagline.model.group.GroupDescription;
 import tagline.model.group.GroupName;
 import tagline.model.group.GroupNameEqualsKeywordPredicate;
+import tagline.model.group.MemberId;
 
 /**
  * Edits the details of an existing group in the address book.

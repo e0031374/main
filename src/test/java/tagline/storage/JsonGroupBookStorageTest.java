@@ -3,8 +3,8 @@ package tagline.storage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static tagline.testutil.Assert.assertThrows;
-import static tagline.testutil.TypicalGroups.CHILDREN;
 import static tagline.testutil.TypicalGroups.ASGARDIAN;
+import static tagline.testutil.TypicalGroups.CHILDREN;
 import static tagline.testutil.TypicalGroups.MYSTIC_ARTS;
 import static tagline.testutil.TypicalGroups.getTypicalGroupBook;
 

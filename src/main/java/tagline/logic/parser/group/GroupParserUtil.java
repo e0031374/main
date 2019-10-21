@@ -9,9 +9,9 @@ import java.util.Set;
 import tagline.commons.core.index.Index;
 import tagline.commons.util.StringUtil;
 import tagline.logic.parser.exceptions.ParseException;
-import tagline.model.group.MemberId;
 import tagline.model.group.GroupDescription;
 import tagline.model.group.GroupName;
+import tagline.model.group.MemberId;
 
 /**
  * Contains utility methods used for parsing strings in the various *Parser classes.

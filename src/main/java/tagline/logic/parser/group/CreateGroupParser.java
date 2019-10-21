@@ -15,10 +15,10 @@ import tagline.logic.parser.ArgumentTokenizer;
 import tagline.logic.parser.Parser;
 import tagline.logic.parser.Prefix;
 import tagline.logic.parser.exceptions.ParseException;
-import tagline.model.group.MemberId;
 import tagline.model.group.Group;
 import tagline.model.group.GroupDescription;
 import tagline.model.group.GroupName;
+import tagline.model.group.MemberId;
 
 /**
  * Parses input arguments and creates a new CreateGroupCommand object

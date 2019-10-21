@@ -5,17 +5,17 @@ import static tagline.storage.group.JsonAdaptedGroup.MISSING_FIELD_MESSAGE_FORMA
 import static tagline.testutil.Assert.assertThrows;
 import static tagline.testutil.TypicalGroups.HYDRA;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.junit.jupiter.api.Test;
 
 import tagline.commons.exceptions.IllegalValueException;
 import tagline.model.group.GroupDescription;
 import tagline.model.group.GroupName;
-import tagline.storage.group.JsonAdaptedMemberId;
 import tagline.storage.group.JsonAdaptedGroup;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import tagline.storage.group.JsonAdaptedMemberId;
 
 public class JsonAdaptedGroupTest {
     private static final String INVALID_GROUPNAME = ""; // empty string is invalid

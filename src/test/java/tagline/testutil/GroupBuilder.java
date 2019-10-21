@@ -3,10 +3,10 @@ package tagline.testutil;
 import java.util.HashSet;
 import java.util.Set;
 
-import tagline.model.group.MemberId;
 import tagline.model.group.Group;
 import tagline.model.group.GroupDescription;
 import tagline.model.group.GroupName;
+import tagline.model.group.MemberId;
 import tagline.model.util.SampleDataUtil;
 
 /**
