@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import tagline.commons.core.Messages;
 import tagline.commons.util.CollectionUtil;
@@ -17,6 +18,7 @@ import tagline.commons.util.CollectionUtil;
 import tagline.logic.commands.CommandResult;
 import tagline.logic.commands.exceptions.CommandException;
 import tagline.model.Model;
+import tagline.model.group.ContactIdEqualsSearchIdsPredicate;
 import tagline.model.group.Group;
 import tagline.model.group.GroupDescription;
 import tagline.model.group.GroupName;
@@ -50,6 +52,7 @@ public class AddMemberToGroupCommand extends GroupCommand {
      * @param groupName of the group in the filtered group list to edit
      * @param editGroupDescriptor details to edit the group with
      */
+
     public AddMemberToGroupCommand(String groupName, EditGroupDescriptor editGroupDescriptor) {
         requireNonNull(groupName);
         requireNonNull(editGroupDescriptor);
@@ -57,12 +60,33 @@ public class AddMemberToGroupCommand extends GroupCommand {
         //this.index = index;
         this.groupName = groupName.trim();
         this.editGroupDescriptor = new EditGroupDescriptor(editGroupDescriptor);
-
     }
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+
+        Group groupToEdit = findOneGroup(model, groupName);
+        Group editedGroup = createEditedGroup(groupToEdit, editGroupDescriptor);
+
+        // ensures Group members are ContactIds that can be found in Model
+        GroupName editedGroupName = editedGroup.getGroupName();
+        GroupDescription editedGroupDescription = editedGroup.getGroupDescription();
+        Set<MemberId> verifiedGroupMemberIds = verifyMemberIdWithModel(model, editedGroup);
+
+        Group verifiedGroup = new Group(editedGroupName, editedGroupDescription,
+                verifiedGroupMemberIds);
+        model.setGroup(groupToEdit, verifiedGroup);
+
+        model.updateFilteredGroupList(PREDICATE_SHOW_ALL_GROUPS);
+        return new CommandResult(String.format(MESSAGE_ADD_MEMBER_SUCCESS, verifiedGroup));
+    }
+
+    /**
+     * Finds and returns a {@code Group} with the GroupName of {@code groupName}
+     * from {@code Model}.
+     */
+    private static Group findOneGroup(Model model, String groupName) throws CommandException {
         List<String> keywords = new ArrayList<>();
         keywords.add(groupName);
         model.updateFilteredGroupList(new GroupNameEqualsKeywordPredicate(keywords));
@@ -73,13 +97,32 @@ public class AddMemberToGroupCommand extends GroupCommand {
             throw new CommandException(Messages.MESSAGE_INVALID_GROUP_NAME);
         }
 
-        Group groupToEdit = optionalGroup.get();
-        Group editedGroup = createEditedGroup(groupToEdit, editGroupDescriptor);
+        return optionalGroup.get();
+    }
 
+    /**
+     * Checks and returns a {@code Set<MemberId>} with the MemberId of {@code targetGroup}
+     * that can be found as {@code ContactId} in {@code Model}.
+     */
+    private static Set<MemberId> verifyMemberIdWithModel(Model model, Group targetGroup) {
+        List<String> members = targetGroup.getMemberIds()
+                .stream()
+                .map(member -> member.value)
+                .collect(Collectors.toList());
 
-        model.setGroup(groupToEdit, editedGroup);
-        model.updateFilteredGroupList(PREDICATE_SHOW_ALL_GROUPS);
-        return new CommandResult(String.format(MESSAGE_ADD_MEMBER_SUCCESS, editedGroup));
+        // to display all contacts which are Group members
+        model.updateFilteredContactList(new ContactIdEqualsSearchIdsPredicate(members));
+
+        // this bit to ensure groupmembers are as updated in case of storage error
+        // done by getting all the MemberIds in the group, AddressBook
+        // for those contacts, then make them into MemberIds
+        Set<MemberId> updatedGroupMemberIds = model.getFilteredContactList()
+                .stream()
+                .map(contact -> contact.getContactId().toInteger().toString())
+                .map(member -> new MemberId(member))
+                .collect(Collectors.toSet());
+
+        return updatedGroupMemberIds;
     }
 
     /**
@@ -97,8 +140,6 @@ public class AddMemberToGroupCommand extends GroupCommand {
             updatedMemberIds.addAll(editGroupDescriptor.getMemberIds().get());
         }
         updatedMemberIds.addAll(groupToEdit.getMemberIds());
-        //Set<MemberId> updatedMemberIds = editGroupDescriptor.getMemberIds().orElse(groupToEdit.getMemberIds());
-        //Set<Tag> updatedTags = editGroupDescriptor.getTags().orElse(groupToEdit.getTags());
 
         return new Group(updatedGroupName, updatedGroupDescription, updatedMemberIds);
     }
@@ -189,6 +230,7 @@ public class AddMemberToGroupCommand extends GroupCommand {
         public Optional<Set<MemberId>> getMemberIds() {
             return (memberIds != null) ? Optional.of(Collections.unmodifiableSet(memberIds)) : Optional.empty();
         }
+
         ///**
         // * Sets {@code tags} to this object's {@code tags}.
         // * A defensive copy of {@code tags} is used internally.

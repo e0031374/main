@@ -4,8 +4,11 @@ import static tagline.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static tagline.logic.parser.group.GroupCliSyntax.PREFIX_CONTACTID;
 import static tagline.logic.parser.group.GroupCliSyntax.PREFIX_GROUPDESCRIPTION;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -34,22 +37,26 @@ public class CreateGroupParser implements Parser<CreateGroupCommand> {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_CONTACTID);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_CONTACTID)
-                || !argMultimap.getPreamble().isEmpty()) {
+        // PREFIX_CONTACTID is optional
+        if (argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, CreateGroupCommand.MESSAGE_USAGE));
         }
-
-        //Set<Tag> tagList = GroupParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
         GroupName groupName = GroupParserUtil.parseGroupName(argMultimap.getPreamble());
         GroupDescription groupDescription = GroupParserUtil.parseGroupDescription(
             argMultimap.getValue(PREFIX_GROUPDESCRIPTION).orElse(""));
-        //Set<ContactId> memberIds = GroupParserUtil.parseMemberIds(argMultimap.getAllValues(PREFIX_CONTACTID));
-        List<String> memberList = argMultimap.getAllValues(PREFIX_CONTACTID);
+
+        // converts list of specified String memberIds to Empty if no Strings parsed in
+        Optional<Set<MemberId>> optionalMemberIds = parseMemberIdsForEdit(argMultimap.getAllValues(PREFIX_CONTACTID));
         Set<MemberId> memberIds = new HashSet<>();
+
+        if (optionalMemberIds.isPresent()) {
+            memberIds.addAll(optionalMemberIds.get());
+        }
+
         Group group = new Group(groupName, groupDescription, memberIds);
 
-        return new CreateGroupCommand(group, memberList);
+        return new CreateGroupCommand(group);
     }
 
     /**
@@ -58,6 +65,23 @@ public class CreateGroupParser implements Parser<CreateGroupCommand> {
      */
     private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
         return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
+    }
+
+
+    /**
+     * Parses {@code Collection<String> memberIds} into a {@code Set<MemberId>} if {@code memberIds} is non-empty.
+     * If {@code memberIds} contain only one element which is an empty string, it will be parsed into a
+     * {@code Set<MemberId>} containing zero memberIds.
+     */
+    private Optional<Set<MemberId>> parseMemberIdsForEdit(Collection<String> memberIds) throws ParseException {
+        assert memberIds != null;
+
+        if (memberIds.isEmpty()) {
+            return Optional.empty();
+        }
+        Collection<String> tagSet = memberIds.size() == 1 && memberIds.contains("")
+                ? Collections.emptySet() : memberIds;
+        return Optional.of(GroupParserUtil.parseMemberIds(tagSet));
     }
 
 }

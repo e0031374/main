@@ -32,23 +32,14 @@ public class AddMemberToGroupParser implements Parser<AddMemberToGroupCommand> {
                 ArgumentTokenizer.tokenize(args, PREFIX_CONTACTID);
 
         String targetGroupName;
-        targetGroupName = argMultimap.getPreamble(); //GroupParserUtil.parseIndex(argMultimap.getPreamble());
-
-        //TODO i need to reference this bit to finish up the rest of the parser
-        //try {
-        //    targetGroupName = argMultimap.getPreamble(); //GroupParserUtil.parseIndex(argMultimap.getPreamble());
-        //} catch (ParseException pe) {
-        //    throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-        //        AddMemberToGroupCommand.MESSAGE_USAGE), pe);
-        //}
+        targetGroupName = argMultimap.getPreamble();
 
         EditGroupDescriptor editGroupDescriptor = new EditGroupDescriptor();
-        //if (argMultimap.getValue(PREFIX_NAME).isPresent()) {
-        //    editGroupDescriptor.setName(ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get()));
-        //}
-        //parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editGroupDescriptor::setTags);
+
+        // converts list of specified String memberIds to MemberIds and add to editGroupDescriptor
         parseMemberIdsForEdit(argMultimap.getAllValues(PREFIX_CONTACTID)).ifPresent(editGroupDescriptor::setMemberIds);
 
+        // checks if user input list of String memberIds is empty
         if (!editGroupDescriptor.isAnyFieldEdited()) {
             throw new ParseException(AddMemberToGroupCommand.MESSAGE_NOT_ADDED);
         }
@@ -57,9 +48,9 @@ public class AddMemberToGroupParser implements Parser<AddMemberToGroupCommand> {
     }
 
     /**
-     * Parses {@code Collection<String> tags} into a {@code Set<Tag>} if {@code tags} is non-empty.
-     * If {@code tags} contain only one element which is an empty string, it will be parsed into a
-     * {@code Set<Tag>} containing zero memberIds.
+     * Parses {@code Collection<String> memberIds} into a {@code Set<MemberId>} if {@code memberIds} is non-empty.
+     * If {@code memberIds} contain only one element which is an empty string, it will be parsed into a
+     * {@code Set<MemberId>} containing zero memberIds.
      */
     private Optional<Set<MemberId>> parseMemberIdsForEdit(Collection<String> memberIds) throws ParseException {
         assert memberIds != null;

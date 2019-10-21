@@ -10,6 +10,7 @@ import tagline.logic.commands.Command;
 import tagline.logic.commands.HelpCommand;
 import tagline.logic.commands.group.AddMemberToGroupCommand;
 import tagline.logic.commands.group.CreateGroupCommand;
+import tagline.logic.commands.group.FindGroupCommand;
 import tagline.logic.parser.exceptions.ParseException;
 
 /**
@@ -43,6 +44,9 @@ public class GroupCommandParser {
 
         case AddMemberToGroupCommand.COMMAND_WORD:
             return new AddMemberToGroupParser().parse(arguments);
+
+        case FindGroupCommand.COMMAND_WORD:
+            return new FindGroupParser().parse(arguments);
 
         //case DeleteGroupCommand.COMMAND_WORD:
         //    return new DeleteGroupParser().parse(arguments);
