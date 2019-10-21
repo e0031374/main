@@ -29,7 +29,6 @@ public class Group {
         this.groupName = groupName;
         this.description = description;
         this.memberIds.addAll(memberIds);
-        //this.tags.addAll(tags);
     }
 
     public GroupName getGroupName() {
