@@ -17,7 +17,7 @@ import tagline.commons.util.CollectionUtil;
 import tagline.logic.commands.CommandResult;
 import tagline.logic.commands.exceptions.CommandException;
 import tagline.model.Model;
-import tagline.model.contact.ContactId;
+import tagline.model.group.MemberId;
 import tagline.model.group.Group;
 import tagline.model.group.GroupDescription;
 import tagline.model.group.GroupName;
@@ -92,7 +92,7 @@ public class AddMemberToGroupCommand extends GroupCommand {
         GroupName updatedGroupName = editGroupDescriptor.getGroupName().orElse(groupToEdit.getGroupName());
         GroupDescription updatedGroupDescription = editGroupDescriptor.getGroupDescription()
             .orElse(groupToEdit.getGroupDescription());
-        Set<ContactId> updatedMemberIds = new HashSet<>();
+        Set<MemberId> updatedMemberIds = new HashSet<>();
         if (editGroupDescriptor.getMemberIds().isPresent()) {
             updatedMemberIds.addAll(editGroupDescriptor.getMemberIds().get());
         }
@@ -128,7 +128,7 @@ public class AddMemberToGroupCommand extends GroupCommand {
     public static class EditGroupDescriptor {
         private GroupName groupName;
         private GroupDescription description;
-        private Set<ContactId> memberIds;
+        private Set<MemberId> memberIds;
         //private Set<Tag> tags;
 
         public EditGroupDescriptor() {}
@@ -170,7 +170,7 @@ public class AddMemberToGroupCommand extends GroupCommand {
          * Sets {@code memberIds} to this object's {@code memberIds}.
          * A defensive copy of {@code memberIds} is used internally.
          */
-        public void setMemberIds(Set<ContactId> memberIds) {
+        public void setMemberIds(Set<MemberId> memberIds) {
             this.memberIds = (memberIds != null) ? new HashSet<>(memberIds) : null;
         }
 
@@ -178,7 +178,7 @@ public class AddMemberToGroupCommand extends GroupCommand {
          * Adds {@code memberIds} to this object's {@code memberIds}.
          * A defensive copy of {@code memberIds} is used internally.
          */
-        public void addMemberIds(Set<ContactId> memberIds) {
+        public void addMemberIds(Set<MemberId> memberIds) {
             this.memberIds = (memberIds != null) ? new HashSet<>(memberIds) : null;
         }
         /**
@@ -186,7 +186,7 @@ public class AddMemberToGroupCommand extends GroupCommand {
          * if modification is attempted.
          * Returns {@code Optional#empty()} if {@code tags} is null.
          */
-        public Optional<Set<ContactId>> getMemberIds() {
+        public Optional<Set<MemberId>> getMemberIds() {
             return (memberIds != null) ? Optional.of(Collections.unmodifiableSet(memberIds)) : Optional.empty();
         }
         ///**

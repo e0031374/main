@@ -9,7 +9,7 @@ import java.util.Set;
 import tagline.commons.core.index.Index;
 import tagline.commons.util.StringUtil;
 import tagline.logic.parser.exceptions.ParseException;
-import tagline.model.contact.ContactId;
+import tagline.model.group.MemberId;
 import tagline.model.group.GroupDescription;
 import tagline.model.group.GroupName;
 
@@ -76,21 +76,21 @@ public class GroupParserUtil {
      *
      * @throws ParseException if the given {@code tag} is invalid.
      */
-    public static ContactId parseMemberId(String id) throws ParseException {
+    public static MemberId parseMemberId(String id) throws ParseException {
         requireNonNull(id);
         String trimmedId = id.trim();
-        if (!ContactId.isValidId(trimmedId)) {
-            throw new ParseException(ContactId.MESSAGE_CONSTRAINTS);
+        if (!MemberId.isValidMemberId(trimmedId)) {
+            throw new ParseException(MemberId.MESSAGE_CONSTRAINTS);
         }
-        return new ContactId(trimmedId);
+        return new MemberId(trimmedId);
     }
 
     /**
      * Parses {@code Collection<String> tags} into a {@code Set<Tag>}.
      */
-    public static Set<ContactId> parseMemberIds(Collection<String> ids) throws ParseException {
+    public static Set<MemberId> parseMemberIds(Collection<String> ids) throws ParseException {
         requireNonNull(ids);
-        final Set<ContactId> memberSet = new HashSet<>();
+        final Set<MemberId> memberSet = new HashSet<>();
         for (String id : ids) {
             memberSet.add(parseMemberId(id));
         }

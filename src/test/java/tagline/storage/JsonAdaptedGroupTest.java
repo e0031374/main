@@ -4,14 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static tagline.storage.group.JsonAdaptedGroup.MISSING_FIELD_MESSAGE_FORMAT;
 import static tagline.testutil.Assert.assertThrows;
 import static tagline.testutil.TypicalGroups.HYDRA;
-import static tagline.testutil.TypicalGroups.HYDRA;
 
 import org.junit.jupiter.api.Test;
 
 import tagline.commons.exceptions.IllegalValueException;
 import tagline.model.group.GroupDescription;
 import tagline.model.group.GroupName;
-import tagline.storage.group.JsonAdaptedContactId;
+import tagline.storage.group.JsonAdaptedMemberId;
 import tagline.storage.group.JsonAdaptedGroup;
 
 import java.util.ArrayList;
@@ -25,8 +24,8 @@ public class JsonAdaptedGroupTest {
 
     private static final String VALID_GROUPNAME = HYDRA.getGroupName().toString();
     private static final String VALID_GROUPDESCRIPTION = HYDRA.getGroupDescription().toString();
-    private static final List<JsonAdaptedContactId> VALID_CONTACTIDS = HYDRA.getMemberIds().stream()
-            .map(JsonAdaptedContactId::new)
+    private static final List<JsonAdaptedMemberId> VALID_CONTACTIDS = HYDRA.getMemberIds().stream()
+            .map(JsonAdaptedMemberId::new)
             .collect(Collectors.toList());
 
     @Test
@@ -70,8 +69,8 @@ public class JsonAdaptedGroupTest {
 
     @Test
     public void toModelType_invalidContactIds_throwsIllegalValueException() {
-        List<JsonAdaptedContactId> invalidContactIds = new ArrayList<>(VALID_CONTACTIDS);
-        invalidContactIds.add(new JsonAdaptedContactId(INVALID_CONTACTID));
+        List<JsonAdaptedMemberId> invalidContactIds = new ArrayList<>(VALID_CONTACTIDS);
+        invalidContactIds.add(new JsonAdaptedMemberId(INVALID_CONTACTID));
         JsonAdaptedGroup person =
                 new JsonAdaptedGroup(VALID_GROUPNAME, VALID_GROUPDESCRIPTION, invalidContactIds);
         assertThrows(IllegalValueException.class, person::toModelType);

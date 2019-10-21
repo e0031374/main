@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import tagline.commons.exceptions.IllegalValueException;
-import tagline.model.contact.ContactId;
+import tagline.model.group.MemberId;
 import tagline.model.group.Group;
 import tagline.model.group.GroupDescription;
 import tagline.model.group.GroupName;
@@ -24,7 +24,7 @@ public class JsonAdaptedGroup {
 
     private final String groupname;
     private final String groupdescription;
-    private final List<JsonAdaptedContactId> members = new ArrayList<>();
+    private final List<JsonAdaptedMemberId> members = new ArrayList<>();
 
     /**
      * Constructs a {@code JsonAdaptedGroup} with the given group details.
@@ -32,7 +32,7 @@ public class JsonAdaptedGroup {
     @JsonCreator
     public JsonAdaptedGroup(@JsonProperty("groupname") String groupname,
         @JsonProperty("groupdescription") String groupdescription,
-        @JsonProperty("members") List<JsonAdaptedContactId> members) {
+        @JsonProperty("members") List<JsonAdaptedMemberId> members) {
         this.groupname = groupname;
         this.groupdescription = groupdescription;
         if (members != null) {
@@ -47,7 +47,7 @@ public class JsonAdaptedGroup {
         groupname = source.getGroupName().value;
         groupdescription = source.getGroupDescription().value;
         members.addAll(source.getMemberIds().stream()
-                .map(JsonAdaptedContactId::new)
+                .map(JsonAdaptedMemberId::new)
                 .collect(Collectors.toList()));
     }
 
@@ -57,8 +57,8 @@ public class JsonAdaptedGroup {
      * @throws IllegalValueException if there were any data constraints violated in the adapted group.
      */
     public Group toModelType() throws IllegalValueException {
-        final List<ContactId> groupMembers = new ArrayList<>();
-        for (JsonAdaptedContactId member: members) {
+        final List<MemberId> groupMembers = new ArrayList<>();
+        for (JsonAdaptedMemberId member: members) {
             groupMembers.add(member.toModelType());
         }
 
@@ -80,7 +80,7 @@ public class JsonAdaptedGroup {
         }
         final GroupDescription modelGroupDescription = new GroupDescription(groupdescription);
 
-        final Set<ContactId> modelMembers = new HashSet<>(groupMembers);
+        final Set<MemberId> modelMembers = new HashSet<>(groupMembers);
 
         return new Group(modelGroupName, modelGroupDescription, modelMembers);
     }

@@ -4,12 +4,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import tagline.commons.exceptions.IllegalValueException;
-import tagline.model.contact.ContactId;
+import tagline.model.group.MemberId;
 
 /**
- * Jackson-friendly version of {@link ContactId}.
+ * Jackson-friendly version of {@link MemberId}.
  */
-public class JsonAdaptedContactId {
+public class JsonAdaptedMemberId {
 
     private final String idValue;
 
@@ -17,19 +17,19 @@ public class JsonAdaptedContactId {
      * Constructs a {@code JsonAdaptedContactId} with the given {@code idValue}.
      */
     @JsonCreator
-    public JsonAdaptedContactId(String idValue) {
+    public JsonAdaptedMemberId(String idValue) {
         this.idValue = idValue;
     }
 
     /**
      * Converts a given {@code ContactId} into this class for Jackson use.
      */
-    public JsonAdaptedContactId(ContactId source) {
-        idValue = String.valueOf(source.toInteger());
+    public JsonAdaptedMemberId(MemberId source) {
+        idValue = source.value;
     }
 
     @JsonValue
-    public String getContactIdName() {
+    public String getMemberIdName() {
         return idValue;
     }
 
@@ -38,11 +38,11 @@ public class JsonAdaptedContactId {
      *
      * @throws IllegalValueException if there were any data constraints violated in the adapted tag.
      */
-    public ContactId toModelType() throws IllegalValueException {
-        if (!ContactId.isValidId(idValue)) {
-            throw new IllegalValueException(ContactId.MESSAGE_CONSTRAINTS);
+    public MemberId toModelType() throws IllegalValueException {
+        if (!MemberId.isValidMemberId(idValue)) {
+            throw new IllegalValueException(MemberId.MESSAGE_CONSTRAINTS);
         }
-        return new ContactId(idValue);
+        return new MemberId(idValue);
     }
 
 }

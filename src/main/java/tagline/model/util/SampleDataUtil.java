@@ -17,6 +17,7 @@ import tagline.model.contact.ReadOnlyAddressBook;
 import tagline.model.group.Group;
 import tagline.model.group.GroupBook;
 import tagline.model.group.GroupDescription;
+import tagline.model.group.MemberId;
 import tagline.model.group.GroupName;
 import tagline.model.group.ReadOnlyGroupBook;
 import tagline.model.note.Content;
@@ -118,20 +119,20 @@ public class SampleDataUtil {
             new Group(new GroupName("X1"), new GroupDescription("X1 was formed through "
                     + "the survival competition series Produce X 101, which aired on Mnet from "
                     + "May 3, 2019, until July 19, 2019."),
-                    getContactIdSet("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11")),
+                    getMemberIdSet("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11")),
             new Group(new GroupName("BTS"), new GroupDescription("The group's name, BTS, "
                     + "stands for the Korean expression Bangtan Sonyeondan, literally meaning \""
                     + "Bulletproof Boy Scouts\". According to member J-Hope, the name signifies "
                     + "the group's desire \"to block out stereotypes, criticisms, and expectations "
                     + "that aim on adolescents like bullets\"."),
-                    getContactIdSet("11", "12", "13", "14", "15", "16", "17")),
+                    getMemberIdSet("11", "12", "13", "14", "15", "16", "17")),
             new Group(new GroupName("GFriend"), new GroupDescription("GFriend (Korean: <Korean>,"
                     + "RR: Yeoja Chingu) is a six-member South Korean girl group formed by Source Music "
                     + "in 2015.[2] The group consists of Sowon, Yerin, Eunha, Yuju, SinB, and Umji. "
                     + "They made their debut with the EP Season of Glass on January 15, 2015. GFriend "
                     + "won several 2015 female rookie awards and has garnered momentum since their debut "
                     + "despite being from a small company."),
-                    getContactIdSet("211", "212", "213", "214", "215", "216")),
+                    getMemberIdSet("211", "212", "213", "214", "215", "216")),
             new Group(new GroupName("Wanna One"), new GroupDescription("Wanna One (Korean: 워너원) "
                     + "was a South Korean boy band formed by CJ E&M through the second season of Produce "
                     + "101.[1] The group was composed of eleven members: Kang Daniel, Park Ji-hoon, Lee "
@@ -140,7 +141,7 @@ public class SampleDataUtil {
                     + "2017, under Swing Entertainment and CJ E&M. Their contract ended on December 31, "
                     + "2018, but their final activity as a group was their last concert on January 24–27, "
                     + "2019."),
-                    getContactIdSet("2131", "2132", "2133", "2134", "2135", "2136", "2137",
+                    getMemberIdSet("2131", "2132", "2133", "2134", "2135", "2136", "2137",
                         "2138", "2139", "21310", "21311")),
             new Group(new GroupName("iKon"), new GroupDescription("The group released their debut "
                     + "studio album Welcome Back (2015), which debuted atop the South Korean Gaon Album "
@@ -153,7 +154,7 @@ public class SampleDataUtil {
                     + "released the singles \"#WYD\" and \"New Kids: Begin\", and they focused on their "
                     + "first Asia tour and several Japanese tours. The group's second studio album, "
                     + "Return, was released on January 25, 2018. "),
-                    getContactIdSet("62131", "52132", "42133", "32134", "22135", "12136")),
+                    getMemberIdSet("62131", "52132", "42133", "32134", "22135", "12136")),
             new Group(new GroupName("exo"), new GroupDescription("Exo (Korean: 엑소; stylized in "
                     + "all caps) is a South Korean–Chinese boy band based in Seoul, with nine members: "
                     + "Xiumin, Suho, Lay, Baekhyun, Chen, Chanyeol, D.O., Kai and Sehun. The band was "
@@ -164,7 +165,7 @@ public class SampleDataUtil {
                     + "on the Forbes Korea Power Celebrity list each year from 2014 to 2018, and have "
                     + "been named \"the biggest boy band in the world\" and the \"kings of K-pop\" by "
                     + "media outlets. "),
-                    getContactIdSet("6231", "5213", "4213", "3213", "5335", "6136",
+                    getMemberIdSet("6231", "5213", "4213", "3213", "5335", "6136",
                         "7", "8", "9")),
             new Group(new GroupName("Seventeen"), new GroupDescription("Seventeen (Korean: 세븐틴), "
                     + "also stylized as SEVENTEEN or SVT, is a South Korean boy group formed by Pledis "
@@ -174,7 +175,7 @@ public class SampleDataUtil {
                     + "extended plays.\n\n"
                     + "Seventeen has been considered a \"self-producing\" idol group, with the members being "
                     + "actively involved in the songwriting, choreographing, and other aspects of the group."),
-                    getContactIdSet("901", "902", "903", "904", "905", "906", "907", "908",
+                    getMemberIdSet("901", "902", "903", "904", "905", "906", "907", "908",
                             "909", "9010", "9011", "9012", "9013"))
         };
     }
@@ -190,15 +191,9 @@ public class SampleDataUtil {
     /**
      * Returns a contactId set containing the list of strings given.
      */
-    public static Set<ContactId> getContactIdSet(String... strings) {
+    public static Set<MemberId> getMemberIdSet(String... strings) {
         return Arrays.stream(strings)
-                .map(s -> new ContactId(Integer.valueOf(s)))
-                .collect(Collectors.toSet());
-    }
-
-    public static Set<ContactId> getContactIdSet(Integer... integers) {
-        return Arrays.stream(integers)
-                .map(i -> new ContactId(i))
+                .map(s -> new MemberId(s))
                 .collect(Collectors.toSet());
     }
 }

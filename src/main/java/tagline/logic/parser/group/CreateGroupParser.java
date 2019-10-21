@@ -15,7 +15,7 @@ import tagline.logic.parser.ArgumentTokenizer;
 import tagline.logic.parser.Parser;
 import tagline.logic.parser.Prefix;
 import tagline.logic.parser.exceptions.ParseException;
-import tagline.model.contact.ContactId;
+import tagline.model.group.MemberId;
 import tagline.model.group.Group;
 import tagline.model.group.GroupDescription;
 import tagline.model.group.GroupName;
@@ -46,7 +46,7 @@ public class CreateGroupParser implements Parser<CreateGroupCommand> {
             argMultimap.getValue(PREFIX_GROUPDESCRIPTION).orElse(""));
         //Set<ContactId> memberIds = GroupParserUtil.parseMemberIds(argMultimap.getAllValues(PREFIX_CONTACTID));
         List<String> memberList = argMultimap.getAllValues(PREFIX_CONTACTID);
-        Set<ContactId> memberIds = new HashSet<>();
+        Set<MemberId> memberIds = new HashSet<>();
         Group group = new Group(groupName, groupDescription, memberIds);
 
         return new CreateGroupCommand(group, memberList);

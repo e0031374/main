@@ -7,8 +7,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import tagline.model.contact.ContactId;
-
 /**
  * Represents a Group in the address book.
  * Guarantees: details are present and not null, field values are validated, immutable.
@@ -20,12 +18,12 @@ public class Group {
 
     // Data fields
     private final GroupDescription description;
-    private final Set<ContactId> memberIds = new HashSet<>();
+    private final Set<MemberId> memberIds = new HashSet<>();
 
     /**
      * Every field must be present and not null.
      */
-    public Group(GroupName groupName, GroupDescription description , Set<ContactId> memberIds) {
+    public Group(GroupName groupName, GroupDescription description , Set<MemberId> memberIds) {
         requireAllNonNull(groupName, description, memberIds);
         //private final MemberModel members;
         this.groupName = groupName;
@@ -46,7 +44,7 @@ public class Group {
      * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
      */
-    public Set<ContactId> getMemberIds() {
+    public Set<MemberId> getMemberIds() {
         return Collections.unmodifiableSet(memberIds);
     }
 

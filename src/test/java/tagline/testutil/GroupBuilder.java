@@ -3,7 +3,7 @@ package tagline.testutil;
 import java.util.HashSet;
 import java.util.Set;
 
-import tagline.model.contact.ContactId;
+import tagline.model.group.MemberId;
 import tagline.model.group.Group;
 import tagline.model.group.GroupDescription;
 import tagline.model.group.GroupName;
@@ -24,7 +24,7 @@ public class GroupBuilder {
 
     private GroupName groupName;
     private GroupDescription groupDescription;
-    private Set<ContactId> memberIds;
+    private Set<MemberId> memberIds;
 
     public GroupBuilder() {
         groupName = new GroupName(DEFAULT_NAME);
@@ -61,7 +61,7 @@ public class GroupBuilder {
      * Parses the {@code tags} into a {@code Set<Tag>} and set it to the {@code Person} that we are building.
      */
     public GroupBuilder withMemberIds(String ... memberIds) {
-        this.memberIds = SampleDataUtil.getContactIdSet(memberIds);
+        this.memberIds = SampleDataUtil.getMemberIdSet(memberIds);
         return this;
     }
 

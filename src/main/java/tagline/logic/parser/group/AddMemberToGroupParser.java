@@ -14,7 +14,7 @@ import tagline.logic.parser.ArgumentMultimap;
 import tagline.logic.parser.ArgumentTokenizer;
 import tagline.logic.parser.Parser;
 import tagline.logic.parser.exceptions.ParseException;
-import tagline.model.contact.ContactId;
+import tagline.model.group.MemberId;
 
 /**
  * Parses input arguments and creates a new AddMemberToGroupCommand object
@@ -61,7 +61,7 @@ public class AddMemberToGroupParser implements Parser<AddMemberToGroupCommand> {
      * If {@code tags} contain only one element which is an empty string, it will be parsed into a
      * {@code Set<Tag>} containing zero memberIds.
      */
-    private Optional<Set<ContactId>> parseMemberIdsForEdit(Collection<String> memberIds) throws ParseException {
+    private Optional<Set<MemberId>> parseMemberIdsForEdit(Collection<String> memberIds) throws ParseException {
         assert memberIds != null;
 
         if (memberIds.isEmpty()) {

@@ -72,6 +72,7 @@ public class JsonGroupBookStorageTest {
 
         // Save in new file and read back
         jsonGroupBookStorage.saveGroupBook(original, filePath);
+        jsonGroupBookStorage2.saveGroupBook(original, filePath2);
         ReadOnlyGroupBook readBack = jsonGroupBookStorage.readGroupBook(filePath).get();
         assertEquals(original, new GroupBook(readBack));
 
