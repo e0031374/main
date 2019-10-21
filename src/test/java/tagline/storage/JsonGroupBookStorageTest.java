@@ -68,11 +68,9 @@ public class JsonGroupBookStorageTest {
         Path filePath2 = TEST_DATA_FOLDER.resolve("TempGroupBook2.json");
         GroupBook original = getTypicalGroupBook();
         JsonGroupBookStorage jsonGroupBookStorage = new JsonGroupBookStorage(filePath);
-        JsonGroupBookStorage jsonGroupBookStorage2 = new JsonGroupBookStorage(filePath2);
 
         // Save in new file and read back
         jsonGroupBookStorage.saveGroupBook(original, filePath);
-        jsonGroupBookStorage2.saveGroupBook(original, filePath2);
         ReadOnlyGroupBook readBack = jsonGroupBookStorage.readGroupBook(filePath).get();
         assertEquals(original, new GroupBook(readBack));
 
