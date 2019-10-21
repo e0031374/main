@@ -1,30 +1,23 @@
 package tagline.logic.commands.group;
 
 import static java.util.Objects.requireNonNull;
-import static tagline.logic.commands.note.ListNoteCommand.MESSAGE_KEYWORD_EMPTYLIST;
 
-import javafx.collections.ObservableList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import tagline.commons.core.Messages;
-
 import tagline.logic.commands.CommandResult;
 import tagline.logic.commands.exceptions.CommandException;
 import tagline.model.Model;
-import tagline.model.contact.Contact;
+
 import tagline.model.group.ContactIdEqualsSearchIdsPredicate;
 import tagline.model.group.Group;
 import tagline.model.group.GroupDescription;
 import tagline.model.group.GroupName;
 import tagline.model.group.GroupNameEqualsKeywordPredicate;
 import tagline.model.group.MemberId;
-import tagline.model.util.SampleDataUtil;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 /**
  * Finds and lists all persons in address book whose name contains any of the argument keywords.

@@ -3,13 +3,10 @@ package tagline.logic.commands.group;
 import static java.util.Objects.requireNonNull;
 import static tagline.logic.parser.group.GroupCliSyntax.PREFIX_CONTACTID;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import tagline.commons.core.Messages;
 import tagline.logic.commands.CommandResult;
 import tagline.logic.commands.exceptions.CommandException;
 import tagline.model.Model;
@@ -17,7 +14,6 @@ import tagline.model.group.ContactIdEqualsSearchIdsPredicate;
 import tagline.model.group.Group;
 import tagline.model.group.GroupDescription;
 import tagline.model.group.GroupName;
-import tagline.model.group.GroupNameEqualsKeywordPredicate;
 import tagline.model.group.MemberId;
 
 /**

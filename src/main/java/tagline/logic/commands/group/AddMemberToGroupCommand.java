@@ -67,13 +67,15 @@ public class AddMemberToGroupCommand extends GroupCommand {
         requireNonNull(model);
 
         Group groupToEdit = findOneGroup(model, groupName);
+        // adds all user-input contactIds as members of this Group checks deferred
         Group editedGroup = createEditedGroup(groupToEdit, editGroupDescriptor);
 
-        // ensures Group members are ContactIds that can be found in Model
+        // check to ensure Group members are ContactIds that can be found in Model
         GroupName editedGroupName = editedGroup.getGroupName();
         GroupDescription editedGroupDescription = editedGroup.getGroupDescription();
         Set<MemberId> verifiedGroupMemberIds = verifyMemberIdWithModel(model, editedGroup);
 
+        // this Group should only have contactId of contacts found in ContactList after calling setGroup
         Group verifiedGroup = new Group(editedGroupName, editedGroupDescription,
                 verifiedGroupMemberIds);
         model.setGroup(groupToEdit, verifiedGroup);
