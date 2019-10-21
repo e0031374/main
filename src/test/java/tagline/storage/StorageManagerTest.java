@@ -3,6 +3,7 @@ package tagline.storage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static tagline.testutil.TypicalContacts.getTypicalAddressBook;
+import static tagline.testutil.TypicalGroups.getTypicalGroupBook;
 import static tagline.testutil.TypicalNotes.getTypicalNoteBook;
 
 import java.nio.file.Path;
@@ -15,6 +16,8 @@ import tagline.commons.core.GuiSettings;
 import tagline.model.UserPrefs;
 import tagline.model.contact.AddressBook;
 import tagline.model.contact.ReadOnlyAddressBook;
+import tagline.model.group.GroupBook;
+import tagline.model.group.ReadOnlyGroupBook;
 import tagline.model.note.NoteBook;
 import tagline.model.note.ReadOnlyNoteBook;
 import tagline.storage.contact.JsonAddressBookStorage;
@@ -90,6 +93,25 @@ public class StorageManagerTest {
     @Test
     public void getNoteBookFilePath() {
         assertNotNull(storageManager.getNoteBookFilePath());
+    }
+
+
+    @Test
+    public void groupBookReadSave() throws Exception {
+        /*
+         * Group: This is an integration test that verifies the StorageManager is properly wired to the
+         * {@link JsonGroupBookStorage} class.
+         * More extensive testing of UserPref saving/reading is done in {@link JsonGroupBookStorageTest} class.
+         */
+        GroupBook original = getTypicalGroupBook();
+        storageManager.saveGroupBook(original);
+        ReadOnlyGroupBook retrieved = storageManager.readGroupBook().get();
+        assertEquals(original, new GroupBook(retrieved));
+    }
+
+    @Test
+    public void getGroupBookFilePath() {
+        assertNotNull(storageManager.getGroupBookFilePath());
     }
 
 }

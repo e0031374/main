@@ -95,6 +95,18 @@ public class ModelManagerTest {
     }
 
     @Test
+    public void setGroupBookFilePath_nullPath_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> modelManager.setGroupBookFilePath(null));
+    }
+
+    @Test
+    public void setGroupBookFilePath_validPath_setsGroupBookFilePath() {
+        Path path = Paths.get("group/book/file/path");
+        modelManager.setGroupBookFilePath(path);
+        assertEquals(path, modelManager.getGroupBookFilePath());
+    }
+
+    @Test
     public void hasContact_nullContact_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> modelManager.hasContact(null));
     }
@@ -129,6 +141,22 @@ public class ModelManagerTest {
     @Test
     public void getFilteredNoteList_modifyList_throwsUnsupportedOperationException() {
         assertThrows(UnsupportedOperationException.class, () -> modelManager.getFilteredNoteList().remove(0));
+    }
+
+    @Test
+    public void hasGroup_groupNotInGroupBook_returnsFalse() {
+        assertFalse(modelManager.hasGroup(MYSTIC_ARTS));
+    }
+
+    @Test
+    public void hasGroup_groupInGroupBook_returnsTrue() {
+        modelManager.addGroup(MYSTIC_ARTS);
+        assertTrue(modelManager.hasGroup(MYSTIC_ARTS));
+    }
+
+    @Test
+    public void getFilteredGroupList_modifyList_throwsUnsupportedOperationException() {
+        assertThrows(UnsupportedOperationException.class, () -> modelManager.getFilteredGroupList().remove(0));
     }
 
     @Test
