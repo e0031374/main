@@ -10,7 +10,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import tagline.model.contact.ContactBuilder;
-import tagline.model.group.ContactIdEqualsSearchIdsPredicate;
 
 public class ContactIdEqualsSearchIdsPredicateTest {
 

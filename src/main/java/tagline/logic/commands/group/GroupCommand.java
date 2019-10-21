@@ -27,7 +27,7 @@ public abstract class GroupCommand extends Command {
      * Finds and returns a {@code Group} with the GroupName of {@code groupName}
      * from {@code Model}.
      */
-    protected static Group findOneGroup(Model model, GroupNameEqualsKeywordPredicate predicate)
+    public static Group findOneGroup(Model model, GroupNameEqualsKeywordPredicate predicate)
         throws CommandException {
         model.updateFilteredGroupList(predicate);
         List<Group> filteredGroupList = model.getFilteredGroupList();
@@ -44,7 +44,9 @@ public abstract class GroupCommand extends Command {
      * Finds and returns a {@code Group} with the GroupName of {@code groupName}
      * from {@code Model}.
      */
-    protected static Group findOneGroup(Model model, String groupName) throws CommandException {
+    public static Group findOneGroup(Model model, String groupName) throws CommandException {
+        // doesnt seem to work with emptystring, im not sure why
+        assert groupName != "";
         List<String> keywords = new ArrayList<>();
         keywords.add(groupName);
         return findOneGroup(model, new GroupNameEqualsKeywordPredicate(keywords));
@@ -88,7 +90,7 @@ public abstract class GroupCommand extends Command {
      * Checks and returns a {@code Group} with the MemberId of {@code targetGroup}
      * that can be found as {@code ContactId} in {@code Model}, side effect sets ContactList.
      */
-    protected static Group verifyGroupWithModel(Model model, Group targetGroup) {
+    public static Group verifyGroupWithModel(Model model, Group targetGroup) {
         // check to ensure Group members are ContactIds that can be found in Model
         GroupName editedGroupName = targetGroup.getGroupName();
         GroupDescription editedGroupDescription = targetGroup.getGroupDescription();
