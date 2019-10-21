@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static tagline.model.group.GroupModel.PREDICATE_SHOW_ALL_GROUPS;
 import static tagline.testutil.Assert.assertThrows;
-import static tagline.testutil.TypicalGroups.WAKANDAN_ROYAL;
 import static tagline.testutil.TypicalGroups.AVENGERS;
+import static tagline.testutil.TypicalGroups.WAKANDAN_ROYAL;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
