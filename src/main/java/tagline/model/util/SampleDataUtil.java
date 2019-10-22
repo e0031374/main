@@ -126,14 +126,14 @@ public class SampleDataUtil {
                     + "the group's desire \"to block out stereotypes, criticisms, and expectations "
                     + "that aim on adolescents like bullets\"."),
                     getMemberIdSet("11", "12", "13", "14", "15", "16", "17")),
-            new Group(new GroupName("GFriend"), new GroupDescription("GFriend (Korean: <Korean>,"
+            new Group(new GroupName("GFriend"), new GroupDescription("GFriend (Korean: <KOREAN>,"
                     + "RR: Yeoja Chingu) is a six-member South Korean girl group formed by Source Music "
                     + "in 2015.[2] The group consists of Sowon, Yerin, Eunha, Yuju, SinB, and Umji. "
                     + "They made their debut with the EP Season of Glass on January 15, 2015. GFriend "
                     + "won several 2015 female rookie awards and has garnered momentum since their debut "
                     + "despite being from a small company."),
                     getMemberIdSet("211", "212", "213", "214", "215", "216")),
-            new Group(new GroupName("Wanna One"), new GroupDescription("Wanna One (Korean: 워너원) "
+            new Group(new GroupName("Wanna-One"), new GroupDescription("Wanna One (Korean: <KOREAN>) "
                     + "was a South Korean boy band formed by CJ E&M through the second season of Produce "
                     + "101.[1] The group was composed of eleven members: Kang Daniel, Park Ji-hoon, Lee "
                     + "Dae-hwi, Kim Jae-hwan, Ong Seong-wu, Park Woo-jin, Lai Kuan-lin, Yoon Ji-sung, "
@@ -155,7 +155,7 @@ public class SampleDataUtil {
                     + "first Asia tour and several Japanese tours. The group's second studio album, "
                     + "Return, was released on January 25, 2018. "),
                     getMemberIdSet("62131", "52132", "42133", "32134", "22135", "12136")),
-            new Group(new GroupName("exo"), new GroupDescription("Exo (Korean: 엑소; stylized in "
+            new Group(new GroupName("exo"), new GroupDescription("Exo (Korean: <KOREAN>; stylized in "
                     + "all caps) is a South Korean–Chinese boy band based in Seoul, with nine members: "
                     + "Xiumin, Suho, Lay, Baekhyun, Chen, Chanyeol, D.O., Kai and Sehun. The band was "
                     + "formed by SM Entertainment in 2011 and debuted in 2012. Their music incorporates "
@@ -167,7 +167,7 @@ public class SampleDataUtil {
                     + "media outlets. "),
                     getMemberIdSet("6231", "5213", "4213", "3213", "5335", "6136",
                         "7", "8", "9")),
-            new Group(new GroupName("Seventeen"), new GroupDescription("Seventeen (Korean: 세븐틴), "
+            new Group(new GroupName("Seventeen"), new GroupDescription("Seventeen (Korean: <KOREAN>), "
                     + "also stylized as SEVENTEEN or SVT, is a South Korean boy group formed by Pledis "
                     + "Entertainment in 2015. The group consists of 13 members divided into three "
                     + "sub-units, each with a different area of specialization: a 'Hip-Hop Unit', 'Vocal "

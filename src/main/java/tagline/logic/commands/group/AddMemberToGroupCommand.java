@@ -34,9 +34,7 @@ public class AddMemberToGroupCommand extends GroupCommand {
             + PREFIX_CONTACTID + "47337 ";
 
     public static final String MESSAGE_ADD_MEMBER_SUCCESS = "Added contact to Group: %1$s";
-    public static final String MESSAGE_NOT_ADDED = "At least one field to edit must be provided.";
-    public static final String MESSAGE_DUPLICATE_MEMBER = "This contact already exists in the Group.";
-    public static final String MESSAGE_DUPLICATE_PERSON = "This group already exists in the address book.";
+    public static final String MESSAGE_NOT_ADDED = "At least one contactID to add must be provided.";
 
     //private final Group group;
     private final String groupName;
