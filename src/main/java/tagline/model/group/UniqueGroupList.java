@@ -31,7 +31,7 @@ public class UniqueGroupList implements Iterable<Group> {
     /**
      * Returns true if the list contains an equivalent group as the given argument.
      */
-    public boolean contains(Group toCheck) {
+    public boolean containsGroup(Group toCheck) {
         requireNonNull(toCheck);
         return internalList.stream().anyMatch(toCheck::isSameGroup);
     }
@@ -40,9 +40,9 @@ public class UniqueGroupList implements Iterable<Group> {
      * Adds a group to the list.
      * The group must not already exist in the list.
      */
-    public void add(Group toAdd) {
+    public void addGroup(Group toAdd) {
         requireNonNull(toAdd);
-        if (contains(toAdd)) {
+        if (containsGroup(toAdd)) {
             throw new DuplicateGroupException();
         }
         internalList.add(toAdd);
@@ -61,7 +61,7 @@ public class UniqueGroupList implements Iterable<Group> {
             throw new GroupNotFoundException();
         }
 
-        if (!target.isSameGroup(editedGroup) && contains(editedGroup)) {
+        if (!target.isSameGroup(editedGroup) && containsGroup(editedGroup)) {
             throw new DuplicateGroupException();
         }
 
@@ -72,7 +72,7 @@ public class UniqueGroupList implements Iterable<Group> {
      * Removes the equivalent group from the list.
      * The group must exist in the list.
      */
-    public void remove(Group toRemove) {
+    public void removeGroup(Group toRemove) {
         requireNonNull(toRemove);
         if (!internalList.remove(toRemove)) {
             throw new GroupNotFoundException();

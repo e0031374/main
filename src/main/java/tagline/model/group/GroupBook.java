@@ -7,7 +7,7 @@ import java.util.List;
 import javafx.collections.ObservableList;
 
 /**
- * Wraps all data at the address-book level
+ * Wraps all data at the group-book level
  * Duplicates are not allowed (by .isSameGroup comparison)
  */
 public class GroupBook implements ReadOnlyGroupBook {
@@ -61,7 +61,7 @@ public class GroupBook implements ReadOnlyGroupBook {
      */
     public boolean hasGroup(Group group) {
         requireNonNull(group);
-        return groups.contains(group);
+        return groups.containsGroup(group);
     }
 
     /**
@@ -69,7 +69,7 @@ public class GroupBook implements ReadOnlyGroupBook {
      * The group must not already exist in the address book.
      */
     public void addGroup(Group p) {
-        groups.add(p);
+        groups.addGroup(p);
     }
 
     /**
@@ -88,7 +88,7 @@ public class GroupBook implements ReadOnlyGroupBook {
      * {@code key} must exist in the address book.
      */
     public void removeGroup(Group key) {
-        groups.remove(key);
+        groups.removeGroup(key);
     }
 
     //// util methods

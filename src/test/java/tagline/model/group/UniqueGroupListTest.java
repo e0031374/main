@@ -25,39 +25,39 @@ public class UniqueGroupListTest {
     private final UniqueGroupList uniqueGroupList = new UniqueGroupList();
 
     @Test
-    public void contains_nullGroup_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> uniqueGroupList.contains(null));
+    public void containsGroup_nullGroup_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> uniqueGroupList.containsGroup(null));
     }
 
     @Test
-    public void contains_personNotInList_returnsFalse() {
-        assertFalse(uniqueGroupList.contains(CHILDREN));
+    public void containsGroup_groupNotInList_returnsFalse() {
+        assertFalse(uniqueGroupList.containsGroup(CHILDREN));
     }
 
     @Test
-    public void contains_personInList_returnsTrue() {
-        uniqueGroupList.add(CHILDREN);
-        assertTrue(uniqueGroupList.contains(CHILDREN));
+    public void containsGroup_groupInList_returnsTrue() {
+        uniqueGroupList.addGroup(CHILDREN);
+        assertTrue(uniqueGroupList.containsGroup(CHILDREN));
     }
 
     @Test
-    public void contains_personWithSameIdentityFieldsInList_returnsTrue() {
-        uniqueGroupList.add(CHILDREN);
+    public void containsGroup_groupWithSameIdentityFieldsInList_returnsTrue() {
+        uniqueGroupList.addGroup(CHILDREN);
         Group editedChildren = new GroupBuilder(CHILDREN).withGroupDescription(VALID_GROUPDESCRIPTION_HYDRA)
                 .withMemberIds(VALID_CONTACTID_HYDRA1, VALID_CONTACTID_HYDRA2)
                 .build();
-        assertTrue(uniqueGroupList.contains(editedChildren));
+        assertTrue(uniqueGroupList.containsGroup(editedChildren));
     }
 
     @Test
-    public void add_nullGroup_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> uniqueGroupList.add(null));
+    public void addGroup_nullGroup_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> uniqueGroupList.addGroup(null));
     }
 
     @Test
-    public void add_duplicateGroup_throwsDuplicateGroupException() {
-        uniqueGroupList.add(CHILDREN);
-        assertThrows(DuplicateGroupException.class, () -> uniqueGroupList.add(CHILDREN));
+    public void addGroup_duplicateGroup_throwsDuplicateGroupException() {
+        uniqueGroupList.addGroup(CHILDREN);
+        assertThrows(DuplicateGroupException.class, () -> uniqueGroupList.addGroup(CHILDREN));
     }
 
     @Test
@@ -77,55 +77,55 @@ public class UniqueGroupListTest {
 
     @Test
     public void setGroup_editedGroupIsSameGroup_success() {
-        uniqueGroupList.add(CHILDREN);
+        uniqueGroupList.addGroup(CHILDREN);
         uniqueGroupList.setGroup(CHILDREN, CHILDREN);
         UniqueGroupList expectedUniqueGroupList = new UniqueGroupList();
-        expectedUniqueGroupList.add(CHILDREN);
+        expectedUniqueGroupList.addGroup(CHILDREN);
         assertEquals(expectedUniqueGroupList, uniqueGroupList);
     }
 
     @Test
     public void setGroup_editedGroupHasSameIdentity_success() {
-        uniqueGroupList.add(CHILDREN);
+        uniqueGroupList.addGroup(CHILDREN);
         Group editedChildren = new GroupBuilder(CHILDREN).withGroupDescription(VALID_GROUPDESCRIPTION_HYDRA)
                 .withMemberIds(VALID_CONTACTID_HYDRA1, VALID_CONTACTID_HYDRA2)
                 .build();
         uniqueGroupList.setGroup(CHILDREN, editedChildren);
         UniqueGroupList expectedUniqueGroupList = new UniqueGroupList();
-        expectedUniqueGroupList.add(editedChildren);
+        expectedUniqueGroupList.addGroup(editedChildren);
         assertEquals(expectedUniqueGroupList, uniqueGroupList);
     }
 
     @Test
     public void setGroup_editedGroupHasDifferentIdentity_success() {
-        uniqueGroupList.add(CHILDREN);
+        uniqueGroupList.addGroup(CHILDREN);
         uniqueGroupList.setGroup(CHILDREN, HYDRA);
         UniqueGroupList expectedUniqueGroupList = new UniqueGroupList();
-        expectedUniqueGroupList.add(HYDRA);
+        expectedUniqueGroupList.addGroup(HYDRA);
         assertEquals(expectedUniqueGroupList, uniqueGroupList);
     }
 
     @Test
     public void setGroup_editedGroupHasNonUniqueIdentity_throwsDuplicateGroupException() {
-        uniqueGroupList.add(CHILDREN);
-        uniqueGroupList.add(HYDRA);
+        uniqueGroupList.addGroup(CHILDREN);
+        uniqueGroupList.addGroup(HYDRA);
         assertThrows(DuplicateGroupException.class, () -> uniqueGroupList.setGroup(CHILDREN, HYDRA));
     }
 
     @Test
-    public void remove_nullGroup_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> uniqueGroupList.remove(null));
+    public void removeGroup_nullGroup_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> uniqueGroupList.removeGroup(null));
     }
 
     @Test
-    public void remove_personDoesNotExist_throwsGroupNotFoundException() {
-        assertThrows(GroupNotFoundException.class, () -> uniqueGroupList.remove(CHILDREN));
+    public void removeGroup_groupDoesNotExist_throwsGroupNotFoundException() {
+        assertThrows(GroupNotFoundException.class, () -> uniqueGroupList.removeGroup(CHILDREN));
     }
 
     @Test
-    public void remove_existingGroup_removesGroup() {
-        uniqueGroupList.add(CHILDREN);
-        uniqueGroupList.remove(CHILDREN);
+    public void removeGroup_existingGroup_removesGroup() {
+        uniqueGroupList.addGroup(CHILDREN);
+        uniqueGroupList.removeGroup(CHILDREN);
         UniqueGroupList expectedUniqueGroupList = new UniqueGroupList();
         assertEquals(expectedUniqueGroupList, uniqueGroupList);
     }
@@ -137,9 +137,9 @@ public class UniqueGroupListTest {
 
     @Test
     public void setGroups_uniqueGroupList_replacesOwnListWithProvidedUniqueGroupList() {
-        uniqueGroupList.add(CHILDREN);
+        uniqueGroupList.addGroup(CHILDREN);
         UniqueGroupList expectedUniqueGroupList = new UniqueGroupList();
-        expectedUniqueGroupList.add(HYDRA);
+        expectedUniqueGroupList.addGroup(HYDRA);
         uniqueGroupList.setGroups(expectedUniqueGroupList);
         assertEquals(expectedUniqueGroupList, uniqueGroupList);
     }
@@ -151,11 +151,11 @@ public class UniqueGroupListTest {
 
     @Test
     public void setGroups_list_replacesOwnListWithProvidedList() {
-        uniqueGroupList.add(CHILDREN);
-        List<Group> personList = Collections.singletonList(HYDRA);
-        uniqueGroupList.setGroups(personList);
+        uniqueGroupList.addGroup(CHILDREN);
+        List<Group> groupList = Collections.singletonList(HYDRA);
+        uniqueGroupList.setGroups(groupList);
         UniqueGroupList expectedUniqueGroupList = new UniqueGroupList();
-        expectedUniqueGroupList.add(HYDRA);
+        expectedUniqueGroupList.addGroup(HYDRA);
         assertEquals(expectedUniqueGroupList, uniqueGroupList);
     }
 
