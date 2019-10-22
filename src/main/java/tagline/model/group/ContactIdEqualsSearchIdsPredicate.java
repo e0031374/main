@@ -2,6 +2,7 @@ package tagline.model.group;
 
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import tagline.model.contact.Contact;
 
@@ -12,7 +13,10 @@ public class ContactIdEqualsSearchIdsPredicate implements Predicate<Contact> {
     private final List<String> keywords;
 
     public ContactIdEqualsSearchIdsPredicate(List<String> keywords) {
-        this.keywords = keywords;
+        this.keywords = keywords.stream()
+            .mapToLong(Long::valueOf)
+            .mapToObj(String::valueOf)
+            .collect(Collectors.toList());
     }
 
     @Override
