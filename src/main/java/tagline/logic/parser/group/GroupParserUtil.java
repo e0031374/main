@@ -57,7 +57,7 @@ public class GroupParserUtil {
     public static GroupDescription parseGroupDescription(String description) throws ParseException {
         requireNonNull(description);
         String trimmedDescription = description.trim();
-        if (!GroupName.isValidGroupName(trimmedDescription)) {
+        if (!GroupDescription.isValidGroupDescription(trimmedDescription)) {
             throw new ParseException(GroupDescription.MESSAGE_CONSTRAINTS);
         }
         return new GroupDescription(trimmedDescription);
