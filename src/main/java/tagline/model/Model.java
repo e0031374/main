@@ -12,6 +12,7 @@ import tagline.model.contact.ReadOnlyAddressBook;
 import tagline.model.group.Group;
 import tagline.model.group.ReadOnlyGroupBook;
 import tagline.model.note.Note;
+import tagline.model.note.NoteId;
 import tagline.model.note.ReadOnlyNoteBook;
 
 /**
@@ -143,6 +144,12 @@ public interface Model {
      * The note must exist in the note book.
      */
     void deleteNote(Note target);
+
+    /**
+     * Finds a {@code Note} in the note book based on the {@code noteId}.
+     * @return Optional object if corresponding note is found, empty otherwise
+     */
+    public Optional<Note> findNote(NoteId noteId);
 
     /**
      * Returns an unmodifiable view of the filtered note list
