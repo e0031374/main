@@ -36,7 +36,8 @@ public class AddMemberToGroupParser implements Parser<AddMemberToGroupCommand> {
 
         // preamble and contactid is compulsory
         if (argMultimap.getPreamble().isEmpty() || !arePrefixesPresent(argMultimap, PREFIX_CONTACTID)) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddMemberToGroupCommand.MESSAGE_USAGE));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                AddMemberToGroupCommand.MESSAGE_USAGE));
         }
 
         String targetGroupName;
