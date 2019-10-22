@@ -63,13 +63,6 @@ public class GroupParserUtil {
         return new GroupDescription(trimmedDescription);
     }
 
-    // NOTE
-    // how to get contacts?
-    // create a IdEqualsPredicate (tagline.model.contact.) vs NameContainsPredicate
-    // findContactByIdCommand (tagline.logic.commands.contact.) vs findContactCommand
-    //      this takes in Model (ContactModel)
-    // findContactByIdParser
-
     /**
      * Parses a {@code String tag} into a {@code Tag}.
      * Leading and trailing whitespaces will be trimmed.
