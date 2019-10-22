@@ -17,18 +17,14 @@ public class GroupBuilder {
     public static final String DEFAULT_GROUPNAME = "SHIELD";
     public static final String DEFAULT_GROUPDESCRIPTION = "Strategic Homeland Intervention "
         + "Enforcement Logistics Divison";
-    public static final String DEFAULT_NAME = "Alice Pauline";
-    public static final String DEFAULT_PHONE = "85355255";
-    public static final String DEFAULT_EMAIL = "alice@gmail.com";
-    public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
 
     private GroupName groupName;
     private GroupDescription groupDescription;
     private Set<MemberId> memberIds;
 
     public GroupBuilder() {
-        groupName = new GroupName(DEFAULT_NAME);
-        groupDescription = new GroupDescription(DEFAULT_NAME);
+        groupName = new GroupName(DEFAULT_GROUPNAME);
+        groupDescription = new GroupDescription(DEFAULT_GROUPDESCRIPTION);
         memberIds = new HashSet<>();
     }
 

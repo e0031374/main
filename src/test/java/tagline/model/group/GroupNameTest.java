@@ -26,16 +26,22 @@ public class GroupNameTest {
 
         // invalid name
         assertFalse(GroupName.isValidGroupName("")); // empty string
+        assertFalse(GroupName.isValidGroupName(" ")); // spaces only
+        assertFalse(GroupName.isValidGroupName("  ")); // spaces only
+        // has whitespace
+        assertFalse(GroupName.isValidGroupName("peter jack")); // alphabets only
+        assertFalse(GroupName.isValidGroupName("peter\nthe 2nd")); // with newline
+        assertFalse(GroupName.isValidGroupName("Capital Tan")); // with capital letters and tab
+        assertFalse(GroupName.isValidGroupName("David Roger Jackson Ray Jr 2nd")); // whitespace
 
         // valid name
-        assertTrue(GroupName.isValidGroupName(" ")); // spaces only
-        assertTrue(GroupName.isValidGroupName("  ")); // spaces only
         assertTrue(GroupName.isValidGroupName("^")); // only non-alphanumeric characters
         assertTrue(GroupName.isValidGroupName("peter*")); // contains non-alphanumeric characters
-        assertTrue(GroupName.isValidGroupName("peter jack")); // alphabets only
         assertTrue(GroupName.isValidGroupName("12345")); // numbers only
-        assertTrue(GroupName.isValidGroupName("peter the 2nd")); // alphanumeric characters
-        assertTrue(GroupName.isValidGroupName("Capital Tan")); // with capital letters
-        assertTrue(GroupName.isValidGroupName("David Roger Jackson Ray Jr 2nd")); // long names
+        assertTrue(GroupName.isValidGroupName("peters123jac12k@asd")); // alphanumeric
+        assertTrue(GroupName.isValidGroupName("peterjack")); // alphabets only
+        assertTrue(GroupName.isValidGroupName("peter_the_2nd")); // with underscore
+        assertTrue(GroupName.isValidGroupName("Capital-Tan")); // with dash
+        assertTrue(GroupName.isValidGroupName("DavidRogerJacksonRayJr2nd")); // long names
     }
 }
