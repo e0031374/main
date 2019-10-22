@@ -50,15 +50,6 @@ public abstract class GroupCommand extends Command {
         List<String> keywords = new ArrayList<>();
         keywords.add(groupName);
         return findOneGroup(model, new GroupNameEqualsKeywordPredicate(keywords));
-        //model.updateFilteredGroupList(new GroupNameEqualsKeywordPredicate(keywords));
-        //List<Group> filteredGroupList = model.getFilteredGroupList();
-        //Optional<Group> optionalGroup = filteredGroupList.stream().findFirst();
-
-        //if (optionalGroup.isEmpty()) {
-        //    throw new CommandException(Messages.MESSAGE_INVALID_GROUP_NAME);
-        //}
-
-        //return optionalGroup.get();
     }
 
     /**
