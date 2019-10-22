@@ -10,13 +10,13 @@ import static tagline.commons.util.AppUtil.checkArgument;
 public class GroupName {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "GroupNames should only contain alphanumeric characters and spaces, and it should not be blank";
+            "GroupNames should only contain alphanumeric characters with no whitespace, and it should not be blank";
 
     /*
-     * Non-empty string
+     * Non-empty string, no spaces
      */
-    //https://stackoverflow.com/questions/4448829/regular-expression-for-not-empty
-    public static final String VALIDATION_REGEX = ".+";
+    // https://stackoverflow.com/questions/11481250/java-regex-no-white-space-or-0-9
+    public static final String VALIDATION_REGEX = "^[^\\s]+$";
 
     public final String value;
 
@@ -26,8 +26,6 @@ public class GroupName {
      * @param name A valid name.
      */
     public GroupName(String name) {
-        // right now Groupname accepts white space only string
-        // i think i can handle this in parser/command
         requireNonNull(name);
         checkArgument(isValidGroupName(name), MESSAGE_CONSTRAINTS);
         value = name;
