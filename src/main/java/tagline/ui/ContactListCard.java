@@ -13,6 +13,7 @@ import tagline.model.contact.Contact;
 public class ContactListCard extends UiPart<Region> {
 
     private static final String FXML = "ContactListCard.fxml";
+
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
      * As a consequence, UI elements' variable names cannot be set to such keywords
@@ -38,13 +39,16 @@ public class ContactListCard extends UiPart<Region> {
     @FXML
     private Label email;
     @FXML
+    private Label contactId;
+    @FXML
     private Label description;
 
-    public ContactListCard(Contact contact) {
+    public ContactListCard(Contact contact, int displayedIndex) {
         super(FXML);
         this.contact = contact;
+        id.setText(displayedIndex + ". ");
         name.setText(contact.getName().fullName);
-        id.setText("ID: " + contact.getContactId());
+        contactId.setText("ID: " + contact.getContactId());
 
         setLabelText(phone, contact.getPhone().value);
         setLabelText(address, contact.getAddress().value);

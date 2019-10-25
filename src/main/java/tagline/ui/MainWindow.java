@@ -1,7 +1,10 @@
 package tagline.ui;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
+import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
@@ -10,10 +13,12 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import tagline.commons.core.GuiSettings;
 import tagline.commons.core.LogsCenter;
 import tagline.logic.Logic;
 import tagline.logic.commands.CommandResult;
+import tagline.logic.commands.CommandResult.ViewType;
 import tagline.logic.commands.exceptions.CommandException;
 import tagline.logic.parser.exceptions.ParseException;
 
@@ -24,6 +29,9 @@ import tagline.logic.parser.exceptions.ParseException;
 public class MainWindow extends UiPart<Stage> {
 
     private static final String FXML = "MainWindow.fxml";
+    private static final double RESULT_PANE_FADE_TRANSITION_DURATION = 0.5;
+    private static final double RESULT_PANE_FADE_TRANSITION_OPACITY_FROM = 0.3;
+    private static final double RESULT_PANE_FADE_TRANSITION_OPACITY_TO = 1.0;
 
     private final Logger logger = LogsCenter.getLogger(getClass());
 
@@ -31,7 +39,13 @@ public class MainWindow extends UiPart<Stage> {
     private Logic logic;
 
     private ChatPane chatPane;
-    private ResultPane resultPane;
+
+    /** The current view displayed in the result pane. */
+    private ViewType currentViewType;
+
+    /** Stores all result pane views using the ViewType as the key. */
+    private Map<ViewType, ResultView> resultViewMap;
+
     private HelpWindow helpWindow;
 
     @FXML
@@ -98,9 +112,52 @@ public class MainWindow extends UiPart<Stage> {
         });
     }
 
+    /**
+     * Changes the view in the result pane according to ViewType.
+     *
+     * @param viewType the ViewType to switch to
+     */
+    private void setCurrentViewType(ViewType viewType) {
+        //no preferred view, don't switch
+        if (viewType == ViewType.NONE) {
+            return;
+        }
 
+        //already correct view, no need to switch
+        if (currentViewType == viewType) {
+            return;
+        }
 
+        setResultPaneView(resultViewMap.get(viewType));
+        currentViewType = viewType;
+    }
 
+    /**
+     * Adds a fade in transition to a result view.
+     *
+     * @param resultView the ResultView to animate
+     */
+    private void animateFadeIn(ResultView resultView) {
+        FadeTransition fadeTransition = new FadeTransition();
+        fadeTransition.setDuration(Duration.seconds(RESULT_PANE_FADE_TRANSITION_DURATION));
+        fadeTransition.setFromValue(RESULT_PANE_FADE_TRANSITION_OPACITY_FROM);
+        fadeTransition.setToValue(RESULT_PANE_FADE_TRANSITION_OPACITY_TO);
+
+        fadeTransition.setNode(resultView.getRoot());
+        fadeTransition.play();
+    }
+
+    /**
+     * Changes the view in the result pane.
+     *
+     * @param resultView Next view to display
+     */
+    private void setResultPaneView(ResultView resultView) {
+        resultPanePlaceholder.getChildren().clear();
+
+        animateFadeIn(resultView);
+        resultPanePlaceholder.getChildren().add(resultView.getRoot());
+    }
 
     /**
      * Initializes the chat pane.
@@ -115,9 +172,18 @@ public class MainWindow extends UiPart<Stage> {
      * Initializes the result pane and all its views.
      */
     private void initResultPane() {
-        resultPane = new ResultPane();
-        resultPane.fillInnerParts(logic.getFilteredContactList(), logic.getFilteredNoteList());
-        resultPanePlaceholder.getChildren().add(resultPane.getRoot());
+        resultViewMap = new HashMap<>();
+
+        ContactResultView contactResultView = new ContactResultView();
+        contactResultView.fillInnerParts(logic.getFilteredContactList());
+        resultViewMap.put(ViewType.CONTACT, contactResultView);
+
+        NoteResultView noteResultView = new NoteResultView();
+        noteResultView.fillInnerParts(logic.getFilteredNoteList());
+        resultViewMap.put(ViewType.NOTE, noteResultView);
+
+        //set to contact result pane by default
+        setCurrentViewType(ViewType.CONTACT);
     }
 
     /**
@@ -189,7 +255,8 @@ public class MainWindow extends UiPart<Stage> {
             CommandResult commandResult = logic.execute(commandText);
             logger.info("Result: " + commandResult.getFeedbackToUser());
             chatPane.setFeedbackToUser(commandResult.getFeedbackToUser());
-            resultPane.setCurrentViewType(commandResult.getViewType());
+
+            setCurrentViewType(commandResult.getViewType());
 
             if (commandResult.isShowHelp()) {
                 handleHelp();

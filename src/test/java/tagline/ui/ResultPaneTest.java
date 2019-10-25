@@ -28,6 +28,7 @@ import tagline.testutil.LogicStub;
 @ExtendWith(ApplicationExtension.class)
 public class ResultPaneTest {
 
+    private static final String COMMAND_TEST_STRING = "command12345";
     private static final String RESPONSE_STRING = "feedback123";
 
     private static final CommandResult CONTACT_COMMAND_RESULT = new CommandResultBuilder()
@@ -85,26 +86,26 @@ public class ResultPaneTest {
         robot.sleep(500);
     }
 
-    private void assertSingleResultView(FxRobot robot) {
+    void assertSingleResultView(FxRobot robot) {
         StackPane resultPanePlaceholder = robot.lookup("#resultPanePlaceholder").queryAs(StackPane.class);
         assertEquals(1, resultPanePlaceholder.getChildren().size());
     }
 
-    private void assertResultViewId(FxRobot robot, String id) {
+    void assertResultViewId(FxRobot robot, String id) {
         assertEquals(1, robot.lookup(id).queryAll().size());
     }
 
     /**
      * Sends a command which returns a specified {@code CommandResult}.
      */
-    private void sendCommandWithResult(FxRobot robot, CommandResult commandResult) {
+    void sendCommandWithResult(FxRobot robot, CommandResult commandResult) {
         logic.setCommandResult(commandResult);
         robot.clickOn(".commandTextField");
         robot.type(KeyCode.ENTER);
     }
 
     @Test
-    void switchViewToNoteFromContact(FxRobot robot) {
+    void switchViewToNoteFromContact(FxRobot robot) throws TimeoutException {
         sendCommandWithResult(robot, NOTE_COMMAND_RESULT);
 
         assertSingleResultView(robot);
@@ -112,7 +113,7 @@ public class ResultPaneTest {
     }
 
     @Test
-    void switchViewToNoteFromNote(FxRobot robot) {
+    void switchViewToNoteFromNote(FxRobot robot) throws TimeoutException {
         sendCommandWithResult(robot, NOTE_COMMAND_RESULT);
         sendCommandWithResult(robot, NOTE_COMMAND_RESULT);
 
@@ -121,7 +122,7 @@ public class ResultPaneTest {
     }
 
     @Test
-    void switchViewToContactFromNote(FxRobot robot) {
+    void switchViewToContactFromNote(FxRobot robot) throws TimeoutException {
         sendCommandWithResult(robot, NOTE_COMMAND_RESULT);
         sendCommandWithResult(robot, CONTACT_COMMAND_RESULT);
 
@@ -130,7 +131,7 @@ public class ResultPaneTest {
     }
 
     @Test
-    void switchViewToContactFromContact(FxRobot robot) {
+    void switchViewToContactFromContact(FxRobot robot) throws TimeoutException {
         sendCommandWithResult(robot, CONTACT_COMMAND_RESULT);
 
         assertSingleResultView(robot);
@@ -138,7 +139,7 @@ public class ResultPaneTest {
     }
 
     @Test
-    void switchViewToNoneFromContact(FxRobot robot) {
+    void switchViewToNoneFromContact(FxRobot robot) throws TimeoutException {
         sendCommandWithResult(robot, NONE_COMMAND_RESULT);
 
         assertSingleResultView(robot);
@@ -146,7 +147,7 @@ public class ResultPaneTest {
     }
 
     @Test
-    void switchViewToNoneFromNote(FxRobot robot) {
+    void switchViewToNoneFromNote(FxRobot robot) throws TimeoutException {
         sendCommandWithResult(robot, NOTE_COMMAND_RESULT);
         sendCommandWithResult(robot, NONE_COMMAND_RESULT);
 
