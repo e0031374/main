@@ -2,6 +2,7 @@ package tagline.testutil;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import tagline.model.group.Group;
 import tagline.model.group.GroupDescription;
@@ -62,10 +63,21 @@ public class GroupBuilder {
     }
 
     /**
-     * Parses the {@code tags} into a {@code Set<Tag>} and set it to the {@code Person} that we are building.
+     * Parses the {@code memberIds} into a {@code Set<MemberIds>} and adds it to the {@code Group} that we are building.
      */
     public GroupBuilder addMemberIds(String ... memberIds) {
         this.memberIds.addAll(SampleDataUtil.getMemberIdSet(memberIds));
+        return this;
+    }
+
+    /**
+     * Parses the {@code memberIds} into a {@code Set<MemberIds>} and removes it to the {@code Group}
+     * that we are building.
+     */
+    public GroupBuilder removeMemberIds(String ... memberIds) {
+        this.memberIds = this.memberIds.stream()
+            .filter(member -> !SampleDataUtil.getMemberIdSet(memberIds).contains(member))
+            .collect(Collectors.toSet());
         return this;
     }
 

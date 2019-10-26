@@ -65,8 +65,12 @@ public class RemoveMemberFromGroupCommand extends EditGroupCommand {
         Group groupToEdit = findOneGroup(model, predicate);
 
         Optional<Set<MemberId>> optMembers = editGroupDescriptor.getMemberIds();
-        assert optMembers.isPresent();
-        String membersNotFound = GroupCommand.notFoundString(notFound(groupToEdit, optMembers.get()));
+        //assert optMembers.isPresent();
+
+        Set<MemberId> membersNotFound = new HashSet<>();
+        if (optMembers.isPresent()) {
+            membersNotFound = GroupCommand.memberIdDoesntExistInContactModel(model, optMembers.get());
+        }
 
         // removes all user-input contactIds as members of this Group checks deferred
         Group editedGroup = createRemovedMemberGroup(groupToEdit, editGroupDescriptor);
@@ -78,8 +82,8 @@ public class RemoveMemberFromGroupCommand extends EditGroupCommand {
         model.setGroup(groupToEdit, verifiedGroup);
 
         model.updateFilteredGroupList(PREDICATE_SHOW_ALL_GROUPS);
-        return new CommandResult(String.format(MESSAGE_REMOVE_MEMBER_SUCCESS + membersNotFound, verifiedGroup),
-               ViewType.CONTACT);
+        return new CommandResult(String.format(MESSAGE_REMOVE_MEMBER_SUCCESS
+               + GroupCommand.notFoundString(membersNotFound), verifiedGroup), ViewType.CONTACT);
     }
 
     /**
