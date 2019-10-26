@@ -14,10 +14,14 @@ import tagline.logic.commands.Command;
 import tagline.logic.commands.CommandResult;
 import tagline.logic.commands.exceptions.CommandException;
 import tagline.model.Model;
+import tagline.model.contact.AddressBook;
+import tagline.model.contact.Contact;
 import tagline.model.group.Group;
 import tagline.model.group.GroupBook;
 import tagline.model.group.GroupName;
 import tagline.model.group.GroupNameEqualsKeywordPredicate;
+import tagline.model.note.Note;
+import tagline.model.note.NoteBook;
 import tagline.testutil.EditGroupDescriptorBuilder;
 
 /**
@@ -116,13 +120,35 @@ public class GroupCommandTestUtil {
     public static void assertCommandFailure(Command command, Model actualModel, String expectedMessage) {
         // we are unable to defensively copy the model for comparison later, so we can
         // only do so by copying its components.
+        AddressBook expectedAddressBook = new AddressBook(actualModel.getAddressBook());
+        NoteBook expectedNoteBook = new NoteBook(actualModel.getNoteBook());
         GroupBook expectedGroupBook = new GroupBook(actualModel.getGroupBook());
-        List<Group> expectedFilteredList = new ArrayList<>(actualModel.getFilteredGroupList());
+        List<Contact> expectedFilteredContactList = new ArrayList<>(actualModel.getFilteredContactList());
+        List<Note> expectedFilteredNoteList = new ArrayList<>(actualModel.getFilteredNoteList());
+        List<Group> expectedFilteredGroupList = new ArrayList<>(actualModel.getFilteredGroupList());
 
         assertThrows(CommandException.class, expectedMessage, () -> command.execute(actualModel));
+
+        assertEquals(expectedAddressBook, actualModel.getAddressBook());
+        assertEquals(expectedNoteBook, actualModel.getNoteBook());
         assertEquals(expectedGroupBook, actualModel.getGroupBook());
-        assertEquals(expectedFilteredList, actualModel.getFilteredGroupList());
+        assertEquals(expectedFilteredContactList, actualModel.getFilteredContactList());
+        assertEquals(expectedFilteredNoteList, actualModel.getFilteredNoteList());
+        assertEquals(expectedFilteredGroupList, actualModel.getFilteredGroupList());
     }
+
+    /**
+     * Executes the given {@code command}, confirms that <br>
+     * - the returned {@link CommandResult} matches {@code expectedCommandResult} <br>
+     * - the {@code actualModel} matches {@code expectedModel}
+     */
+    public static void assertCommandFailure(Command command, Model actualModel, String expectedMessage,
+                                            Model expectedModel) {
+
+        assertThrows(CommandException.class, expectedMessage, () -> command.execute(actualModel));
+        assertEquals(expectedModel, actualModel);
+    }
+
     /**
      * Updates {@code model}'s filtered list to show only the group at the given {@code targetIndex} in the
      * {@code model}'s address book.
