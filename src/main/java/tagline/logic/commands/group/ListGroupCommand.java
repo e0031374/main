@@ -20,7 +20,7 @@ public class ListGroupCommand extends GroupCommand {
 
     public static final String MESSAGE_SUCCESS = "Listed all groups";
     public static final String MESSAGE_UI = "UI: now displaying all Contacts in AddressBook";
-    public static final String MESSAGE_KEYWORD_SUCCESS = "Success! Groups found: %n%s%n" + MESSAGE_UI;
+    public static final String MESSAGE_KEYWORD_SUCCESS = "Success! Listing groups found:%n%s%n" + MESSAGE_UI;
     public static final String MESSAGE_KEYWORD_EMPTYLIST = "No groups matching keywords";
 
     private final Predicate<Group> predicate;

@@ -2,17 +2,20 @@ package tagline.logic.parser.group;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import tagline.commons.core.Messages;
 import tagline.commons.core.index.Index;
 import tagline.commons.util.StringUtil;
 import tagline.logic.parser.exceptions.ParseException;
 import tagline.model.group.GroupDescription;
 import tagline.model.group.GroupName;
+import tagline.model.group.GroupNameEqualsKeywordPredicate;
 import tagline.model.group.MemberId;
 
 /**
@@ -67,7 +70,8 @@ public class GroupParserUtil {
      * If {@code groupNames} contain only one element which is an empty string, it will be parsed into a
      * {@code Set<GroupName>} containing zero groupNames.
      */
-    public static Optional<Set<GroupName>> parseGroupNamesForSearch(Collection<String> groupNames) throws ParseException {
+    public static Optional<Set<GroupName>> parseGroupNamesForSearch(Collection<String> groupNames)
+        throws ParseException {
         assert groupNames != null;
 
         if (groupNames.isEmpty()) {
@@ -76,6 +80,20 @@ public class GroupParserUtil {
         Collection<String> nameSet = groupNames.size() == 1 && groupNames.contains("")
                 ? Collections.emptySet() : groupNames;
         return Optional.of(GroupParserUtil.parseGroupNames(nameSet));
+    }
+
+    /**
+     * Parses {@code targetGroupName} into a {@code GroupNameEqualsKeywordPredicate} if {@code targetGroupName}
+     * is tested to be a valid {@code GroupName}, predicate contains only one element to check for
+     */
+    public static GroupNameEqualsKeywordPredicate stringsToGroupNamePredicate(String targetGroupName)
+        throws ParseException {
+
+        Optional<Set<GroupName>> optNameSet = GroupParserUtil.parseGroupNamesForSearch(Arrays.asList(targetGroupName));
+        if (optNameSet.isEmpty()) {
+            throw new ParseException(Messages.MESSAGE_INVALID_GROUP_NAME + ": " + targetGroupName);
+        }
+        return new GroupNameEqualsKeywordPredicate(optNameSet.get());
     }
 
     /**

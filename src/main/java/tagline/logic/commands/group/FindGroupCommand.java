@@ -2,7 +2,6 @@ package tagline.logic.commands.group;
 
 import static java.util.Objects.requireNonNull;
 
-import tagline.commons.core.Messages;
 import tagline.logic.commands.CommandResult;
 import tagline.logic.commands.CommandResult.ViewType;
 import tagline.logic.commands.exceptions.CommandException;
@@ -21,13 +20,13 @@ public class FindGroupCommand extends GroupCommand {
 
     public static final String MESSAGE_KEYWORD_EMPTYLIST = "No groups matching keyword";
     //public static final String MESSAGE_KEYWORD_EMPTYLIST = "No groups matching keyword: %1$s";
-    public static final String MESSAGE_UI = "UI: now displaying all Contacts in found group";
-    public static final String MESSAGE_KEYWORD_SUCCESS = "Success! Group found: %n%s%n" + MESSAGE_UI;
+    public static final String MESSAGE_UI = "UI: now displaying all Contacts in requested group";
+    public static final String MESSAGE_KEYWORD_SUCCESS = "Success! Displaying group: %n%s%n" + MESSAGE_UI;
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose names contain any of "
-            + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Shows all contacts whose is in Group matching exactly"
+            + "the specified keywords (case-insensitive) and displays them as a list.\n"
             + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
-            + "Example: " + COMMAND_WORD + " alice bob charlie";
+            + "Example: " + COMMAND_WORD + " exo";
 
     private final GroupNameEqualsKeywordPredicate predicate;
 
@@ -45,12 +44,6 @@ public class FindGroupCommand extends GroupCommand {
         // set Group members to only those that can be found as ContactId in ContactList
         Group verifiedGroup = GroupCommand.verifyGroupWithModel(model, targetGroup);
         model.setGroup(targetGroup, verifiedGroup);
-
-
-        //if (verifiedGroup.getMemberIds().size() <= 0) {
-        //    return new CommandResult(
-        //            String.format(Messages.MESSAGE_GROUP_MEMBERS_ZERO), ViewType.CONTACT);
-        //}
 
         return new CommandResult(
                 String.format(MESSAGE_KEYWORD_SUCCESS, verifiedGroup), ViewType.CONTACT);
