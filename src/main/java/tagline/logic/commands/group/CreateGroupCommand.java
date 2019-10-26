@@ -1,7 +1,6 @@
 package tagline.logic.commands.group;
 
 import static java.util.Objects.requireNonNull;
-import static tagline.commons.core.Messages.MESSAGE_GROUP_MEMBERS_ZERO;
 import static tagline.logic.parser.group.GroupCliSyntax.PREFIX_CONTACTID;
 
 import tagline.logic.commands.CommandResult;
@@ -24,7 +23,8 @@ public class CreateGroupCommand extends GroupCommand {
             + PREFIX_CONTACTID + "1077 "
             + PREFIX_CONTACTID + "1078";
 
-    public static final String MESSAGE_SUCCESS = "New group added: %1$s";
+    public static final String MESSAGE_UI = "UI: now displaying all Contacts in found group";
+    public static final String MESSAGE_SUCCESS = "New group added: %s%n" + MESSAGE_UI;
     ;
     public static final String MESSAGE_DUPLICATE_GROUP = "This group already exists in the group book";
 

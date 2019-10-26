@@ -21,6 +21,8 @@ public class FindGroupCommand extends GroupCommand {
 
     public static final String MESSAGE_KEYWORD_EMPTYLIST = "No groups matching keyword";
     //public static final String MESSAGE_KEYWORD_EMPTYLIST = "No groups matching keyword: %1$s";
+    public static final String MESSAGE_UI = "UI: now displaying all Contacts in found group";
+    public static final String MESSAGE_KEYWORD_SUCCESS = "Success! Group found: %n%s%n" + MESSAGE_UI;
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose names contain any of "
             + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
@@ -45,14 +47,13 @@ public class FindGroupCommand extends GroupCommand {
         model.setGroup(targetGroup, verifiedGroup);
 
 
-        if (verifiedGroup.getMemberIds().size() <= 0) {
-            return new CommandResult(
-                    String.format(Messages.MESSAGE_GROUP_MEMBERS_ZERO), ViewType.CONTACT);
-        }
+        //if (verifiedGroup.getMemberIds().size() <= 0) {
+        //    return new CommandResult(
+        //            String.format(Messages.MESSAGE_GROUP_MEMBERS_ZERO), ViewType.CONTACT);
+        //}
 
         return new CommandResult(
-                String.format(Messages.MESSAGE_GROUP_MEMBERS_OVERVIEW, model.getFilteredContactList().size()),
-                ViewType.CONTACT);
+                String.format(MESSAGE_KEYWORD_SUCCESS, verifiedGroup), ViewType.CONTACT);
     }
 
     @Override

@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static tagline.commons.core.Messages.MESSAGE_CONTACTS_LISTED_OVERVIEW;
 import static tagline.testutil.TypicalContacts.getTypicalAddressBook;
+import static tagline.testutil.TypicalGroups.MYSTIC_ARTS;
 import static tagline.testutil.TypicalGroups.WAKANDAN_ROYAL;
 import static tagline.testutil.TypicalGroups.getTypicalGroupBook;
 
@@ -14,11 +15,13 @@ import java.util.Collections;
 import org.junit.jupiter.api.Test;
 
 import tagline.logic.commands.exceptions.CommandException;
+import tagline.logic.parser.exceptions.ParseException;
 import tagline.model.Model;
 import tagline.model.ModelManager;
 import tagline.model.UserPrefs;
 import tagline.model.group.Group;
 import tagline.model.group.GroupBook;
+import tagline.model.group.GroupName;
 import tagline.model.group.GroupNameEqualsKeywordPredicate;
 import tagline.model.note.NoteBook;
 import tagline.testutil.GroupBuilder;
@@ -37,7 +40,7 @@ public class GroupCommandTest {
             getTypicalGroupBook(), new UserPrefs());
 
         // empty predicate
-        GroupNameEqualsKeywordPredicate predicate = prepareGroupPredicate("");
+        GroupNameEqualsKeywordPredicate predicate = prepareGroupPredicate(MYSTIC_ARTS.getGroupName().value);
         //try {
         //    GroupCommand.findOneGroup(model,"");
         //} catch (CommandException e) {
@@ -117,7 +120,7 @@ public class GroupCommandTest {
      * Parses {@code userInput} into a {@code NameContainsKeywordsPredicate}.
      */
     private GroupNameEqualsKeywordPredicate prepareGroupPredicate(String userInput) {
-        return new GroupNameEqualsKeywordPredicate(Arrays.asList(userInput));
+        return new GroupNameEqualsKeywordPredicate(Arrays.asList(new GroupName(userInput)));
     }
 
 }

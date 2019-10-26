@@ -12,11 +12,13 @@ import java.util.Set;
 import tagline.commons.util.CollectionUtil;
 
 import tagline.logic.commands.CommandResult;
+import tagline.logic.commands.CommandResult.ViewType;
 import tagline.logic.commands.exceptions.CommandException;
 import tagline.model.Model;
 import tagline.model.group.Group;
 import tagline.model.group.GroupDescription;
 import tagline.model.group.GroupName;
+import tagline.model.group.GroupNameEqualsKeywordPredicate;
 import tagline.model.group.MemberId;
 
 /**
@@ -33,24 +35,25 @@ public class AddMemberToGroupCommand extends GroupCommand {
             + "Example: " + COMMAND_WORD + " BTS_ARMY "
             + PREFIX_CONTACTID + "47337 ";
 
-    public static final String MESSAGE_ADD_MEMBER_SUCCESS = "Added contact to Group: %1$s";
+    public static final String MESSAGE_UI = "UI: now displaying all Contacts in found Group";
+    public static final String MESSAGE_ADD_MEMBER_SUCCESS = "Added contact to Group: %s%n" + MESSAGE_UI;
     public static final String MESSAGE_NOT_ADDED = "At least one contactID to add must be provided.";
 
     //private final Group group;
-    private final String groupName;
+    private final GroupNameEqualsKeywordPredicate predicate;
     private final EditGroupDescriptor editGroupDescriptor;
 
     /**
-     * @param groupName of the group in the filtered group list to edit
+     * @param predicate of the group in the filtered group list to edit
      * @param editGroupDescriptor details to edit the group with
      */
 
-    public AddMemberToGroupCommand(String groupName, EditGroupDescriptor editGroupDescriptor) {
-        requireNonNull(groupName);
+    public AddMemberToGroupCommand(GroupNameEqualsKeywordPredicate predicate, EditGroupDescriptor editGroupDescriptor) {
+        requireNonNull(predicate);
         requireNonNull(editGroupDescriptor);
 
         //this.index = index;
-        this.groupName = groupName.trim();
+        this.predicate = predicate;
         this.editGroupDescriptor = new EditGroupDescriptor(editGroupDescriptor);
     }
 
@@ -58,7 +61,7 @@ public class AddMemberToGroupCommand extends GroupCommand {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        Group groupToEdit = findOneGroup(model, groupName);
+        Group groupToEdit = findOneGroup(model, predicate);
         // adds all user-input contactIds as members of this Group checks deferred
         Group editedGroup = createEditedGroup(groupToEdit, editGroupDescriptor);
 
@@ -68,7 +71,7 @@ public class AddMemberToGroupCommand extends GroupCommand {
         model.setGroup(groupToEdit, verifiedGroup);
 
         model.updateFilteredGroupList(PREDICATE_SHOW_ALL_GROUPS);
-        return new CommandResult(String.format(MESSAGE_ADD_MEMBER_SUCCESS, verifiedGroup));
+        return new CommandResult(String.format(MESSAGE_ADD_MEMBER_SUCCESS, verifiedGroup), ViewType.CONTACT);
     }
 
     /**
@@ -104,7 +107,7 @@ public class AddMemberToGroupCommand extends GroupCommand {
 
         // state check
         AddMemberToGroupCommand e = (AddMemberToGroupCommand) other;
-        return groupName.equals(e.groupName)
+        return predicate.equals(e.predicate)
                 && editGroupDescriptor.equals(e.editGroupDescriptor);
     }
 

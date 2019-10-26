@@ -1,15 +1,19 @@
 package tagline.logic.parser.group;
 
 import static java.util.Objects.requireNonNull;
+import static tagline.logic.parser.group.GroupCliSyntax.PREFIX_CONTACTID;
+import static tagline.model.group.GroupModel.PREDICATE_SHOW_ALL_GROUPS;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Optional;
+import java.util.Set;
 
 import tagline.logic.commands.group.ListGroupCommand;
-import tagline.logic.commands.group.ListGroupCommand.Filter;
-import tagline.logic.commands.group.ListGroupCommand.Filter.FilterType;
+import tagline.logic.parser.ArgumentMultimap;
+import tagline.logic.parser.ArgumentTokenizer;
 import tagline.logic.parser.Parser;
 import tagline.logic.parser.exceptions.ParseException;
+import tagline.model.group.GroupMembersContainsSearchIdsPredicate;
+import tagline.model.group.MemberId;
 
 /**
  * Parses input arguments and creates a new ListGroupCommand object
@@ -22,45 +26,18 @@ public class ListGroupParser implements Parser<ListGroupCommand> {
      */
     public ListGroupCommand parse(String args) throws ParseException {
         requireNonNull(args);
-        return new ListGroupCommand(GroupFilterUtil.generateFilter(args));
+
+        ArgumentMultimap argMultimap =
+                ArgumentTokenizer.tokenize(args, PREFIX_CONTACTID);
+
+        // converts list of specified String memberIds to Empty if no Strings parsed in
+        Optional<Set<MemberId>> optionalMemberIds =
+            GroupParserUtil.parseMemberIdsForEdit(argMultimap.getAllValues(PREFIX_CONTACTID));
+
+        if (optionalMemberIds.isPresent()) {
+            return new ListGroupCommand(new GroupMembersContainsSearchIdsPredicate(optionalMemberIds.get()));
+        }
+        return new ListGroupCommand(PREDICATE_SHOW_ALL_GROUPS);
     }
 
-    /**
-     * Contains utility methods used for generating the *Filter classes from the argument string.
-     */
-    private static class GroupFilterUtil {
-        private static final String HASHTAG_FILTER_FORMAT = "#";
-        private static final String CONTACT_FILTER_FORMAT = "@";
-        private static final String GROUP_FILTER_FORMAT = "%";
-
-        private static final Pattern TAG_FILTER_FORMAT = Pattern.compile("["
-                + HASHTAG_FILTER_FORMAT + CONTACT_FILTER_FORMAT + GROUP_FILTER_FORMAT + "].*");
-
-        /**
-         * Parses {@code argString} into a {@code Filter} and returns it. Leading and trailing whitespaces will be
-         * trimmed.
-         */
-        public static Filter generateFilter(String argString) {
-            String trimmedArg = argString.strip();
-
-            // No filter provided, list all groups
-            if (trimmedArg.isEmpty()) {
-                return null;
-            }
-
-            Matcher filterMatcher = TAG_FILTER_FORMAT.matcher(trimmedArg);
-
-            if (filterMatcher.matches()) {
-                return null;
-                /* TO ADD WHEN TAG IMPLEMENTED */
-                // generateTagFilter(trimmedArg);
-            } else {
-                return generateKeywordFilter(trimmedArg);
-            }
-        }
-
-        private static Filter generateKeywordFilter(String keyword) {
-            return new Filter(keyword, FilterType.KEYWORD);
-        }
-    }
 }

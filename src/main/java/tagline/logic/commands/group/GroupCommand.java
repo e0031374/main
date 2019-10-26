@@ -8,8 +8,8 @@ import java.util.stream.Collectors;
 
 import tagline.commons.core.Messages;
 import tagline.logic.commands.Command;
-import tagline.logic.commands.CommandResult;
 import tagline.logic.commands.exceptions.CommandException;
+import tagline.logic.parser.exceptions.ParseException;
 import tagline.model.Model;
 import tagline.model.group.ContactIdEqualsSearchIdsPredicate;
 import tagline.model.group.Group;
@@ -27,6 +27,8 @@ import static tagline.model.group.GroupModel.PREDICATE_SHOW_ALL_GROUPS;
 public abstract class GroupCommand extends Command {
     public static final String COMMAND_KEY = "group";
 
+    public static final String MESSAGE_GROUP_NOT_FOUND = "The group name provided could not be found.";
+
     /**
      * Finds and returns a {@code Group} with the GroupName of {@code groupName}
      * from {@code Model}.
@@ -39,7 +41,7 @@ public abstract class GroupCommand extends Command {
         Optional<Group> optionalGroup = filteredGroupList.stream().findFirst();
 
         if (optionalGroup.isEmpty()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_GROUP_NAME);
+            throw new CommandException(MESSAGE_GROUP_NOT_FOUND);
         }
 
         return optionalGroup.get();
@@ -52,8 +54,14 @@ public abstract class GroupCommand extends Command {
     public static Group findOneGroup(Model model, String groupName) throws CommandException {
         // doesnt seem to work with emptystring, im not sure why
         assert groupName != "";
-        List<String> keywords = new ArrayList<>();
-        keywords.add(groupName);
+
+
+        if (! GroupName.isValidGroupName(groupName)) {
+            throw new CommandException(GroupName.MESSAGE_CONSTRAINTS);
+        }
+
+        List<GroupName> keywords = new ArrayList<>();
+        keywords.add(new GroupName(groupName));
         return findOneGroup(model, new GroupNameEqualsKeywordPredicate(keywords));
     }
 
@@ -104,4 +112,31 @@ public abstract class GroupCommand extends Command {
         return verifiedGroup;
     }
 
+    /**
+     * Verifies and all MemberId of {@code targetGroup} can be found as {@code Contact} containing
+     * {@code ContactId} in {@code Model}, procedure which side effect replaces Group with verifiedGroup.
+     */
+    private static void verifyGroupWithModelAndSet(Model model, Group targetGroup) {
+        Group verifiedGroup = verifyGroupWithModel(model, targetGroup);
+        model.setGroup(targetGroup, verifiedGroup);
+    }
+
+    /**
+     * Verifies and all MemberId of all {@code Group} in {@code Model} can be found as {@code Contact} containing
+     * {@code ContactId} in {@code Model}, procedure with side effect mutating Model
+     */
+    public static void syncGroupBook(Model model) {
+        // clears out the old predicates before checks
+        model.updateFilteredContactList(PREDICATE_SHOW_ALL_CONTACTS);
+        model.updateFilteredGroupList(PREDICATE_SHOW_ALL_GROUPS);
+
+        // makes a copy to prevent mutating Model state while iterating through Model(Group) state
+        List<Group> allGroups = model.getFilteredGroupList().stream().collect(Collectors.toList());
+        allGroups.stream()
+                .forEach(group -> verifyGroupWithModelAndSet(model, group));
+
+        // clears out the last used predicate when filtering
+        model.updateFilteredContactList(PREDICATE_SHOW_ALL_CONTACTS);
+        model.updateFilteredGroupList(PREDICATE_SHOW_ALL_GROUPS);
+    }
 }

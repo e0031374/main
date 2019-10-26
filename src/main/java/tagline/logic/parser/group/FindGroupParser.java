@@ -3,10 +3,14 @@ package tagline.logic.parser.group;
 import static tagline.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
 import java.util.Arrays;
+import java.util.Optional;
+import java.util.Set;
 
+import tagline.commons.core.Messages;
 import tagline.logic.commands.group.FindGroupCommand;
 import tagline.logic.parser.Parser;
 import tagline.logic.parser.exceptions.ParseException;
+import tagline.model.group.GroupName;
 import tagline.model.group.GroupNameEqualsKeywordPredicate;
 
 /**
@@ -26,7 +30,11 @@ public class FindGroupParser implements Parser<FindGroupCommand> {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindGroupCommand.MESSAGE_USAGE));
         }
 
-        return new FindGroupCommand(new GroupNameEqualsKeywordPredicate(Arrays.asList(trimmedArgs)));
+        Optional<Set<GroupName>> optNameSet = GroupParserUtil.parseGroupNamesForSearch(Arrays.asList(trimmedArgs));
+        if (optNameSet.isEmpty()) {
+            throw new ParseException(Messages.MESSAGE_INVALID_GROUP_NAME + ": " + trimmedArgs);
+        }
+        return new FindGroupCommand(new GroupNameEqualsKeywordPredicate(optNameSet.get()));
     }
 
 }

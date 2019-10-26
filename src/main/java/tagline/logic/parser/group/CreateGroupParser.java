@@ -46,7 +46,8 @@ public class CreateGroupParser implements Parser<CreateGroupCommand> {
             argMultimap.getValue(PREFIX_GROUPDESCRIPTION).orElse(""));
 
         // converts list of specified String memberIds to Empty if no Strings parsed in
-        Optional<Set<MemberId>> optionalMemberIds = parseMemberIdsForEdit(argMultimap.getAllValues(PREFIX_CONTACTID));
+        Optional<Set<MemberId>> optionalMemberIds =
+            GroupParserUtil.parseMemberIdsForEdit(argMultimap.getAllValues(PREFIX_CONTACTID));
         Set<MemberId> memberIds = new HashSet<>();
 
         if (optionalMemberIds.isPresent()) {
@@ -64,23 +65,6 @@ public class CreateGroupParser implements Parser<CreateGroupCommand> {
      */
     private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
         return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
-    }
-
-
-    /**
-     * Parses {@code Collection<String> memberIds} into a {@code Set<MemberId>} if {@code memberIds} is non-empty.
-     * If {@code memberIds} contain only one element which is an empty string, it will be parsed into a
-     * {@code Set<MemberId>} containing zero memberIds.
-     */
-    private Optional<Set<MemberId>> parseMemberIdsForEdit(Collection<String> memberIds) throws ParseException {
-        assert memberIds != null;
-
-        if (memberIds.isEmpty()) {
-            return Optional.empty();
-        }
-        Collection<String> tagSet = memberIds.size() == 1 && memberIds.contains("")
-                ? Collections.emptySet() : memberIds;
-        return Optional.of(GroupParserUtil.parseMemberIds(tagSet));
     }
 
 }

@@ -4,12 +4,15 @@ import static java.util.Objects.requireNonNull;
 import static tagline.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static tagline.logic.parser.group.GroupCliSyntax.PREFIX_CONTACTID;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import tagline.commons.core.Messages;
+import tagline.logic.commands.exceptions.CommandException;
 import tagline.logic.commands.group.AddMemberToGroupCommand;
 import tagline.logic.commands.group.AddMemberToGroupCommand.EditGroupDescriptor;
 import tagline.logic.parser.ArgumentMultimap;
@@ -17,6 +20,8 @@ import tagline.logic.parser.ArgumentTokenizer;
 import tagline.logic.parser.Parser;
 import tagline.logic.parser.Prefix;
 import tagline.logic.parser.exceptions.ParseException;
+import tagline.model.group.GroupName;
+import tagline.model.group.GroupNameEqualsKeywordPredicate;
 import tagline.model.group.MemberId;
 
 /**
@@ -43,10 +48,16 @@ public class AddMemberToGroupParser implements Parser<AddMemberToGroupCommand> {
         String targetGroupName;
         targetGroupName = argMultimap.getPreamble();
 
+        Optional<Set<GroupName>> optNameSet = GroupParserUtil.parseGroupNamesForSearch(Arrays.asList(targetGroupName));
+        if (optNameSet.isEmpty()) {
+            throw new ParseException(Messages.MESSAGE_INVALID_GROUP_NAME + ": " + targetGroupName);
+        }
+        GroupNameEqualsKeywordPredicate predicate = new GroupNameEqualsKeywordPredicate(optNameSet.get());
+
         EditGroupDescriptor editGroupDescriptor = new EditGroupDescriptor();
 
         // converts list of specified String memberIds to MemberIds and add to editGroupDescriptor
-        parseMemberIdsForEdit(argMultimap.getAllValues(PREFIX_CONTACTID)).ifPresent(editGroupDescriptor::setMemberIds);
+        GroupParserUtil.parseMemberIdsForEdit(argMultimap.getAllValues(PREFIX_CONTACTID)).ifPresent(editGroupDescriptor::setMemberIds);
 
         // checks if user input list of String memberIds is empty
         if (!editGroupDescriptor.isAnyFieldEdited()) {
@@ -57,23 +68,7 @@ public class AddMemberToGroupParser implements Parser<AddMemberToGroupCommand> {
             throw new ParseException(AddMemberToGroupCommand.MESSAGE_NOT_ADDED);
         }
 
-        return new AddMemberToGroupCommand(targetGroupName, editGroupDescriptor);
-    }
-
-    /**
-     * Parses {@code Collection<String> memberIds} into a {@code Set<MemberId>} if {@code memberIds} is non-empty.
-     * If {@code memberIds} contain only one element which is an empty string, it will be parsed into a
-     * {@code Set<MemberId>} containing zero memberIds.
-     */
-    private Optional<Set<MemberId>> parseMemberIdsForEdit(Collection<String> memberIds) throws ParseException {
-        assert memberIds != null;
-
-        if (memberIds.isEmpty()) {
-            return Optional.empty();
-        }
-        Collection<String> tagSet = memberIds.size() == 1 && memberIds.contains("")
-            ? Collections.emptySet() : memberIds;
-        return Optional.of(GroupParserUtil.parseMemberIds(tagSet));
+        return new AddMemberToGroupCommand(predicate, editGroupDescriptor);
     }
 
     /**
