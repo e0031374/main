@@ -25,11 +25,12 @@ public class AddMemberToGroupCommand extends EditGroupCommand {
 
     public static final String COMMAND_WORD = "add";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Add a contact to the group identified "
+    public static final String MESSAGE_USAGE = COMMAND_KEY + " " + COMMAND_WORD
+            + ": Add a contact to the group identified "
             + "by the group name and the contact ID number displayed in the contact list.\n "
             + "Parameters: GROUP_NAME (one word, cannot contain space) "
             + "[" + PREFIX_CONTACTID + " CONTACT_ID]...\n"
-            + "Example: " + COMMAND_WORD + " BTS_ARMY "
+            + "Example: " + COMMAND_KEY + " " + COMMAND_WORD + " BTS_ARMY "
             + PREFIX_CONTACTID + " 47337 ";
 
     public static final String MESSAGE_UI = "UI: now displaying all contacts in found group";

@@ -1,6 +1,7 @@
 package tagline.logic.parser.group;
 
 import static java.util.Objects.requireNonNull;
+import static tagline.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static tagline.logic.parser.group.GroupCliSyntax.PREFIX_CONTACTID;
 import static tagline.model.group.GroupModel.PREDICATE_SHOW_ALL_GROUPS;
 
@@ -33,6 +34,12 @@ public class ListGroupParser implements Parser<ListGroupCommand> {
         // converts list of specified String memberIds to Empty if no Strings parsed in
         Optional<Set<MemberId>> optionalMemberIds =
             GroupParserUtil.parseMemberIdsForEdit(argMultimap.getAllValues(PREFIX_CONTACTID));
+
+        // preamble is not allowed compulsory
+        if (!argMultimap.getPreamble().isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    ListGroupCommand.MESSAGE_USAGE));
+        }
 
         if (optionalMemberIds.isPresent()) {
             return new ListGroupCommand(new GroupMembersContainsSearchIdsPredicate(optionalMemberIds.get()));

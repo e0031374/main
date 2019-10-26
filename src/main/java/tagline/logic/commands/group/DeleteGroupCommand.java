@@ -25,10 +25,11 @@ public class DeleteGroupCommand extends GroupCommand {
     public static final String MESSAGE_UI = "UI: now displaying all Contacts in found group";
     public static final String MESSAGE_KEYWORD_SUCCESS = "Success! Group deleted: %n%s%n" + MESSAGE_UI;
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Delete a group whose name matches"
+    public static final String MESSAGE_USAGE = COMMAND_KEY + " " + COMMAND_WORD
+            + ": Delete a group whose name matches"
             + "the specified keyword (case-insensitive).\n"
             + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
-            + "Example: " + COMMAND_WORD + " wanna-one";
+            + "Example: " + COMMAND_KEY + " " + COMMAND_WORD + " wanna-one";
 
     private final GroupNameEqualsKeywordPredicate predicate;
 

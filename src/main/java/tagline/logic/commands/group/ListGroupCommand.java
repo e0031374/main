@@ -23,6 +23,10 @@ public class ListGroupCommand extends GroupCommand {
     public static final String MESSAGE_KEYWORD_SUCCESS = "Success! Listing groups found:%n%s%n" + MESSAGE_UI;
     public static final String MESSAGE_KEYWORD_EMPTYLIST = "No groups matching keywords";
 
+    public static final String MESSAGE_USAGE = COMMAND_KEY + " " + COMMAND_WORD + ": List all groups "
+            + "stored.\n "
+            + "Example: " + COMMAND_KEY + " " + COMMAND_WORD + "\n";
+
     private final Predicate<Group> predicate;
 
     /**

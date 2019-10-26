@@ -23,10 +23,11 @@ public class FindGroupCommand extends GroupCommand {
     public static final String MESSAGE_UI = "UI: now displaying all Contacts in requested group";
     public static final String MESSAGE_KEYWORD_SUCCESS = "Success! Displaying group: %n%s%n" + MESSAGE_UI;
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Shows all contacts whose is in Group matching exactly"
+    public static final String MESSAGE_USAGE = COMMAND_KEY + " " + COMMAND_WORD
+            + ": Shows all contacts whose is in Group matching exactly"
             + "the specified keywords (case-insensitive) and displays them as a list.\n"
             + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
-            + "Example: " + COMMAND_WORD + " exo";
+            + "Example: " + COMMAND_KEY + " " + COMMAND_WORD + " exo";
 
     private final GroupNameEqualsKeywordPredicate predicate;
 

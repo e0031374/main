@@ -20,10 +20,11 @@ public class CreateGroupCommand extends GroupCommand {
 
     public static final String COMMAND_WORD = "create";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Creates a group. "
+    public static final String MESSAGE_USAGE = COMMAND_KEY + " " + COMMAND_WORD
+            + ": Creates a group. "
             + "Parameters: GROUP_NAME "
             + "[" + PREFIX_CONTACTID + "CONTACT_ID]...\n"
-            + "Example: " + COMMAND_WORD + " BTS_ARMY "
+            + "Example: " + COMMAND_KEY + " " + COMMAND_WORD + " BTS_ARMY "
             + PREFIX_CONTACTID + "1077 "
             + PREFIX_CONTACTID + "1078";
 
