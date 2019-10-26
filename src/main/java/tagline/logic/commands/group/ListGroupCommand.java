@@ -1,6 +1,7 @@
 package tagline.logic.commands.group;
 
 import static java.util.Objects.requireNonNull;
+import static tagline.logic.commands.group.ListGroupCommand.Filter.FilterType.MEMBER;
 import static tagline.model.group.GroupModel.PREDICATE_SHOW_ALL_GROUPS;
 
 import java.util.Arrays;
@@ -21,6 +22,7 @@ public class ListGroupCommand extends GroupCommand {
     public static final String MESSAGE_SUCCESS = "Listed all groups";
     public static final String MESSAGE_KEYWORD_SUCCESS = "Listed groups for keyword: %1$s";
     public static final String MESSAGE_KEYWORD_EMPTYLIST = "No groups matching keyword: %1$s";
+    public static final String MESSAGE_INVALID_COMMAND = "INVALID COMMAND";
 
     private final Filter filter;
 
@@ -38,8 +40,11 @@ public class ListGroupCommand extends GroupCommand {
         if (filter == null) { // No filter, list all groups
             model.updateFilteredGroupList(PREDICATE_SHOW_ALL_GROUPS);
             return new CommandResult(MESSAGE_SUCCESS);
-        } else { // list if group contains keyword (filter.filterType.equals(KEYWORD))
-            return filterAndListByKeyword(model);
+        } else if (filter.filterType.equals(MEMBER)) {
+            // list if group contains members (filter.filterType.equals(MEMEBER))
+            return filterAndListByMember(model);
+        } else {
+            throw new CommandException(MESSAGE_INVALID_COMMAND);
         }
 
         /* TODO Implement filter by tag */
@@ -48,10 +53,10 @@ public class ListGroupCommand extends GroupCommand {
     /**
      * Filter group list by String keyword
      */
-    private CommandResult filterAndListByKeyword(Model model) throws CommandException {
+    private CommandResult filterAndListByMember(Model model) throws CommandException {
         model.updateFilteredGroupList(PREDICATE_SHOW_ALL_GROUPS);
 
-        List<String> keywordList = Arrays.asList(filter.filterValue.split(" "));
+        List<String> keywordList = Arrays.asList(filter.filterValue);
         GroupNameEqualsKeywordPredicate predicate = new GroupNameEqualsKeywordPredicate(keywordList);
 
         model.updateFilteredGroupList(predicate);
@@ -63,6 +68,7 @@ public class ListGroupCommand extends GroupCommand {
         return new CommandResult(String.format(MESSAGE_KEYWORD_SUCCESS, filter.filterValue));
     }
 
+    //@@author shiweing
     /**
      * Stores filter for group listing.
      */
@@ -71,7 +77,7 @@ public class ListGroupCommand extends GroupCommand {
          * Represents the type of filter to list groups by.
          */
         public enum FilterType {
-            KEYWORD
+            KEYWORD, MEMBER
         }
 
         private final String filterValue;
