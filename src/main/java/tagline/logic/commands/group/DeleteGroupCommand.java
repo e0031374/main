@@ -2,6 +2,7 @@ package tagline.logic.commands.group;
 
 import static java.util.Objects.requireNonNull;
 import static tagline.model.contact.ContactModel.PREDICATE_SHOW_ALL_CONTACTS;
+import static tagline.model.group.GroupModel.PREDICATE_SHOW_ALL_GROUPS;
 
 import tagline.logic.commands.CommandResult;
 import tagline.logic.commands.CommandResult.ViewType;
@@ -32,6 +33,7 @@ public class DeleteGroupCommand extends GroupCommand {
     private final GroupNameEqualsKeywordPredicate predicate;
 
     public DeleteGroupCommand(GroupNameEqualsKeywordPredicate predicate) {
+        requireNonNull(predicate);
         this.predicate = predicate;
     }
 
@@ -39,11 +41,13 @@ public class DeleteGroupCommand extends GroupCommand {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        //Group targetGroup = optionalGroup.get();
         Group targetGroup = GroupCommand.findOneGroup(model, predicate);
 
         model.deleteGroup(targetGroup);
         model.updateFilteredContactList(PREDICATE_SHOW_ALL_CONTACTS);
+        // note, after deleting a group, all groups will be shown.
+        // this will suffice until a View for Group has been established, note the respective comment in test as well
+        model.updateFilteredGroupList(PREDICATE_SHOW_ALL_GROUPS);
 
         return new CommandResult(
                 String.format(MESSAGE_KEYWORD_SUCCESS, targetGroup.getGroupName().value), ViewType.CONTACT);
