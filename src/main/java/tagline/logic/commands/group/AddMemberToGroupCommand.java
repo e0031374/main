@@ -33,7 +33,8 @@ public class AddMemberToGroupCommand extends EditGroupCommand {
             + PREFIX_CONTACTID + " 47337 ";
 
     public static final String MESSAGE_UI = "UI: now displaying all contacts in found group";
-    public static final String MESSAGE_ADD_MEMBER_SUCCESS = "Added contact to Group: %s%n" + MESSAGE_UI;
+    public static final String MESSAGE_ADD_MEMBER_SUCCESS = "Add member to group%n"
+            + "Now displaying group:%n%s%n" + MESSAGE_UI;
     public static final String MESSAGE_NOT_ADDED = "At least one contactID to add must be provided.";
 
     //private final Group group;

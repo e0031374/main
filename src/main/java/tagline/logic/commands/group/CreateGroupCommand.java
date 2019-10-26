@@ -28,7 +28,7 @@ public class CreateGroupCommand extends GroupCommand {
             + PREFIX_CONTACTID + "1078";
 
     public static final String MESSAGE_UI = "UI: now displaying all Contacts in found group";
-    public static final String MESSAGE_SUCCESS = "New group added: %s%n%n" + MESSAGE_UI;
+    public static final String MESSAGE_SUCCESS = "New group added:%n%s%n%n" + MESSAGE_UI;
     public static final String MESSAGE_DUPLICATE_GROUP = "This group already exists in the group book";
 
     private final Group toAdd;

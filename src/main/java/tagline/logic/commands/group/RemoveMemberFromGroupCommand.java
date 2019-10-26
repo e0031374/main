@@ -35,7 +35,8 @@ public class RemoveMemberFromGroupCommand extends EditGroupCommand {
             + PREFIX_CONTACTID + " 47337 ";
 
     public static final String MESSAGE_UI = "UI: now displaying all contacts in found group";
-    public static final String MESSAGE_REMOVE_MEMBER_SUCCESS = "Removed contact to Group: %s%n" + MESSAGE_UI;
+    public static final String MESSAGE_REMOVE_MEMBER_SUCCESS = "Remove contact from group%n"
+        + "Now displaying group:%n%s%n" + MESSAGE_UI;
     public static final String MESSAGE_NOT_REMOVED = "At least one contactID to be removed must be provided.";
 
     //private final Group group;
