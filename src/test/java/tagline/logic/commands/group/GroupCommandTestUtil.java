@@ -1,6 +1,7 @@
 package tagline.logic.commands.group;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static tagline.logic.parser.group.GroupCliSyntax.PREFIX_CONTACTID;
 import static tagline.logic.parser.group.GroupCliSyntax.PREFIX_GROUPDESCRIPTION;
 import static tagline.model.group.GroupModel.PREDICATE_SHOW_ALL_GROUPS;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import tagline.commons.core.index.Index;
 import tagline.logic.commands.Command;
 import tagline.logic.commands.CommandResult;
 import tagline.logic.commands.exceptions.CommandException;
@@ -72,6 +74,21 @@ public class GroupCommandTestUtil {
      * Executes the given {@code command}, confirms that <br>
      * - the returned {@link CommandResult} matches {@code expectedCommandResult} <br>
      * - the {@code actualModel} matches {@code expectedModel}
+     */
+    public static void assertCommandSuccess(Command command, Model actualModel, Model expectedModel) {
+        try {
+            CommandResult result = command.execute(actualModel);
+            //assertEquals(expectedCommandResult, result);
+            assertEquals(expectedModel, actualModel);
+        } catch (CommandException ce) {
+            throw new AssertionError("Execution of command should not fail.", ce);
+        }
+    }
+
+    /**
+     * Executes the given {@code command}, confirms that <br>
+     * - the {@code actualModel} matches {@code expectedModel}
+     * - weaker check used when the commandresult is too unwieldy due to view not being implemented yet
      */
     public static void assertCommandSuccess(Command command, Model actualModel, CommandResult expectedCommandResult,
                                             Model expectedModel) {
@@ -160,6 +177,20 @@ public class GroupCommandTestUtil {
         assert GroupName.isValidGroupName(targetIndex);
 
         GroupName[] groupNames = { new GroupName(targetIndex) };
+        model.updateFilteredGroupList(new GroupNameEqualsKeywordPredicate(Arrays.asList(groupNames[0])));
+
+        assertEquals(1, model.getFilteredGroupList().size());
+    }
+
+    /**
+     * Updates {@code model}'s filtered list to show only the contact at the given {@code targetIndex} in the
+     * {@code model}'s address book.
+     */
+    public static void showGroupAtIndex(Model model, Index targetIndex) {
+        assertTrue(targetIndex.getZeroBased() < model.getFilteredGroupList().size());
+
+        Group group = model.getFilteredGroupList().get(targetIndex.getZeroBased());
+        GroupName[] groupNames = { group.getGroupName() };
         model.updateFilteredGroupList(new GroupNameEqualsKeywordPredicate(Arrays.asList(groupNames[0])));
 
         assertEquals(1, model.getFilteredGroupList().size());

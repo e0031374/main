@@ -65,6 +65,15 @@ public class TypicalGroups {
             .withMemberIds("5", "6")
             .withGroupDescription("").build();
 
+    // Some Non Existing Members
+    public static final Group WAKANDAN_ROYAL3 = new GroupBuilder().withGroupName("Wakandan-Royal-Guard")
+            .withMemberIds("1", "3", "12388")
+            .withGroupDescription("Wakanda Forever").build();
+
+    public static final Group AVENGERS3 = new GroupBuilder().withGroupName("The-OG-6")
+            .withMemberIds("2", "4", "43119")
+            .withGroupDescription("The Earths Mightiest Heroes").build();
+
     private TypicalGroups() {} // prevents instantiation
 
     /**
@@ -92,5 +101,17 @@ public class TypicalGroups {
 
     public static List<Group> getTypicalGroupsExistingMembers() {
         return new ArrayList<>(Arrays.asList(WAKANDAN_ROYAL2, AVENGERS2, GUARDIANS2));
+    }
+
+    public static GroupBook getTypicalGroupBookSomeNonExistingMembers() {
+        GroupBook ab = new GroupBook();
+        for (Group group : getTypicalGroupsSomeNonExistingMembers()) {
+            ab.addGroup(group);
+        }
+        return ab;
+    }
+
+    public static List<Group> getTypicalGroupsSomeNonExistingMembers() {
+        return new ArrayList<>(Arrays.asList(WAKANDAN_ROYAL3, AVENGERS3, GUARDIANS2));
     }
 }

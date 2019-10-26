@@ -32,6 +32,10 @@ public class ListGroupCommand extends GroupCommand {
         this.predicate = predicate;
     }
 
+    public ListGroupCommand() {
+        this.predicate = PREDICATE_SHOW_ALL_GROUPS;
+    }
+
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
