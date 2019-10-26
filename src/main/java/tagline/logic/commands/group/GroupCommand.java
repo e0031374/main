@@ -2,6 +2,7 @@ package tagline.logic.commands.group;
 
 import static tagline.model.contact.ContactModel.PREDICATE_SHOW_ALL_CONTACTS;
 import static tagline.model.group.GroupModel.PREDICATE_SHOW_ALL_GROUPS;
+import static tagline.model.note.NoteModel.PREDICATE_SHOW_ALL_NOTES;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -126,13 +127,8 @@ public abstract class GroupCommand extends Command {
         // clears out the old predicates before checks
         model.updateFilteredContactList(PREDICATE_SHOW_ALL_CONTACTS);
 
-        List<String> members = targetGroup.getMemberIds()
-                .stream()
-                .map(member -> member.value)
-                .collect(Collectors.toList());
-
         // to display all contacts which are Group members
-        model.updateFilteredContactList(new ContactIdEqualsSearchIdsPredicate(members));
+        model.updateFilteredContactList(memberIdsToContactIdPredicate(targetGroup.getMemberIds()));
 
         // this bit to ensure groupmembers are as updated in case of storage error
         // done by getting all the MemberIds in the group, AddressBook
@@ -191,5 +187,30 @@ public abstract class GroupCommand extends Command {
         // clears out the last used predicate when filtering
         model.updateFilteredContactList(PREDICATE_SHOW_ALL_CONTACTS);
         model.updateFilteredGroupList(PREDICATE_SHOW_ALL_GROUPS);
+    }
+
+
+    /**
+     * Resets all {@code Predicate} in {@code Model} to show all
+     * {@code ContactId} in {@code Model}, procedure with side effect mutating Model
+     */
+    public static void resetAllPredicates(Model model) {
+        model.updateFilteredContactList(PREDICATE_SHOW_ALL_CONTACTS);
+        model.updateFilteredNoteList(PREDICATE_SHOW_ALL_NOTES);
+        model.updateFilteredGroupList(PREDICATE_SHOW_ALL_GROUPS);
+    }
+
+    /**
+     * Generates {@code ContactIdEqualsSearchIdsPredicate} from {@Code Collection<MemberId>}
+     * for convenience.
+     */
+    public static ContactIdEqualsSearchIdsPredicate memberIdsToContactIdPredicate(Collection<MemberId> members) {
+        List<String> membersString = members
+                .stream()
+                .map(member -> member.value)
+                .collect(Collectors.toList());
+
+        // to display all contacts which are Group members
+        return new ContactIdEqualsSearchIdsPredicate(membersString);
     }
 }

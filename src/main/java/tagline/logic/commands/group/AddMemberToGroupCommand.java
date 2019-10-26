@@ -4,12 +4,9 @@ import static java.util.Objects.requireNonNull;
 import static tagline.logic.parser.group.GroupCliSyntax.PREFIX_CONTACTID;
 import static tagline.model.group.GroupModel.PREDICATE_SHOW_ALL_GROUPS;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-
-import tagline.commons.util.CollectionUtil;
 
 import tagline.logic.commands.CommandResult;
 import tagline.logic.commands.CommandResult.ViewType;
@@ -64,8 +61,12 @@ public class AddMemberToGroupCommand extends EditGroupCommand {
         Group groupToEdit = findOneGroup(model, predicate);
 
         Optional<Set<MemberId>> optMembers = editGroupDescriptor.getMemberIds();
-        assert optMembers.isPresent();
-        Set<MemberId> notFound = GroupCommand.memberIdDoesntExistInContactModel(model, optMembers.get());
+        //assert optMembers.isPresent();
+
+        Set<MemberId> notFound = new HashSet<>();
+        if (optMembers.isPresent()) {
+            notFound = GroupCommand.memberIdDoesntExistInContactModel(model, optMembers.get());
+        }
 
         // adds all user-input contactIds as members of this Group checks deferred
         Group editedGroup = createEditedGroup(groupToEdit, editGroupDescriptor);
@@ -76,6 +77,7 @@ public class AddMemberToGroupCommand extends EditGroupCommand {
         model.setGroup(groupToEdit, verifiedGroup);
 
         model.updateFilteredGroupList(PREDICATE_SHOW_ALL_GROUPS);
+        // i cannot use PREDICATE_SHOW_ALL_GROUP here because it would now display the contacts in the group
         return new CommandResult(String.format(MESSAGE_ADD_MEMBER_SUCCESS + GroupCommand.notFoundString(notFound),
             verifiedGroup), ViewType.CONTACT);
     }

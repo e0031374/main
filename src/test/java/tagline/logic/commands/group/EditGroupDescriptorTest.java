@@ -4,9 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static tagline.logic.commands.group.GroupCommandTestUtil.DESC_HYDRA;
 import static tagline.logic.commands.group.GroupCommandTestUtil.DESC_SHIELD;
-import static tagline.logic.commands.group.GroupCommandTestUtil.VALID_GROUPNAME_SHIELD;
-import static tagline.logic.commands.group.GroupCommandTestUtil.VALID_GROUPDESCRIPTION_SHIELD;
 import static tagline.logic.commands.group.GroupCommandTestUtil.VALID_CONTACTID_SHIELD;
+import static tagline.logic.commands.group.GroupCommandTestUtil.VALID_GROUPDESCRIPTION_SHIELD;
+import static tagline.logic.commands.group.GroupCommandTestUtil.VALID_GROUPNAME_SHIELD;
 
 import org.junit.jupiter.api.Test;
 
@@ -39,7 +39,8 @@ public class EditGroupDescriptorTest {
         assertFalse(DESC_HYDRA.equals(editedHydra));
 
         // different description -> returns true
-        editedHydra = new EditGroupDescriptorBuilder(DESC_HYDRA).withGroupDescription(VALID_GROUPDESCRIPTION_SHIELD).build();
+        editedHydra = new EditGroupDescriptorBuilder(DESC_HYDRA)
+            .withGroupDescription(VALID_GROUPDESCRIPTION_SHIELD).build();
         assertTrue(DESC_HYDRA.equals(editedHydra));
 
         // different tags -> returns false

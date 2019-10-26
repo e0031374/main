@@ -1,14 +1,15 @@
 package tagline.testutil;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import tagline.logic.commands.group.EditGroupCommand.EditGroupDescriptor;
 import tagline.model.group.Group;
 import tagline.model.group.GroupDescription;
 import tagline.model.group.GroupName;
 import tagline.model.group.MemberId;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * A utility class to help with building EditGroupDescriptor objects.

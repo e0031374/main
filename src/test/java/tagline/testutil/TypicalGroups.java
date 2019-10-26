@@ -52,6 +52,19 @@ public class TypicalGroups {
 
     public static final String KEYWORD_MATCHING_MEIER = "Meier"; // A keyword that matches MEIER
 
+    // No Members
+    public static final Group WAKANDAN_ROYAL2 = new GroupBuilder().withGroupName("Wakandan-Royal-Guard")
+            .withMemberIds("1", "3")
+            .withGroupDescription("Wakanda Forever").build();
+
+    public static final Group AVENGERS2 = new GroupBuilder().withGroupName("The-OG-6")
+            .withMemberIds("2", "4")
+            .withGroupDescription("The Earths Mightiest Heroes").build();
+
+    public static final Group GUARDIANS2 = new GroupBuilder().withGroupName("Guardians_of_theGalaxy")
+            .withMemberIds("5", "6")
+            .withGroupDescription("").build();
+
     private TypicalGroups() {} // prevents instantiation
 
     /**
@@ -67,5 +80,17 @@ public class TypicalGroups {
 
     public static List<Group> getTypicalGroups() {
         return new ArrayList<>(Arrays.asList(CHILDREN, HYDRA, WAKANDAN_ROYAL, AVENGERS, GUARDIANS));
+    }
+
+    public static GroupBook getTypicalGroupBookExistingMembers() {
+        GroupBook ab = new GroupBook();
+        for (Group group : getTypicalGroupsExistingMembers()) {
+            ab.addGroup(group);
+        }
+        return ab;
+    }
+
+    public static List<Group> getTypicalGroupsExistingMembers() {
+        return new ArrayList<>(Arrays.asList(WAKANDAN_ROYAL2, AVENGERS2, GUARDIANS2));
     }
 }

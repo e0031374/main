@@ -61,6 +61,14 @@ public class GroupBuilder {
         return this;
     }
 
+    /**
+     * Parses the {@code tags} into a {@code Set<Tag>} and set it to the {@code Person} that we are building.
+     */
+    public GroupBuilder addMemberIds(String ... memberIds) {
+        this.memberIds.addAll(SampleDataUtil.getMemberIdSet(memberIds));
+        return this;
+    }
+
     public Group build() {
         return new Group(groupName, groupDescription, memberIds);
     }

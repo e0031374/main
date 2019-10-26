@@ -14,10 +14,10 @@ import tagline.logic.commands.Command;
 import tagline.logic.commands.CommandResult;
 import tagline.logic.commands.exceptions.CommandException;
 import tagline.model.Model;
+import tagline.model.group.Group;
 import tagline.model.group.GroupBook;
 import tagline.model.group.GroupName;
 import tagline.model.group.GroupNameEqualsKeywordPredicate;
-import tagline.model.group.Group;
 import tagline.testutil.EditGroupDescriptorBuilder;
 
 /**
@@ -45,7 +45,8 @@ public class GroupCommandTestUtil {
     public static final String CONTACTID_DESC_WARD = " " + PREFIX_CONTACTID + VALID_CONTACTID_WARD;
     public static final String CONTACTID_DESC_SHIELD = " " + PREFIX_CONTACTID + VALID_CONTACTID_SHIELD;
 
-    public static final String INVALID_GROUPNAME_DESC = " " + PREFIX_GROUPNAME + "WANNA ONE"; // ' ' not allowed in names
+    public static final String INVALID_GROUPNAME_DESC = " " + PREFIX_GROUPNAME + "WANNA ONE";
+    // ' ' not allowed in names
     public static final String INVALID_CONTACTID_DESC = " " + PREFIX_CONTACTID + "12a4"; // 'a' not allowed in tags
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
@@ -73,10 +74,27 @@ public class GroupCommandTestUtil {
         try {
             CommandResult result = command.execute(actualModel);
             assertEquals(expectedCommandResult, result);
+            assertEquals(expectedModel.getAddressBook(), actualModel.getAddressBook());
+            assertEquals(expectedModel.getFilteredContactList(), actualModel.getFilteredContactList());
+            assertEquals(expectedModel.getNoteBook(), actualModel.getNoteBook());
+            assertEquals(expectedModel.getFilteredNoteList(), actualModel.getFilteredNoteList());
+            assertEquals(expectedModel.getGroupBook(), actualModel.getGroupBook());
+            assertEquals(expectedModel.getFilteredGroupList(), actualModel.getFilteredGroupList());
+            assertEquals(expectedModel.getUserPrefs(), actualModel.getUserPrefs());
             assertEquals(expectedModel, actualModel);
         } catch (CommandException ce) {
             throw new AssertionError("Execution of command should not fail.", ce);
         }
+    }
+
+    /**
+     * Convenience wrapper to {@link #assertCommandSuccess(Command, Model, CommandResult, Model)}
+     * that takes a string {@code expectedMessage} and a {@code ViewType} {@code expectedViewType}.
+     */
+    public static void assertCommandSuccess(Command command, Model actualModel, String expectedMessage,
+                                            CommandResult.ViewType expectedViewType, Model expectedModel) {
+        CommandResult expectedCommandResult = new CommandResult(expectedMessage, expectedViewType);
+        assertCommandSuccess(command, actualModel, expectedCommandResult, expectedModel);
     }
 
     /**
@@ -120,5 +138,7 @@ public class GroupCommandTestUtil {
 
         assertEquals(1, model.getFilteredGroupList().size());
     }
+
+
 
 }

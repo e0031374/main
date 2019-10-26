@@ -1,9 +1,5 @@
 package tagline.logic.commands.group;
 
-import static java.util.Objects.requireNonNull;
-import static tagline.logic.parser.group.GroupCliSyntax.PREFIX_CONTACTID;
-import static tagline.model.group.GroupModel.PREDICATE_SHOW_ALL_GROUPS;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
