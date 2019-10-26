@@ -7,7 +7,7 @@ import static tagline.logic.parser.group.GroupCliSyntax.PREFIX_CONTACTID;
 import java.util.stream.Stream;
 
 import tagline.logic.commands.group.AddMemberToGroupCommand;
-import tagline.logic.commands.group.AddMemberToGroupCommand.EditGroupDescriptor;
+import tagline.logic.commands.group.EditGroupCommand.EditGroupDescriptor;
 import tagline.logic.parser.ArgumentMultimap;
 import tagline.logic.parser.ArgumentTokenizer;
 import tagline.logic.parser.Parser;
