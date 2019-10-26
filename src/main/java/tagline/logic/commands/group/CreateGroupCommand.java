@@ -1,9 +1,11 @@
 package tagline.logic.commands.group;
 
 import static java.util.Objects.requireNonNull;
+import static tagline.commons.core.Messages.MESSAGE_GROUP_MEMBERS_ZERO;
 import static tagline.logic.parser.group.GroupCliSyntax.PREFIX_CONTACTID;
 
 import tagline.logic.commands.CommandResult;
+import tagline.logic.commands.CommandResult.ViewType;
 import tagline.logic.commands.exceptions.CommandException;
 import tagline.model.Model;
 import tagline.model.group.Group;
@@ -23,6 +25,7 @@ public class CreateGroupCommand extends GroupCommand {
             + PREFIX_CONTACTID + "1078";
 
     public static final String MESSAGE_SUCCESS = "New group added: %1$s";
+    ;
     public static final String MESSAGE_DUPLICATE_GROUP = "This group already exists in the group book";
 
     private final Group toAdd;
@@ -48,7 +51,9 @@ public class CreateGroupCommand extends GroupCommand {
         Group verifiedGroup = GroupCommand.verifyGroupWithModel(model, toAdd);
 
         model.addGroup(verifiedGroup);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, verifiedGroup));
+
+        return new CommandResult(String.format(MESSAGE_SUCCESS, verifiedGroup), ViewType.CONTACT);
+
     }
 
     @Override

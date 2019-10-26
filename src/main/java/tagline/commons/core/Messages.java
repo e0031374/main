@@ -15,5 +15,6 @@ public class Messages {
     public static final String MESSAGE_INVALID_GROUP_NAME = "The group name provided is invalid";
     public static final String MESSAGE_GROUPS_LISTED_OVERVIEW = "%1$d groups listed!";
     public static final String MESSAGE_GROUP_MEMBERS_OVERVIEW = "%1$d group members listed!";
+    public static final String MESSAGE_GROUP_MEMBERS_ZERO = "There are no group members in this group!";
 
 }

@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import tagline.commons.core.Messages;
 import tagline.logic.commands.Command;
+import tagline.logic.commands.CommandResult;
 import tagline.logic.commands.exceptions.CommandException;
 import tagline.model.Model;
 import tagline.model.group.ContactIdEqualsSearchIdsPredicate;
@@ -16,6 +17,9 @@ import tagline.model.group.GroupDescription;
 import tagline.model.group.GroupName;
 import tagline.model.group.GroupNameEqualsKeywordPredicate;
 import tagline.model.group.MemberId;
+
+import static tagline.model.contact.ContactModel.PREDICATE_SHOW_ALL_CONTACTS;
+import static tagline.model.group.GroupModel.PREDICATE_SHOW_ALL_GROUPS;
 
 /**
  * Represents a group command with hidden internal logic and the ability to be executed.
@@ -29,6 +33,7 @@ public abstract class GroupCommand extends Command {
      */
     public static Group findOneGroup(Model model, GroupNameEqualsKeywordPredicate predicate)
         throws CommandException {
+        model.updateFilteredGroupList(PREDICATE_SHOW_ALL_GROUPS);
         model.updateFilteredGroupList(predicate);
         List<Group> filteredGroupList = model.getFilteredGroupList();
         Optional<Group> optionalGroup = filteredGroupList.stream().findFirst();
@@ -57,6 +62,9 @@ public abstract class GroupCommand extends Command {
       * that can be found as {@code ContactId} in {@code Model}, side effect: sets ContactList.
       */
     private static Set<MemberId> verifyMemberIdWithModel(Model model, Group targetGroup) {
+        // clears out the old predicates before checks
+        model.updateFilteredContactList(PREDICATE_SHOW_ALL_CONTACTS);
+
         List<String> members = targetGroup.getMemberIds()
                 .stream()
                 .map(member -> member.value)
@@ -82,6 +90,9 @@ public abstract class GroupCommand extends Command {
      * that can be found as {@code ContactId} in {@code Model}, side effect sets ContactList.
      */
     public static Group verifyGroupWithModel(Model model, Group targetGroup) {
+        // clears out the old predicates before checks
+        model.updateFilteredContactList(PREDICATE_SHOW_ALL_CONTACTS);
+
         // check to ensure Group members are ContactIds that can be found in Model
         GroupName editedGroupName = targetGroup.getGroupName();
         GroupDescription editedGroupDescription = targetGroup.getGroupDescription();

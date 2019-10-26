@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import tagline.commons.core.Messages;
 import tagline.logic.commands.CommandResult;
+import tagline.logic.commands.CommandResult.ViewType;
 import tagline.logic.commands.exceptions.CommandException;
 import tagline.model.Model;
 
@@ -43,8 +44,15 @@ public class FindGroupCommand extends GroupCommand {
         Group verifiedGroup = GroupCommand.verifyGroupWithModel(model, targetGroup);
         model.setGroup(targetGroup, verifiedGroup);
 
+
+        if (verifiedGroup.getMemberIds().size() <= 0) {
+            return new CommandResult(
+                    String.format(Messages.MESSAGE_GROUP_MEMBERS_ZERO), ViewType.CONTACT);
+        }
+
         return new CommandResult(
-            String.format(Messages.MESSAGE_GROUP_MEMBERS_OVERVIEW, model.getFilteredContactList().size()));
+                String.format(Messages.MESSAGE_GROUP_MEMBERS_OVERVIEW, model.getFilteredContactList().size()),
+                ViewType.CONTACT);
     }
 
     @Override
