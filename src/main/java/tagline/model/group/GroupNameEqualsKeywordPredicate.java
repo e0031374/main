@@ -1,17 +1,7 @@
 package tagline.model.group;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
-import tagline.commons.util.StringUtil;
-import tagline.logic.parser.exceptions.ParseException;
-import tagline.logic.parser.group.GroupParserUtil;
-
-import javax.swing.text.html.Option;
 
 /**
  * Tests that a {@code Group}'s {@code Name} matches any of the keywords given.

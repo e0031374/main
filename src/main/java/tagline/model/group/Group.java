@@ -72,6 +72,10 @@ public class Group {
         return builder.toString();
     }
 
+    /**
+     * Adds memberIds to {@code StringBuilder} if there are members in the group, otherwise
+     * adds "None" to prompt that members are missing.
+     */
     private void addMembersToStringBuilder(StringBuilder builder) {
         builder.append(" Members: ");
         if (getMemberIds().size() <= 0) {
@@ -81,6 +85,10 @@ public class Group {
         }
     }
 
+    /**
+     * Adds description to {@code StringBuilder} if there {@code GroupDescription} does not contain an empty string,
+     * otherwise does not include " Description: " header to make formatting neater.
+     */
     private void addGroupDescriptionToStringBuilder(StringBuilder builder) {
         if (getGroupDescription().value.length() <= 0) {
         } else {

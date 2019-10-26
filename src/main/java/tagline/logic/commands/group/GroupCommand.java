@@ -109,7 +109,7 @@ public abstract class GroupCommand extends Command {
         assert groupName != "";
 
 
-        if (! GroupName.isValidGroupName(groupName)) {
+        if (!GroupName.isValidGroupName(groupName)) {
             throw new CommandException(GroupName.MESSAGE_CONSTRAINTS);
         }
 

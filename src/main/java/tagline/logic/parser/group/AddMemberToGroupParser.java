@@ -42,7 +42,8 @@ public class AddMemberToGroupParser implements Parser<AddMemberToGroupCommand> {
         EditGroupDescriptor editGroupDescriptor = new EditGroupDescriptor();
 
         // converts list of specified String memberIds to MemberIds and add to editGroupDescriptor
-        GroupParserUtil.parseMemberIdsForEdit(argMultimap.getAllValues(PREFIX_CONTACTID)).ifPresent(editGroupDescriptor::setMemberIds);
+        GroupParserUtil.parseMemberIdsForEdit(argMultimap
+            .getAllValues(PREFIX_CONTACTID)).ifPresent(editGroupDescriptor::setMemberIds);
 
         // checks if user input list of String memberIds is empty
         if (!editGroupDescriptor.isAnyFieldEdited()) {

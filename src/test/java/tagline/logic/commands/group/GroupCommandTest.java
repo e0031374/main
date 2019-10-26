@@ -15,7 +15,6 @@ import java.util.Collections;
 import org.junit.jupiter.api.Test;
 
 import tagline.logic.commands.exceptions.CommandException;
-import tagline.logic.parser.exceptions.ParseException;
 import tagline.model.Model;
 import tagline.model.ModelManager;
 import tagline.model.UserPrefs;
@@ -41,11 +40,6 @@ public class GroupCommandTest {
 
         // empty predicate
         GroupNameEqualsKeywordPredicate predicate = prepareGroupPredicate(MYSTIC_ARTS.getGroupName().value);
-        //try {
-        //    GroupCommand.findOneGroup(model,"");
-        //} catch (CommandException e) {
-
-        //}
         assertThrows(CommandException.class, () -> GroupCommand.findOneGroup(model, "BTS"));
         expectedModel.updateFilteredGroupList(predicate);
         assertEquals(Collections.emptyList(), model.getFilteredGroupList());
