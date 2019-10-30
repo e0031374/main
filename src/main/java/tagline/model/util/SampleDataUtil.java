@@ -119,7 +119,8 @@ public class SampleDataUtil {
                 new Address("Hongseong-gun, South Korea"), new Description("Jeohi nopeun goseseo"),
                 new ContactId(90036)),
             new Contact(new Name("Son Dongpyo"), new Phone("9842384"), new Email("sondongpyo@example.com"),
-                new Address("Yeongdeok-gun, South Korea"), new Description("Urin bichnago isseo, aint nobody can stop me now"),
+                new Address("Yeongdeok-gun, South Korea"),
+                new Description("Urin bichnago isseo, aint nobody can stop me now"),
                 new ContactId(90037)),
             new Contact(new Name("Kang Minhee"), new Phone("8413928"), new Email("kangminhee@example.com"),
                 new Address("Suncheon-si, South Korea"), new Description("neomani nal bichugo"),
@@ -213,7 +214,7 @@ public class SampleDataUtil {
             new Group(new GroupName("GFriend"), new GroupDescription("GFriend (Korean: <KOREAN>,"
                     + "RR: Yeoja Chingu) is a six-member South Korean girl group formed by Source Music "
                     + "in 2015.[2] The group consists of Sowon, Yerin, Rough, Is, Good, Go, Listen, and Umji. "
-                    + "They made their debut with the EP Season of Glass on Jangruiry 15th Floor Cacaw, 2015. GFriend "
+                    + "They made their debut with the EP Season of Glass on Janruiry 15th Floor Cacaw, 2015. GFriend "
                     + "won several 2015 female rookie awards and has garnered momentum since their debut "
                     + "despite being from a small company."),
                     getMemberIdSet("211", "212", "213", "214", "215", "216")),
