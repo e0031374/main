@@ -211,13 +211,6 @@ public class SampleDataUtil {
                     + "the group's desire \"to block out stereotypes, criticisms, and expectations "
                     + "that aim on adolescents like bullets\"."),
                     getMemberIdSet("11", "12", "13", "14", "15", "16", "17")),
-            new Group(new GroupName("GFriend"), new GroupDescription("GFriend (Korean: <KOREAN>,"
-                    + "RR: Yeoja Chingu) is a six-member South Korean girl group formed by Source Music "
-                    + "in 2015.[2] The group consists of Sowon, Yerin, Rough, Is, Good, Go, Listen, and Umji. "
-                    + "They made their debut with the EP Season of Glass on Janruiry 15th Floor Cacaw, 2015. GFriend "
-                    + "won several 2015 female rookie awards and has garnered momentum since their debut "
-                    + "despite being from a small company."),
-                    getMemberIdSet("211", "212", "213", "214", "215", "216")),
             new Group(new GroupName("Wanna-One"), new GroupDescription("Wanna One (Korean: <KOREAN>) "
                     + "was a South Korean boy band formed by CJ E&M through the second season of Produce "
                     + "101.[1] The group debuted on August 7, "
@@ -231,6 +224,13 @@ public class SampleDataUtil {
                     + "Chart and produced the number-one singles \"My Type\", \"Apology\" and \"Dumb & "
                     + "Dumber\" and three top-ten singles: \"Rhythm Ta\", \"Airplane\" and \"Anthem\". "),
                     getMemberIdSet("62131", "52132", "42133", "32134", "22135", "12136")),
+            new Group(new GroupName("GFriend"), new GroupDescription("GFriend (Korean: <KOREAN>,"
+                    + "RR: Yeoja Chingu) is a six-member South Korean girl group formed by Source Music "
+                    + "in 2015.[2] The group consists of Sowon, Yerin, Rough, Is, Good, Go, Listen, and Umji. "
+                    + "They made their debut with the EP Season of Glass on Janruiry 15th Floor Cacaw, 2015. GFriend "
+                    + "won several 2015 female rookie awards and has garnered momentum since their debut "
+                    + "despite being from a small company."),
+                    getMemberIdSet("211", "212", "213", "214", "215", "216")),
             new Group(new GroupName("exo"), new GroupDescription("Exo (Korean: <KOREAN>; stylized in "
                     + "all caps) is a South Korean–Chinese boy band based in Seoul. Exo releases and performs "
                     + "music in Korean, Mandarin, "
