@@ -1,5 +1,7 @@
+//@@author tanlk99
 package tagline.ui;
 
+import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
 import javafx.collections.ObservableList;
@@ -34,9 +36,11 @@ public class CommandBox extends UiPart<Region> {
         this.commandExecutor = commandExecutor;
 
         autoCompleteMatcher = AutoCompleteUtil.getAutoCompleteRootNode();
-        TextFields.bindAutoCompletion(commandTextField,
-            input -> autoCompleteMatcher.findMatches(input.getUserText()))
-            .setVisibleRowCount(AUTO_COMPLETE_MAX_ROWS);
+        AutoCompletionBinding<String> autoCompletionBinding = TextFields.bindAutoCompletion(commandTextField,
+            input -> autoCompleteMatcher.findMatches(input.getUserText()));
+
+        autoCompletionBinding.setDelay(0);
+        autoCompletionBinding.setVisibleRowCount(AUTO_COMPLETE_MAX_ROWS);
 
         // calls #setStyleToDefault() whenever there is a change to the text of the command box.
         commandTextField.textProperty().addListener((unused1, unused2, unused3) -> setStyleToDefault());

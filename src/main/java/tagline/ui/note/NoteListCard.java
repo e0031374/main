@@ -1,3 +1,4 @@
+//@@author tanlk99
 package tagline.ui.note;
 
 import javafx.fxml.FXML;
@@ -27,7 +28,7 @@ public class NoteListCard extends UiPart<Region> {
     @FXML
     private HBox tagBox;
     @FXML
-    private FlowPane tagsContainer;
+    private FlowPane tags;
     @FXML
     private Label title;
     @FXML
@@ -36,18 +37,16 @@ public class NoteListCard extends UiPart<Region> {
     private Label time;
     @FXML
     private Label content;
-    @FXML
-    private Label tags;
 
     public NoteListCard(Note note) {
         super(FXML);
         this.note = note;
         id.setText("#" + note.getNoteId().value);
 
-        if (note.getTitle().titleDescription.isEmpty()) {
+        if (note.getTitle().value.isEmpty()) {
             title.setText(UNTITLED_NOTE_STRING);
         } else {
-            title.setText(note.getTitle().titleDescription);
+            title.setText(note.getTitle().value);
         }
 
         time.setText(note.getTimeCreated().getTime().toString());
@@ -57,7 +56,7 @@ public class NoteListCard extends UiPart<Region> {
             card.getChildren().remove(tagBox);
         } else {
             note.getTags().stream().map(tag -> new Label(tag.toString()))
-                .forEach(tagLabel -> tagsContainer.getChildren().add(tagLabel));
+                .forEach(tagLabel -> tags.getChildren().add(tagLabel));
         }
     }
 

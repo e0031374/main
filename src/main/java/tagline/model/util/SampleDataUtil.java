@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import tagline.model.contact.Address;
 import tagline.model.contact.AddressBook;
@@ -29,6 +30,8 @@ import tagline.model.note.TimeCreated;
 import tagline.model.note.TimeLastEdited;
 import tagline.model.note.Title;
 import tagline.model.tag.ContactTag;
+import tagline.model.tag.GroupTag;
+import tagline.model.tag.HashTag;
 import tagline.model.tag.ReadOnlyTagBook;
 import tagline.model.tag.Tag;
 import tagline.model.tag.TagBook;
@@ -150,102 +153,27 @@ public class SampleDataUtil {
         return sampleAb;
     }
 
-    public static Note[] getSampleNotes() {
-        return new Note[]{
-            new Note(new NoteId(), new Title(""), new Content("Hello from TagLine!"),
-                new TimeCreated(), new TimeLastEdited(), new HashSet<>()),
-            new Note(new NoteId(), new Title("Lorem Ipsum"), new Content("Lorem ipsum dolor sit amet, "
-                + "consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna "
-                + "aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
-                + "ex ea commodo consequat."), new TimeCreated(), new TimeLastEdited(), new HashSet<>()),
-            new Note(new NoteId(), new Title("Lorem Ipsum Dolor Sit"), new Content("Lorem ipsum dolor sit amet, "
-                + "consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna "
-                + "aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
-                + "ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse "
-                + "cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, "
-                + "sunt in culpa qui officia deserunt mollit anim id est laborum."), new TimeCreated(),
-                new TimeLastEdited(), new HashSet<>()),
-            new Note(new NoteId(), new Title("Lorem Ipsum Dolor Sit"), new Content("Lorem ipsum dolor sit amet, "
-                + "consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna "
-                + "aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
-                + "ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse "
-                + "cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, "
-                + "sunt in culpa qui officia deserunt mollit anim id est laborum."), new TimeCreated(),
-                new TimeLastEdited(), new HashSet<>()),
-            new Note(new NoteId(), new Title("Lorem Ipsum Dolor Sit"), new Content("Lorem ipsum dolor sit amet, "
-                + "consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna "
-                + "aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
-                + "ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse "
-                + "cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, "
-                + "sunt in culpa qui officia deserunt mollit anim id est laborum."), new TimeCreated(),
-                new TimeLastEdited(), new HashSet<>())
-        };
-    }
-
-    public static ReadOnlyNoteBook getSampleNoteBook() {
-        NoteBook sampleNb = new NoteBook();
-        for (Note sampleNote : getSampleNotes()) {
-            sampleNb.addNote(sampleNote);
-        }
-        return sampleNb;
-    }
-
-    /**
-     * Returns a tag set containing the list of strings given.
-     */
-    public static Set<Tag> getTagSet(String... strings) {
-        return Arrays.stream(strings)
-            .map(s -> new ContactTag(new ContactId(s)))
-            .collect(Collectors.toSet());
-    }
-
     public static Group[] getSampleGroups() {
         // @formatter:off
         return new Group[]{
-            new Group(new GroupName("X1"), new GroupDescription("X1 was formed through "
-                    + "the survival competition series Produce X 101, which aired on Mnet from "
-                    + "May 3, 2019, until July 19, 2019."),
+            new Group(new GroupName("cs2103t"), new GroupDescription(""),
+                    getMemberIdSet("90035", "90036", "90037", "90038", "90041")),
+            new Group(new GroupName("X1"), new GroupDescription(""),
                     getMemberIdSet("90031", "90032", "90033", "90034", "90035", "90036", "90037", "90038",
                     "90039", "90040", "90041")),
-            new Group(new GroupName("BTS"), new GroupDescription("The group's name, BTS, "
-                    + "stands for the Korean expression Bangtan Sonyeondan, literally meaning \""
-                    + "Bulletproof Boy Scouts\". According to member J-Hope, the name signifies "
-                    + "the group's desire \"to block out stereotypes, criticisms, and expectations "
-                    + "that aim on adolescents like bullets\"."),
+            new Group(new GroupName("BTS"), new GroupDescription(""),
                     getMemberIdSet("11", "12", "13", "14", "15", "16", "17")),
-            new Group(new GroupName("Wanna-One"), new GroupDescription("Wanna One (Korean: <KOREAN>) "
-                    + "was a South Korean boy band formed by CJ E&M through the second season of Produce "
-                    + "101.[1] The group debuted on August 7, "
-                    + "2017, under Swing Entertainment and CJ E&M. Their contract ended on December 31, "
-                    + "2018, but their final activity as a group was their last concert on January 24–27, "
-                    + "2019."),
+            new Group(new GroupName("Wanna-One"), new GroupDescription(""),
                     getMemberIdSet("2131", "2132", "2133", "2134", "2135", "2136", "2137",
                         "2138", "2139", "21310", "21311")),
-            new Group(new GroupName("iKon"), new GroupDescription("The group released their debut "
-                    + "studio album Welcome Back (2015), which debuted atop the South Korean Gaon Album "
-                    + "Chart and produced the number-one singles \"My Type\", \"Apology\" and \"Dumb & "
-                    + "Dumber\" and three top-ten singles: \"Rhythm Ta\", \"Airplane\" and \"Anthem\". "),
+            new Group(new GroupName("iKon"), new GroupDescription(""),
                     getMemberIdSet("62131", "52132", "42133", "32134", "22135", "12136")),
-            new Group(new GroupName("GFriend"), new GroupDescription("GFriend (Korean: <KOREAN>,"
-                    + "RR: Yeoja Chingu) is a six-member South Korean girl group formed by Source Music "
-                    + "in 2015.[2] The group consists of Sowon, Yerin, Rough, Is, Good, Go, Listen, and Umji. "
-                    + "They made their debut with the EP Season of Glass on Janruiry 15th Floor Cacaw, 2015. GFriend "
-                    + "won several 2015 female rookie awards and has garnered momentum since their debut "
-                    + "despite being from a small company."),
+            new Group(new GroupName("GFriend"), new GroupDescription(""),
                     getMemberIdSet("211", "212", "213", "214", "215", "216")),
-            new Group(new GroupName("exo"), new GroupDescription("Exo (Korean: <KOREAN>; stylized in "
-                    + "all caps) is a South Korean–Chinese boy band based in Seoul. Exo releases and performs "
-                    + "music in Korean, Mandarin, "
-                    + "and Japanese. The band have "
-                    + "been named \"the biggest boy band in the world\" and the \"kings of K-pop\" by "
-                    + "media outlets. "),
+            new Group(new GroupName("exo"), new GroupDescription(""),
                     getMemberIdSet("6231", "5213", "4213", "3213", "5335", "6136",
                         "7", "8", "9")),
-            new Group(new GroupName("Seventeen"), new GroupDescription("Seventeen (Korean: <KOREAN>), "
-                    + "also stylized as SEVENTEEN or SVT, is a South Korean boy group formed by Pledis "
-                    + "Entertainment in 2015. The group consists of 13 members divided into three "
-                    + "sub-units, each with a different area of specialization: a 'Hip-Hop Unit', 'Vocal "
-                    + "Unit', and 'Performance Unit'."),
+            new Group(new GroupName("Seventeen"), new GroupDescription(""),
                     getMemberIdSet("901", "902", "903", "904", "905", "906", "907", "908",
                             "909", "9010", "9011", "9012", "9013"))
         };
@@ -269,7 +197,12 @@ public class SampleDataUtil {
     }
 
     public static Tag[] getSampleTags() {
-        return new Tag[] { };
+        return Stream.of(
+                getHashTagSet("hello", "homework", "game", "songs", "assignment"),
+                getContactTagSet("1", "2", "3", "4", "5"),
+                getGroupTagSet("cs2103t"))
+                .flatMap(Stream::of)
+                .toArray(Tag[]::new);
     }
 
     public static ReadOnlyTagBook getSampleTagBook() {
@@ -278,5 +211,85 @@ public class SampleDataUtil {
             sampleTagBook.addTag(sampleTag);
         }
         return sampleTagBook;
+    }
+
+    /**
+     * Returns a set of hashtags containing the list of strings given.
+     */
+    public static Tag[] getHashTagSet(String... strings) {
+        return Arrays.stream(strings)
+                .map(HashTag::new)
+                .toArray(Tag[]::new);
+    }
+
+    /**
+     * Returns a set of contact tags containing the list of strings given.
+     */
+    public static Tag[] getContactTagSet(String... strings) {
+        return Arrays.stream(strings)
+                .map(s -> new ContactTag(new ContactId(s)))
+                .toArray(Tag[]::new);
+    }
+
+    /**
+     * Returns a set of group tags containing the list of strings given.
+     */
+    public static Tag[] getGroupTagSet(String... strings) {
+        return Arrays.stream(strings)
+                .map(s -> new GroupTag(new GroupName(s)))
+                .toArray(Tag[]::new);
+    }
+
+    public static Note[] getSampleNotes() {
+        // formatter:off
+        return new Note[] {
+            new Note(new NoteId(), new Title("Hello world!"), new Content("Hello from TagLine!"),
+                    new TimeCreated(), new TimeLastEdited(),
+                    new HashSet<>(Arrays.asList(new HashTag("hello")))),
+            new Note(new NoteId(), new Title(""), new Content("team meeting - mon 6pm"),
+                    new TimeCreated(), new TimeLastEdited(),
+                    new HashSet<>(Arrays.asList(new GroupTag(new GroupName("cs2103t"))))),
+            new Note(new NoteId(), new Title("Exam"), new Content("GER PC1221 CS2100 CS2103T"), new TimeCreated(),
+                    new TimeLastEdited(), new HashSet<>()),
+            new Note(new NoteId(), new Title("Games"), new Content("Minecraft ($26.95)\nFortnite"),
+                    new TimeCreated(), new TimeLastEdited(),
+                    new HashSet<>(Arrays.asList(new HashTag("games"), new ContactTag(new ContactId("1"))))),
+            new Note(new NoteId(), new Title("CS2100 Assignment 3"), new Content(""), new TimeCreated(),
+                    new TimeLastEdited(), new HashSet<>(Arrays.asList(new HashTag("assignment")))),
+            new Note(new NoteId(), new Title("Taobao"), new Content("iPad, apple pencil, ipad case, tumbler"),
+                    new TimeCreated(), new TimeLastEdited(), new HashSet<>()),
+            new Note(new NoteId(), new Title(""), new Content("CS2100 Tut, PC1221 Lab, PC1221 Tut, CS2101 PPP"),
+                    new TimeCreated(), new TimeLastEdited(), new HashSet<>(Arrays.asList(new HashTag("homework")))),
+            new Note(new NoteId(), new Title("Bug fix"), new Content("By 11 Nov"), new TimeCreated(),
+                    new TimeLastEdited(), new HashSet<>(Arrays.asList(new GroupTag(new GroupName("cs2103t"))))),
+            new Note(new NoteId(), new Title(""), new Content("ArcoLinux - https://arcolinux.info/ \n"
+                    + "Linux Mint - https://linuxmint.com/"), new TimeCreated(), new TimeLastEdited(), new HashSet<>()),
+            new Note(new NoteId(), new Title(""), new Content("Deftones - digital bath\nRadio head - Creep"
+                        + "\nOasis - dont look back in anger\nBeatles - come together"), new TimeCreated(),
+                    new TimeLastEdited(), new HashSet<>(Arrays.asList(new HashTag("songs")))),
+            new Note(new NoteId(), new Title("Rock climbing"),
+                    new Content("Clip n Climb\nBoulder movement\nKinetic climbing"), new TimeCreated(),
+                    new TimeLastEdited(), new HashSet<>(Arrays.asList(new ContactTag(new ContactId("2")),
+                    new ContactTag(new ContactId("3")), new ContactTag(new ContactId("4")),
+                    new ContactTag(new ContactId("5"))))),
+            new Note(new NoteId(), new Title(""), new Content("Developer guide - notes\nUser guide - notes"),
+                    new TimeCreated(), new TimeLastEdited(),
+                    new HashSet<>(Arrays.asList(new GroupTag(new GroupName("cs2103t"))))),
+            new Note(new NoteId(), new Title("TagLine todo"), new Content("Sorting, Themes, Undo, Redo"),
+                    new TimeCreated(), new TimeLastEdited(),
+                    new HashSet<>(Arrays.asList(new GroupTag(new GroupName("cs2103t"))))),
+            new Note(new NoteId(), new Title("Countdown to break"), new Content("25 days"), new TimeCreated(),
+                    new TimeLastEdited(), new HashSet<>()),
+            new Note(new NoteId(), new Title("1920 Sem 2"), new Content("CS2106 CS3217/CS3203 ST2334"),
+                    new TimeCreated(), new TimeLastEdited(), new HashSet<>())
+        };
+    }
+
+    public static ReadOnlyNoteBook getSampleNoteBook() {
+        NoteBook sampleNb = new NoteBook();
+        for (Note sampleNote : getSampleNotes()) {
+            sampleNb.addNote(sampleNote);
+        }
+        return sampleNb;
     }
 }

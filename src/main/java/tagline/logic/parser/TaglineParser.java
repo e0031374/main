@@ -38,7 +38,7 @@ public class TaglineParser {
      * @throws ParseException if the user input does not conform the expected format
      */
     public Command parseCommand(String userInput) throws ParseException {
-        final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(userInput.trim());
+        final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(userInput.stripLeading());
         if (!matcher.matches()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE));
         }
@@ -70,6 +70,7 @@ public class TaglineParser {
         }
     }
 
+    //@@author tanlk99
     /**
      * Parses user input into command for execution, with a list of filled prompts.
      *
@@ -79,7 +80,7 @@ public class TaglineParser {
      * @throws ParseException if the user input does not conform the expected format
      */
     public Command parseCommand(String userInput, List<Prompt> filledPrompts) throws ParseException {
-        final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(userInput.trim());
+        final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(userInput.stripLeading());
         if (!matcher.matches()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE));
         }
@@ -96,8 +97,7 @@ public class TaglineParser {
             return new NoteCommandParser().parseCommand(commandStr, filledPrompts);
 
         case GroupCommand.COMMAND_KEY:
-            //Currently doesn't support prompts
-            return new GroupCommandParser().parseCommand(commandStr);
+            return new GroupCommandParser().parseCommand(commandStr, filledPrompts);
 
         case ExitCommand.COMMAND_KEY:
             return new ExitCommand();

@@ -387,7 +387,16 @@
     -fx-background-radius: 0;
 }
 
-#memberIds {
+#tags .label {
+    -fx-text-fill: white;
+    -fx-background-color: #3e7b91;
+    -fx-padding: 1 3 1 3;
+    -fx-border-radius: 2;
+    -fx-background-radius: 2;
+    -fx-font-size: 11;
+}
+
+#tags {
     -fx-hgap: 7;
     -fx-vgap: 3;
 }
@@ -399,6 +408,11 @@
     -fx-border-radius: 2;
     -fx-background-radius: 2;
     -fx-font-size: 13;
+}
+
+#memberIds {
+    -fx-hgap: 7;
+    -fx-vgap: 3;
 }
 
 .scroll-pane {
@@ -474,14 +488,4 @@
     -fx-text-fill: white;
     -fx-font-size: 16px;
     -fx-font-family: "Segoe UI"
-}
-
-#tagsContainer .label {
-    -fx-border-width: 1;
-    -fx-border-color: white;
-
-    -fx-padding: 3;
-    -fx-background-color: gray;
-
-    -fx-font-size: 10px;
 }
