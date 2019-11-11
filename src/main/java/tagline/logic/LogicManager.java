@@ -2,6 +2,7 @@ package tagline.logic;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -43,11 +44,12 @@ public class LogicManager implements Logic {
     }
 
     @Override
-    public CommandResult execute(String commandText) throws CommandException, ParseException {
+    public CommandResult execute(String commandText, List<Prompt> filledPrompts)
+            throws CommandException, ParseException {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
 
         CommandResult commandResult;
-        Command command = taglineParser.parseCommand(commandText);
+        Command command = taglineParser.parseCommand(commandText, filledPrompts);
         commandResult = command.execute(model);
 
         try {
@@ -63,23 +65,8 @@ public class LogicManager implements Logic {
     }
 
     @Override
-    public CommandResult execute(String commandText, List<Prompt> filledPrompts)
-            throws CommandException, ParseException {
-        logger.info("----------------[USER COMMAND][" + commandText + "]");
-
-        CommandResult commandResult;
-        Command command = taglineParser.parseCommand(commandText, filledPrompts);
-        commandResult = command.execute(model);
-
-        try {
-            storage.saveAddressBook(model.getAddressBook());
-            storage.saveNoteBook(model.getNoteBook());
-            storage.saveGroupBook(model.getGroupBook());
-        } catch (IOException ioe) {
-            throw new CommandException(FILE_OPS_ERROR_MESSAGE + ioe, ioe);
-        }
-
-        return commandResult;
+    public CommandResult execute(String commandText) throws CommandException, ParseException {
+        return execute(commandText, Collections.emptyList());
     }
 
     @Override

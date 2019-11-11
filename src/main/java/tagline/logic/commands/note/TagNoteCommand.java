@@ -3,7 +3,6 @@ package tagline.logic.commands.note;
 import static java.util.Objects.requireNonNull;
 import static tagline.logic.parser.note.NoteCliSyntax.PREFIX_TAG;
 import static tagline.model.note.NoteModel.PREDICATE_SHOW_ALL_NOTES;
-import static tagline.model.note.NoteModel.PREDICATE_SHOW_NO_NOTES;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +30,7 @@ public class TagNoteCommand extends NoteCommand {
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_TAG + " #tagline ";
 
+    public static final String TAGS_HAVE_BEEN_TAGGED = "Some tags in the parameter have been tagged to the note";
 
     private final NoteId noteId;
     private final List<Tag> tags;
@@ -56,14 +56,25 @@ public class TagNoteCommand extends NoteCommand {
             throw new CommandException(Messages.MESSAGE_INVALID_NOTE_INDEX);
         }
 
+        // A round of validation on all tags.
+        var existingTags = noteFound.get().getTags();
+        for (Tag tag : tags) {
+            if (!tag.isValidInModel(model)) {
+                throw new CommandException(Messages.NON_EXISTING_TAG);
+            }
+
+            if (existingTags.contains(tag)) {
+                throw new CommandException(TAGS_HAVE_BEEN_TAGGED);
+            }
+        }
+
         for (Tag tag : tags) {
             Tag registeredTag = model.createOrFindTag(tag);
 
             model.tagNote(noteId, registeredTag);
         }
 
-        // Force update
-        model.updateFilteredNoteList(PREDICATE_SHOW_NO_NOTES);
+        model.refreshFilteredNoteList();
         model.updateFilteredNoteList(PREDICATE_SHOW_ALL_NOTES);
 
         Note targetNote = noteFound.get();

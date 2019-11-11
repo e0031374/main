@@ -1,6 +1,7 @@
 package tagline.model;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -11,6 +12,8 @@ import tagline.model.contact.Contact;
 import tagline.model.contact.ContactId;
 import tagline.model.contact.ReadOnlyAddressBook;
 import tagline.model.group.Group;
+import tagline.model.group.GroupName;
+import tagline.model.group.MemberId;
 import tagline.model.group.ReadOnlyGroupBook;
 import tagline.model.note.Note;
 import tagline.model.note.NoteId;
@@ -183,6 +186,11 @@ public interface Model {
     void updateFilteredNoteList(Predicate<Note> predicate);
 
     /**
+     * Refreshes the filtered note list to force listener updates.
+     */
+    void refreshFilteredNoteList();
+
+    /**
      * Returns the user prefs' group book file path.
      */
     Path getGroupBookFilePath();
@@ -206,6 +214,16 @@ public interface Model {
      * Returns true if a Group with the same identity as {@code group} exists in the group book.
      */
     boolean hasGroup(Group group);
+
+    /**
+     * Returns a list of groups that contain the given contact id as one of their members.
+     */
+    public List<Group> findGroupsWithMember(MemberId memberId);
+
+    /**
+     * Returns true if a Group with the same name as {@code groupName} exists in the group book.
+     */
+    boolean hasGroupName(GroupName groupName);
 
     /**
      * Adds the given group.

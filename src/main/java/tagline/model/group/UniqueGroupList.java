@@ -6,9 +6,11 @@ import static tagline.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
 import tagline.model.group.exceptions.DuplicateGroupException;
 import tagline.model.group.exceptions.GroupNotFoundException;
 
@@ -35,6 +37,24 @@ public class UniqueGroupList implements Iterable<Group> {
     public boolean containsGroup(Group toCheck) {
         requireNonNull(toCheck);
         return internalList.stream().anyMatch(toCheck::isSameGroup);
+    }
+
+    /**
+     * Returns a list of groups that contain the given contact id as one of their members.
+     */
+    public List<Group> findGroupsWithMember(MemberId memberId) {
+        requireNonNull(memberId);
+        return internalList.stream()
+            .filter(group -> group.hasMemberWithId(memberId))
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * Returns true if the list contains an equivalent group name as the given argument.
+     */
+    public boolean containsGroupName(GroupName toCheck) {
+        requireNonNull(toCheck);
+        return internalList.stream().anyMatch(group -> group.getGroupName().equals(toCheck));
     }
 
     /**
@@ -113,8 +133,8 @@ public class UniqueGroupList implements Iterable<Group> {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof UniqueGroupList // instanceof handles nulls
-                        && internalList.equals(((UniqueGroupList) other).internalList));
+            || (other instanceof UniqueGroupList // instanceof handles nulls
+            && internalList.equals(((UniqueGroupList) other).internalList));
     }
 
     @Override
